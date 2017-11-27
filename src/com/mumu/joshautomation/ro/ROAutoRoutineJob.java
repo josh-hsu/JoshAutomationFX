@@ -125,15 +125,19 @@ public class ROAutoRoutineJob extends AutoJob {
                 if (currentJob.sEnabled == 1) {
                     switch (currentJob.sWhenValue) {
                         case OnMPLessThan:
-                            break;
                         case OnHPLessThan:
+                            Thread.sleep(defaultDetectInterval);
+                            if (mRO.checkBattleSupply(currentJob.sWhen, currentJob.sWhenValue))
+                                mRO.executeAction(currentJob.sAction, currentJob.sActionValue);
                             break;
                         case OnPeriod:
+                            Thread.sleep(currentJob.sWhenValue);
+                            mRO.executeAction(currentJob.sAction, currentJob.sActionValue);
                             break;
                     }
                 } else {
                     Log.d(TAG, "Job " + currentIndex + " is not enabled, sleep for 5 seconds");
-                    Thread.sleep(5000);
+                    Thread.sleep(500);
                 }
             }
         }

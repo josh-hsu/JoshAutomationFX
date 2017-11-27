@@ -6,6 +6,7 @@ import com.mumu.libjoshgame.JoshGameLibrary;
 import com.mumu.libjoshgame.ScreenCoord;
 import com.mumu.libjoshgame.ScreenPoint;
 
+import static com.mumu.joshautomation.ro.ROJobDescription.*;
 import static com.mumu.joshautomation.ro.RORoutineDefinition.*;
 
 /**
@@ -83,22 +84,34 @@ class RORoutine {
         mGL.getInputService().tapOnScreen(skillCoord);
     }
 
-    void checkBattleSupply() {
+    boolean checkBattleSupply(int type, int typeValue) {
         // check on character HP and MP
-        if (false) {
-            int hpTargetPercent = 50;
-            int hpTargetItem = 1;
-            if (isHPLowerThan((float)hpTargetPercent)) {
-                tapOnQuickItem(hpTargetItem - 1);
-            }
+        switch (type) {
+            case OnHPLessThan:
+                if (isHPLowerThan((float)typeValue))
+                    return true;
+                break;
+            case OnMPLessThan:
+                if (isMPLowerThan((float)typeValue))
+                    return true;
+                break;
+            default:
+                Log.d(TAG, "Unknown supply type: " + type);
         }
 
-        if (true) {
-            int mpTargetPercent = 50;
-            int mpTargetItem = 1;
-            if (isMPLowerThan((float)mpTargetPercent)) {
-                tapOnQuickItem(mpTargetItem - 1);
-            }
+        return false;
+    }
+
+    void executeAction(int action, int actionValue) {
+        switch (action) {
+            case ActionPressItem:
+                tapOnQuickItem(actionValue);
+                break;
+            case ActionPressSkill:
+                tapOnSkill(actionValue);
+                break;
+            default:
+                Log.d(TAG, "Unknown supply action: " + action);
         }
     }
 }
