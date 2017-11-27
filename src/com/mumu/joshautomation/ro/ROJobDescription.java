@@ -17,7 +17,7 @@ public class ROJobDescription {
     public final static int ActionPressItem  = 0;
     public final static int ActionPressSkill = 1;
 
-    public static int defaultDetectInterval = 500;
+    public static int defaultDetectInterval = 1500;
 
     int sEnabled;
     int sWhen;

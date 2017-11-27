@@ -55,7 +55,7 @@ public class ROAutoRoutineJob extends AutoJob {
     public void setExtra(Object object) {
         if (object instanceof ROJobList) {
             mJobList = (ROJobList) object;
-            onJobListChanged();
+            //onJobListChanged();
         }
     }
 
@@ -123,17 +123,22 @@ public class ROAutoRoutineJob extends AutoJob {
             while (mShouldJobRunning) {
                 //do jobs
                 if (currentJob.sEnabled == 1) {
-                    switch (currentJob.sWhenValue) {
+                    switch (currentJob.sWhen) {
                         case OnMPLessThan:
                         case OnHPLessThan:
                             Thread.sleep(defaultDetectInterval);
+                            Log.d(TAG, "checking " + currentIndex + " for values");
                             if (mRO.checkBattleSupply(currentJob.sWhen, currentJob.sWhenValue))
                                 mRO.executeAction(currentJob.sAction, currentJob.sActionValue);
                             break;
                         case OnPeriod:
                             Thread.sleep(currentJob.sWhenValue);
+                            Log.d(TAG, "checking " + currentIndex + " for period job");
                             mRO.executeAction(currentJob.sAction, currentJob.sActionValue);
                             break;
+                        default:
+                            Log.w(TAG, "When " + currentJob.sWhen + " is not supported");
+                            Thread.sleep(500);
                     }
                 } else {
                     Log.d(TAG, "Job " + currentIndex + " is not enabled, sleep for 5 seconds");
