@@ -2,7 +2,9 @@ package com.mumu.jafx;
 
 import java.io.IOException;
 
-import com.mumu.joshautomation.ro.ROAutoDrinkJob;
+import com.mumu.joshautomation.ro.ROAutoRoutineJob;
+import com.mumu.joshautomation.ro.ROJobDescription;
+import com.mumu.joshautomation.ro.ROJobList;
 import com.mumu.joshautomation.script.AutoJobEventListener;
 import com.mumu.joshautomation.script.AutoJobHandler;
 import com.mumu.libjoshgame.Cmd;
@@ -15,6 +17,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import static com.mumu.joshautomation.ro.ROJobDescription.*;
+
 public class Main extends Application implements AutoJobEventListener {
 
     private Stage mMainStage;
@@ -24,6 +28,7 @@ public class Main extends Application implements AutoJobEventListener {
     private AutoJobHandler mAutoJobHandler;
     private JobViewController mJobViewController;
     private JoshGameLibrary mGL = JoshGameLibrary.getInstance();
+    private ROJobList mROJobList;
 
 
     /**
@@ -36,15 +41,23 @@ public class Main extends Application implements AutoJobEventListener {
         mGL.setTouchShift(0);
         mGL.setAmbiguousRange(new int[] {9,9,9});
         mGL.setPlatform(true);
-        mGL.setChatty(true);
+        mGL.setChatty(false);
 
         mAutoJobHandler = AutoJobHandler.getHandler();
-        mAutoJobHandler.addJob(new ROAutoDrinkJob());
+        mAutoJobHandler.addJob(new ROAutoRoutineJob());
         mAutoJobHandler.setJobEventListener(0, this);
 
-        Cmd cmd = new Cmd();
-        cmd.getAdbDevices();
-        cmd.runCommand("ls -l /sdcard", 0);
+        // test job list for easy debug
+        //TODO: removed when release
+        mROJobList = new ROJobList();
+        mROJobList.addJob(0, new ROJobDescription(Enable, OnMPLessThan, 50, ActionPressItem, 1));
+        mROJobList.addJob(1, new ROJobDescription(Enable, OnPeriod, 5000, ActionPressSkill, 1));
+        mROJobList.addJob(2, new ROJobDescription(Enable, OnPeriod, 8000, ActionPressItem, 2));
+        mAutoJobHandler.setExtra(0, mROJobList);
+
+        //Cmd cmd = new Cmd();
+        //cmd.getAdbDevices();
+        //cmd.runCommand("ls -l /sdcard", 0);
 
         // shouldn't be started here, but we just want to test it out
         mAutoJobHandler.startJob(0);

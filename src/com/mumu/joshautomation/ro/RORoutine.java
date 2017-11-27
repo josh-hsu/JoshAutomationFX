@@ -44,11 +44,9 @@ class RORoutine {
     private ScreenCoord getTargetGaugeCoord(float percent, int gauge) {
         if (gauge == GAUGE_TYPE_HP) {
             int length = (int)((pointHPEnd.x - pointHPStart.x) * percent) / 100;
-            Log.d(TAG, "Calculate offset " + length);
             return new ScreenCoord(pointHPStart.x + length, pointHPStart.y, pointHPStart.orientation);
         } else if (gauge == GAUGE_TYPE_MP) {
             int length = (int)((pointMPEnd.x - pointMPStart.x) * percent) / 100;
-            Log.d(TAG, "Calculate offset " + length);
             return new ScreenCoord(pointMPStart.x + length, pointMPStart.y, pointMPStart.orientation);
         } else {
             Log.d(TAG, "Unknown gauge type " + gauge);

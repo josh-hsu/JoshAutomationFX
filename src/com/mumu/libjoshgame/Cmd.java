@@ -87,7 +87,6 @@ public class Cmd {
         while ((s = stdInput.readLine()) != null) {
             result += s;
         }
-        Log.d(TAG, "Cmd: " + cmd + " result: " + result);
 
         // read any errors from the attempted command
         while ((s = stdError.readLine()) != null) {
