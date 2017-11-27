@@ -13,6 +13,7 @@ public class ROJobDescription {
     public final static int OnAutoEnd      = 6;
     public final static int OnFollowStart  = 7;
     public final static int OnFollowEnd    = 8;
+    public final static int OnServerDisconnected = 9;
 
     public final static int ActionPressItem  = 0;
     public final static int ActionPressSkill = 1;

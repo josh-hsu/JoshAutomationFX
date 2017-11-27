@@ -11,7 +11,7 @@
    <children>
       <TabPane layoutX="50.0" layoutY="57.0" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
-          <Tab text="Nox 1">
+          <Tab fx:id="mTab1" text="Nox 1">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -21,7 +21,7 @@
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
-                                          <GridPane prefHeight="324.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <GridPane fx:id="mGridPane1" prefHeight="324.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <columnConstraints>
                                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
                                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="150.0" />
@@ -37,14 +37,14 @@
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
-                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.rowIndex="1" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                                                 <Label text="啟用" />
                                                 <Label text="使用條件" GridPane.columnIndex="1" />
                                                 <Label text="技能.物品" GridPane.columnIndex="3" />
-                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.rowIndex="2" />
-                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.rowIndex="3" />
-                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.rowIndex="4" />
-                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.rowIndex="5" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="5" />
                                                 <ChoiceBox prefWidth="150.0" value="如果 HP 小於" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                     <items>
                                                         <FXCollections fx:factory="observableArrayList">
@@ -100,11 +100,6 @@
                                                         </FXCollections>
                                                     </items>
                                                 </ChoiceBox>
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
                                                 <ChoiceBox prefWidth="150.0" value="使用物品 1" GridPane.columnIndex="3" GridPane.rowIndex="1">
                                                     <items>
                                                         <FXCollections fx:factory="observableArrayList">
@@ -191,6 +186,11 @@
                                                     </items>
                                                 </ChoiceBox>
                                                 <Label fx:id="mStatusLabel" text="DEBUG" GridPane.columnIndex="2" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="5" />
                                              </children>
                                           </GridPane>
                                        </children>
@@ -208,41 +208,172 @@
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab text="Nox 2">
+            <Tab fx:id="mTab2" text="Nox 2">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Accordion prefHeight="371.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <Accordion prefHeight="371.0" prefWidth="600.0">
                            <panes>
                               <TitledPane animated="false" text="自動技能與物品">
                                  <content>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
-                                          <GridPane prefHeight="324.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <GridPane fx:id="mGridPane2" prefHeight="324.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
-                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.rowIndex="1" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                                                 <Label text="啟用" />
                                                 <Label text="使用條件" GridPane.columnIndex="1" />
                                                 <Label text="技能.物品" GridPane.columnIndex="3" />
-                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.rowIndex="2" />
-                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.rowIndex="3" />
-                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.rowIndex="4" />
-                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.rowIndex="5" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                                                <ChoiceBox prefWidth="150.0" value="如果 HP 小於" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="如果 HP 小於" />
+                                                         <String fx:value="如果 HP 大於" />
+                                                         <String fx:value="如果 MP 小於" />
+                                                         <String fx:value="如果 MP 大於" />
+                                                         <String fx:value="定時" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <ChoiceBox prefWidth="150.0" value="如果 HP 小於" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="如果 HP 小於" />
+                                                         <String fx:value="如果 HP 大於" />
+                                                         <String fx:value="如果 MP 小於" />
+                                                         <String fx:value="如果 MP 大於" />
+                                                         <String fx:value="定時" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <ChoiceBox prefWidth="150.0" value="如果 HP 小於" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="如果 HP 小於" />
+                                                         <String fx:value="如果 HP 大於" />
+                                                         <String fx:value="如果 MP 小於" />
+                                                         <String fx:value="如果 MP 大於" />
+                                                         <String fx:value="定時" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <ChoiceBox prefWidth="150.0" value="如果 HP 小於" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="如果 HP 小於" />
+                                                         <String fx:value="如果 HP 大於" />
+                                                         <String fx:value="如果 MP 小於" />
+                                                         <String fx:value="如果 MP 大於" />
+                                                         <String fx:value="定時" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <ChoiceBox prefWidth="150.0" value="如果 HP 小於" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="如果 HP 小於" />
+                                                         <String fx:value="如果 HP 大於" />
+                                                         <String fx:value="如果 MP 小於" />
+                                                         <String fx:value="如果 MP 大於" />
+                                                         <String fx:value="定時" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <ChoiceBox prefWidth="150.0" value="使用物品 1" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="使用物品 1" />
+                                                         <String fx:value="使用物品 2" />
+                                                         <String fx:value="使用物品 3" />
+                                                         <String fx:value="使用物品 4" />
+                                                         <String fx:value="使用物品 5" />
+                                                         <String fx:value="使用技能 1" />
+                                                         <String fx:value="使用技能 2" />
+                                                         <String fx:value="使用技能 3" />
+                                                         <String fx:value="使用技能 4" />
+                                                         <String fx:value="使用技能 5" />
+                                                         <String fx:value="使用技能 6" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <ChoiceBox prefWidth="150.0" value="使用物品 1" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="使用物品 1" />
+                                                         <String fx:value="使用物品 2" />
+                                                         <String fx:value="使用物品 3" />
+                                                         <String fx:value="使用物品 4" />
+                                                         <String fx:value="使用物品 5" />
+                                                         <String fx:value="使用技能 1" />
+                                                         <String fx:value="使用技能 2" />
+                                                         <String fx:value="使用技能 3" />
+                                                         <String fx:value="使用技能 4" />
+                                                         <String fx:value="使用技能 5" />
+                                                         <String fx:value="使用技能 6" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <ChoiceBox prefWidth="150.0" value="使用物品 1" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="使用物品 1" />
+                                                         <String fx:value="使用物品 2" />
+                                                         <String fx:value="使用物品 3" />
+                                                         <String fx:value="使用物品 4" />
+                                                         <String fx:value="使用物品 5" />
+                                                         <String fx:value="使用技能 1" />
+                                                         <String fx:value="使用技能 2" />
+                                                         <String fx:value="使用技能 3" />
+                                                         <String fx:value="使用技能 4" />
+                                                         <String fx:value="使用技能 5" />
+                                                         <String fx:value="使用技能 6" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <ChoiceBox prefWidth="150.0" value="使用物品 1" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="使用物品 1" />
+                                                         <String fx:value="使用物品 2" />
+                                                         <String fx:value="使用物品 3" />
+                                                         <String fx:value="使用物品 4" />
+                                                         <String fx:value="使用物品 5" />
+                                                         <String fx:value="使用技能 1" />
+                                                         <String fx:value="使用技能 2" />
+                                                         <String fx:value="使用技能 3" />
+                                                         <String fx:value="使用技能 4" />
+                                                         <String fx:value="使用技能 5" />
+                                                         <String fx:value="使用技能 6" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <ChoiceBox prefWidth="150.0" value="使用物品 1" GridPane.columnIndex="3" GridPane.rowIndex="5">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="使用物品 1" />
+                                                         <String fx:value="使用物品 2" />
+                                                         <String fx:value="使用物品 3" />
+                                                         <String fx:value="使用物品 4" />
+                                                         <String fx:value="使用物品 5" />
+                                                         <String fx:value="使用技能 1" />
+                                                         <String fx:value="使用技能 2" />
+                                                         <String fx:value="使用技能 3" />
+                                                         <String fx:value="使用技能 4" />
+                                                         <String fx:value="使用技能 5" />
+                                                         <String fx:value="使用技能 6" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <Label fx:id="mStatusLabel1" text="DEBUG" GridPane.columnIndex="2" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="5" />
                                              </children>
                                              <columnConstraints>
                                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
@@ -274,41 +405,172 @@
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab text="Nox 3">
+            <Tab fx:id="mTab3" text="Nox 3">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Accordion prefHeight="371.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <Accordion prefHeight="371.0" prefWidth="600.0">
                            <panes>
                               <TitledPane animated="false" text="自動技能與物品">
                                  <content>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
-                                          <GridPane prefHeight="324.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <GridPane fx:id="mGridPane3" prefHeight="324.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
-                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.rowIndex="1" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                                                 <Label text="啟用" />
                                                 <Label text="使用條件" GridPane.columnIndex="1" />
                                                 <Label text="技能.物品" GridPane.columnIndex="3" />
-                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.rowIndex="2" />
-                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.rowIndex="3" />
-                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.rowIndex="4" />
-                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.rowIndex="5" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                                                <ChoiceBox prefWidth="150.0" value="如果 HP 小於" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="如果 HP 小於" />
+                                                         <String fx:value="如果 HP 大於" />
+                                                         <String fx:value="如果 MP 小於" />
+                                                         <String fx:value="如果 MP 大於" />
+                                                         <String fx:value="定時" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <ChoiceBox prefWidth="150.0" value="如果 HP 小於" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="如果 HP 小於" />
+                                                         <String fx:value="如果 HP 大於" />
+                                                         <String fx:value="如果 MP 小於" />
+                                                         <String fx:value="如果 MP 大於" />
+                                                         <String fx:value="定時" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <ChoiceBox prefWidth="150.0" value="如果 HP 小於" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="如果 HP 小於" />
+                                                         <String fx:value="如果 HP 大於" />
+                                                         <String fx:value="如果 MP 小於" />
+                                                         <String fx:value="如果 MP 大於" />
+                                                         <String fx:value="定時" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <ChoiceBox prefWidth="150.0" value="如果 HP 小於" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="如果 HP 小於" />
+                                                         <String fx:value="如果 HP 大於" />
+                                                         <String fx:value="如果 MP 小於" />
+                                                         <String fx:value="如果 MP 大於" />
+                                                         <String fx:value="定時" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <ChoiceBox prefWidth="150.0" value="如果 HP 小於" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="如果 HP 小於" />
+                                                         <String fx:value="如果 HP 大於" />
+                                                         <String fx:value="如果 MP 小於" />
+                                                         <String fx:value="如果 MP 大於" />
+                                                         <String fx:value="定時" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <ChoiceBox prefWidth="150.0" value="使用物品 1" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="使用物品 1" />
+                                                         <String fx:value="使用物品 2" />
+                                                         <String fx:value="使用物品 3" />
+                                                         <String fx:value="使用物品 4" />
+                                                         <String fx:value="使用物品 5" />
+                                                         <String fx:value="使用技能 1" />
+                                                         <String fx:value="使用技能 2" />
+                                                         <String fx:value="使用技能 3" />
+                                                         <String fx:value="使用技能 4" />
+                                                         <String fx:value="使用技能 5" />
+                                                         <String fx:value="使用技能 6" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <ChoiceBox prefWidth="150.0" value="使用物品 1" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="使用物品 1" />
+                                                         <String fx:value="使用物品 2" />
+                                                         <String fx:value="使用物品 3" />
+                                                         <String fx:value="使用物品 4" />
+                                                         <String fx:value="使用物品 5" />
+                                                         <String fx:value="使用技能 1" />
+                                                         <String fx:value="使用技能 2" />
+                                                         <String fx:value="使用技能 3" />
+                                                         <String fx:value="使用技能 4" />
+                                                         <String fx:value="使用技能 5" />
+                                                         <String fx:value="使用技能 6" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <ChoiceBox prefWidth="150.0" value="使用物品 1" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="使用物品 1" />
+                                                         <String fx:value="使用物品 2" />
+                                                         <String fx:value="使用物品 3" />
+                                                         <String fx:value="使用物品 4" />
+                                                         <String fx:value="使用物品 5" />
+                                                         <String fx:value="使用技能 1" />
+                                                         <String fx:value="使用技能 2" />
+                                                         <String fx:value="使用技能 3" />
+                                                         <String fx:value="使用技能 4" />
+                                                         <String fx:value="使用技能 5" />
+                                                         <String fx:value="使用技能 6" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <ChoiceBox prefWidth="150.0" value="使用物品 1" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="使用物品 1" />
+                                                         <String fx:value="使用物品 2" />
+                                                         <String fx:value="使用物品 3" />
+                                                         <String fx:value="使用物品 4" />
+                                                         <String fx:value="使用物品 5" />
+                                                         <String fx:value="使用技能 1" />
+                                                         <String fx:value="使用技能 2" />
+                                                         <String fx:value="使用技能 3" />
+                                                         <String fx:value="使用技能 4" />
+                                                         <String fx:value="使用技能 5" />
+                                                         <String fx:value="使用技能 6" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <ChoiceBox prefWidth="150.0" value="使用物品 1" GridPane.columnIndex="3" GridPane.rowIndex="5">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="使用物品 1" />
+                                                         <String fx:value="使用物品 2" />
+                                                         <String fx:value="使用物品 3" />
+                                                         <String fx:value="使用物品 4" />
+                                                         <String fx:value="使用物品 5" />
+                                                         <String fx:value="使用技能 1" />
+                                                         <String fx:value="使用技能 2" />
+                                                         <String fx:value="使用技能 3" />
+                                                         <String fx:value="使用技能 4" />
+                                                         <String fx:value="使用技能 5" />
+                                                         <String fx:value="使用技能 6" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <Label fx:id="mStatusLabel2" text="DEBUG" GridPane.columnIndex="2" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="5" />
                                              </children>
                                              <columnConstraints>
                                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />

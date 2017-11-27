@@ -38,7 +38,7 @@ package com.mumu.libjoshgame;
 public class JoshGameLibrary {
     private InputService mInputService;
     private CaptureService mCaptureService;
-    private static Cmd mCmd = new Cmd();
+    private static Cmd mCmd = Cmd.getInstance();
     private int width, height;
 
     private static JoshGameLibrary currentRuntime = new JoshGameLibrary();
@@ -123,6 +123,10 @@ public class JoshGameLibrary {
          */
         String runCommand(String cmd) {
             return mCmd.runCommand(cmd);
+        }
+
+        String runCommand(String cmd, String dev) {
+            return mCmd.runCommand(cmd, dev);
         }
     }
 

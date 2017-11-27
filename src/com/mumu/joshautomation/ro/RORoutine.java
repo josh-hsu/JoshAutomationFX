@@ -18,10 +18,12 @@ class RORoutine {
     private static final String TAG = "RORoutine";
     private JoshGameLibrary mGL;
     private AutoJobEventListener mCallbacks;
+    private String mDevice;
 
-    public RORoutine(JoshGameLibrary gl, AutoJobEventListener el) {
+    public RORoutine(JoshGameLibrary gl, AutoJobEventListener el, String dev) {
         mGL = gl;
         mCallbacks = el;
+        mDevice = dev;
     }
 
     private void sendMessage(String msg) {
@@ -58,12 +60,12 @@ class RORoutine {
 
     boolean isMPLowerThan(float percent) {
         ScreenPoint point = new ScreenPoint(getTargetGaugeCoord(percent, GAUGE_TYPE_MP), pointMPColor);
-        return !mGL.getCaptureService().colorIs(point);
+        return !mGL.getCaptureService().colorIs(point, mDevice);
     }
 
     boolean isHPLowerThan(float percent) {
         ScreenPoint point = new ScreenPoint(getTargetGaugeCoord(percent, GAUGE_TYPE_HP), pointHPColor);
-        return !mGL.getCaptureService().colorIs(point);
+        return !mGL.getCaptureService().colorIs(point, mDevice);
     }
 
     public float getCurrentHPValue() {
@@ -75,13 +77,19 @@ class RORoutine {
     }
 
     void tapOnQuickItem(int index) {
-        ScreenCoord itemCoord = pointItems.get(index);
-        mGL.getInputService().tapOnScreen(itemCoord);
+        if (index < 1)
+            return;
+
+        ScreenCoord itemCoord = pointItems.get(index - 1);
+        mGL.getInputService().tapOnScreen(itemCoord, mDevice);
     }
 
     void tapOnSkill(int index) {
-        ScreenCoord skillCoord = pointSkills.get(index);
-        mGL.getInputService().tapOnScreen(skillCoord);
+        if (index < 1)
+            return;
+
+        ScreenCoord skillCoord = pointSkills.get(index - 1);
+        mGL.getInputService().tapOnScreen(skillCoord, mDevice);
     }
 
     boolean checkBattleSupply(int type, int typeValue) {

@@ -20,8 +20,21 @@ public class ROAutoRoutineJob extends AutoJob {
     private RORoutine mRO;
     private ROAutoRoutineJob mSelf;
     private ROJobList mJobList;
+    private String mCurrentDevice;
 
     public static final String jobName = "RO 自動程序";
+
+    public ROAutoRoutineJob(String device) {
+        super(jobName);
+
+        /* JoshGameLibrary basic initial */
+        mGL = JoshGameLibrary.getInstance();
+        mGL.setGameOrientation(ScreenPoint.SO_Landscape);
+
+        mRO = new RORoutine(mGL, mListener, device);
+        mSelf = this;
+        mCurrentDevice = device;
+    }
 
     public ROAutoRoutineJob() {
         super(jobName);
@@ -30,7 +43,7 @@ public class ROAutoRoutineJob extends AutoJob {
         mGL = JoshGameLibrary.getInstance();
         mGL.setGameOrientation(ScreenPoint.SO_Landscape);
 
-        mRO = new RORoutine(mGL, mListener);
+        mRO = new RORoutine(mGL, mListener, null);
         mSelf = this;
     }
 
@@ -55,13 +68,14 @@ public class ROAutoRoutineJob extends AutoJob {
     public void setExtra(Object object) {
         if (object instanceof ROJobList) {
             mJobList = (ROJobList) object;
-            //onJobListChanged();
+            if (mShouldJobRunning)
+                onJobListChanged();
         }
     }
 
     public void setJobEventListener(AutoJobEventListener el) {
         mListener = el;
-        mRO = new RORoutine(mGL, mListener);
+        mRO = new RORoutine(mGL, mListener, mCurrentDevice);
     }
 
     private void sendEvent(String msg, Object extra) {
@@ -73,10 +87,13 @@ public class ROAutoRoutineJob extends AutoJob {
     }
 
     private void sendMessage(String msg) {
-        sendEvent(msg, this);
+        sendEvent(msg, mSelf);
     }
 
     private void formatNewJobs() {
+        if (mJobRoutines != null && !mJobRoutines.isEmpty())
+            mJobRoutines.clear();
+
         mJobRoutines = new ArrayList<>();
 
         //format job routine
@@ -88,7 +105,8 @@ public class ROAutoRoutineJob extends AutoJob {
     private void startAllJobs() {
         if (mJobRoutines != null) {
             for(int i = 0; i < mJobList.getJobCount(); i++) {
-                mJobRoutines.get(i).start();
+                if (!mJobRoutines.get(i).isRunning())
+                    mJobRoutines.get(i).start();
             }
         }
     }
@@ -101,6 +119,10 @@ public class ROAutoRoutineJob extends AutoJob {
         }
     }
 
+    /*
+     * onJobListChanged
+     * Currently we will stop all jobs to accomplish new jobs
+     */
     private void onJobListChanged() {
         stopAllJobs();
         formatNewJobs();
@@ -110,16 +132,23 @@ public class ROAutoRoutineJob extends AutoJob {
     private class ROJobRoutine extends Thread {
         private ROJobDescription currentJob;
         private int currentIndex;
+        private boolean currentRunning = false;
 
         ROJobRoutine(int index, ROJobDescription job) {
             currentJob = job;
             currentIndex = index;
         }
 
+        public boolean isRunning() {
+            return currentRunning;
+        }
+
         /*
          * main function should handle job parsing and running
          */
         private void main() throws Exception {
+            currentRunning = true;
+
             while (mShouldJobRunning) {
                 //do jobs
                 if (currentJob.sEnabled == 1) {

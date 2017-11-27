@@ -82,7 +82,7 @@ public class InputService extends JoshGameLibrary.GLService {
      * apply random shift in touch point (added in 1.23)
      * TODO: need to find out why input binary takes a long time to execute
      */
-    private int touchOnScreen(int x, int y, int tx, int ty, int type) {
+    private int touchOnScreen(int x, int y, int tx, int ty, int type, String dev) {
         int x_shift = (int) (Math.random() * mRandomTouchShift) - mRandomTouchShift/2;
         int y_shift = (int) (Math.random() * mRandomTouchShift) - mRandomTouchShift/2;
 
@@ -103,26 +103,30 @@ public class InputService extends JoshGameLibrary.GLService {
 
         switch (type) {
             case INPUT_TYPE_TAP:
-                super.runCommand("input tap " + x + " " + y);
+                super.runCommand("input tap " + x + " " + y, dev);
                 break;
             case INPUT_TYPE_DOUBLE_TAP:
-                super.runCommand("input tap " + x + " " + y);
-                super.runCommand("input tap " + x + " " + y);
+                super.runCommand("input tap " + x + " " + y, dev);
+                super.runCommand("input tap " + x + " " + y, dev);
                 break;
             case INPUT_TYPE_TRIPLE_TAP:
-                super.runCommand("input tap " + x + " " + y);
-                super.runCommand("input tap " + x + " " + y);
-                super.runCommand("input tap " + x + " " + y);
+                super.runCommand("input tap " + x + " " + y, dev);
+                super.runCommand("input tap " + x + " " + y, dev);
+                super.runCommand("input tap " + x + " " + y, dev);
                 break;
             case INPUT_TYPE_CONT_TAPS:
                 break;
             case INPUT_TYPE_SWIPE:
-                super.runCommand("input swipe " + x + " " + y + " " + tx + " " + ty);
+                super.runCommand("input swipe " + x + " " + y + " " + tx + " " + ty, dev);
                 break;
             default:
                 Log.e(TAG, "touchOnScreen: type " + type + "is invalid.");
         }
         return 0;
+    }
+
+    private int touchOnScreen(int x, int y, int tx, int ty, int type) {
+        return touchOnScreen(x, y, tx, ty, type, null);
     }
 
     private ScreenCoord getCalculatedOffsetCoord(ScreenCoord coord1) {
@@ -137,42 +141,50 @@ public class InputService extends JoshGameLibrary.GLService {
         return coord;
     }
 
-    public int tapOnScreen(ScreenCoord coord1) {
+    public int tapOnScreen(ScreenCoord coord1, String dev) {
         ScreenCoord coord = getCalculatedOffsetCoord(coord1);
 
         if (mGameOrientation != coord.orientation)
-            touchOnScreen(coord.y, mScreenWidth - coord.x, 0, 0, INPUT_TYPE_TAP);
+            touchOnScreen(coord.y, mScreenWidth - coord.x, 0, 0, INPUT_TYPE_TAP, dev);
         else
-            touchOnScreen(coord.x, coord.y, 0, 0, INPUT_TYPE_TAP);
+            touchOnScreen(coord.x, coord.y, 0, 0, INPUT_TYPE_TAP, dev);
+
+        return 0;
+    }
+
+    public int tapOnScreen(ScreenCoord coord1) {
+        return tapOnScreen(coord1, null);
+    }
+
+    public int swipeOnScreen(ScreenCoord start, ScreenCoord end, String dev) {
+        ScreenCoord coord_start = getCalculatedOffsetCoord(start);
+        ScreenCoord coord_end = getCalculatedOffsetCoord(end);
+
+        if (mGameOrientation != start.orientation)
+            touchOnScreen(coord_start.y, mScreenWidth - coord_start.x, coord_end.y, mScreenWidth - coord_end.x, INPUT_TYPE_SWIPE, dev);
+        else
+            touchOnScreen(coord_start.x, coord_start.y, coord_end.x, coord_end.y, INPUT_TYPE_SWIPE, dev);
 
         return 0;
     }
 
     public int swipeOnScreen(ScreenCoord start, ScreenCoord end) {
-        ScreenCoord coord_start = getCalculatedOffsetCoord(start);
-        ScreenCoord coord_end = getCalculatedOffsetCoord(end);
-
-        if (mGameOrientation != start.orientation)
-            touchOnScreen(coord_start.y, mScreenWidth - coord_start.x, coord_end.y, mScreenWidth - coord_end.x, INPUT_TYPE_SWIPE);
-        else
-            touchOnScreen(coord_start.x, coord_start.y, coord_end.x, coord_end.y, INPUT_TYPE_SWIPE);
-
-        return 0;
+        return swipeOnScreen(start, end, null);
     }
 
     /*
      * Tap on screen amount of times until the color on the screen is not in point->color
      */
-    public int tapOnScreenUntilColorChanged(ScreenPoint point, int interval, int retry) throws InterruptedException {
+    public int tapOnScreenUntilColorChanged(ScreenPoint point, int interval, int retry, String dev) throws InterruptedException {
         if (point == null) {
             Log.e(TAG, "null point");
             return -1;
         }
 
         while(retry-- > 0) {
-            tapOnScreen(point.coord);
+            tapOnScreen(point.coord, dev);
             Thread.sleep(interval);
-            if (!mCaptureService.colorIs(point)) {
+            if (!mCaptureService.colorIs(point, dev)) {
                 Log.d(TAG, "color changed. exiting..");
                 return 0;
             }
@@ -181,17 +193,24 @@ public class InputService extends JoshGameLibrary.GLService {
         return -1;
     }
 
-    public int tapOnScreenUntilColorChangedTo(ScreenPoint point,
-                                       ScreenPoint to, int interval, int retry) throws InterruptedException {
+    public int tapOnScreenUntilColorChanged(ScreenPoint point, int interval, int retry) throws InterruptedException {
+        return tapOnScreenUntilColorChanged(point, interval, retry, null);
+    }
+
+    public int tapOnScreenUntilColorChangedTo(ScreenCoord point,
+                                              ScreenPoint to,
+                                              int interval,
+                                              int retry,
+                                              String dev) throws InterruptedException {
         if ((point == null) || (to == null)) {
             Log.e(TAG, "InputService: null points.\n");
             return -1;
         }
 
         while(retry-- > 0) {
-            tapOnScreen(point.coord);
+            tapOnScreen(point, dev);
             Thread.sleep(interval);
-            if (mCaptureService.colorIs(to)) {
+            if (mCaptureService.colorIs(to, dev)) {
                 Log.d(TAG, "color changed to specific point. exiting..");
                 return 0;
             }
@@ -202,25 +221,16 @@ public class InputService extends JoshGameLibrary.GLService {
 
     public int tapOnScreenUntilColorChangedTo(ScreenCoord point,
                                               ScreenPoint to, int interval, int retry) throws InterruptedException {
-        if ((point == null) || (to == null)) {
-            Log.e(TAG, "InputService: null points.\n");
-            return -1;
-        }
-
-        while(retry-- > 0) {
-            tapOnScreen(point);
-            Thread.sleep(interval);
-            if (mCaptureService.colorIs(to)) {
-                Log.d(TAG, "color changed to specific point. exiting..");
-                return 0;
-            }
-        }
-
-        return -1;
+        return tapOnScreenUntilColorChangedTo(point, to, interval, retry, null);
     }
+
 
     public void inputText(String text) {
         super.runCommand("input text " + text);
+    }
+
+    public void inputText(String text, String device) {
+        super.runCommand("input text " + text, device);
     }
 
     public String toString() {

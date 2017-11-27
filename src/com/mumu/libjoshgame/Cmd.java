@@ -19,25 +19,35 @@ package com.mumu.libjoshgame;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class Cmd {
     private final String TAG = "Cmd";
+    private static Cmd mThis = new Cmd();
     private static String mAdbDefaultIP = "127.0.0.1";
     private static int mMaxDevices = 3;
     private String[] mAdbDevicePort = {"62001", "62025", "62026"};
-    private boolean[] mDeviceAvailable = {false, false, false};
 
-    public Cmd() {
+    private Cmd() {
         tryConnect();
     }
 
-    public String runCommand(String cmd) {
-        return runCommand(cmd, 2);
+    public static Cmd getInstance() {
+        return mThis;
     }
 
-    public String runCommand(String cmd, int idx) {
-        String fullCmd = "-s " + mAdbDefaultIP + ":" + mAdbDevicePort[idx] + " shell " + cmd;
+    public String runCommand(String cmd) {
+        return runCommand(cmd, null);
+    }
+
+    public String runCommand(String cmd, String device) {
+        String fullCmd;
         String result = "";
+
+        if (device != null)
+            fullCmd = "-s " + device + " shell " + cmd;
+        else
+            fullCmd = " shell " + cmd;
 
         try {
             result = runAdbCommandInternal(fullCmd);
@@ -58,17 +68,29 @@ public class Cmd {
         }
     }
 
-    public int getAdbDevices() {
-        String result = "";
+    public ArrayList<String> getAdbDevices() {
+        ArrayList<String> resultList = new ArrayList<>();
 
         try {
-            result = runAdbCommandInternal("devices");
+            Runtime rt = Runtime.getRuntime();
+            Process process = rt.exec("adb devices");
+
+            BufferedReader stdInput = new BufferedReader(new
+                    InputStreamReader(process.getInputStream()));
+
+            // read the output from the command
+            String s;
+            while ((s = stdInput.readLine()) != null) {
+                String[] parsedDevice = s.split("\t");
+                if (parsedDevice.length == 2 && parsedDevice[1].equals("device"))
+                    resultList.add(parsedDevice[0]);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        Log.d(TAG, "adb devices: " + result);
-        return 1;
+        Log.d(TAG, "adb devices: " + resultList.size());
+        return resultList;
 
     }
 

@@ -1,6 +1,7 @@
 package com.mumu.jafx;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.mumu.joshautomation.ro.ROAutoRoutineJob;
 import com.mumu.joshautomation.ro.ROJobDescription;
@@ -9,6 +10,7 @@ import com.mumu.joshautomation.script.AutoJobEventListener;
 import com.mumu.joshautomation.script.AutoJobHandler;
 import com.mumu.libjoshgame.Cmd;
 import com.mumu.libjoshgame.JoshGameLibrary;
+import com.mumu.libjoshgame.Log;
 import com.mumu.libjoshgame.ScreenPoint;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -29,6 +31,7 @@ public class Main extends Application implements AutoJobEventListener {
     private JobViewController mJobViewController;
     private JoshGameLibrary mGL = JoshGameLibrary.getInstance();
     private ROJobList mROJobList;
+    private ArrayList<String> mDeviceList;
 
 
     /**
@@ -44,23 +47,24 @@ public class Main extends Application implements AutoJobEventListener {
         mGL.setChatty(false);
 
         mAutoJobHandler = AutoJobHandler.getHandler();
-        mAutoJobHandler.addJob(new ROAutoRoutineJob());
+        mAutoJobHandler.addJob(new ROAutoRoutineJob("127.0.0.1:62026"));
         mAutoJobHandler.setJobEventListener(0, this);
 
         // test job list for easy debug
         //TODO: removed when release
         mROJobList = new ROJobList();
         mROJobList.addJob(0, new ROJobDescription(Enable, OnMPLessThan, 50, ActionPressItem, 1));
-        mROJobList.addJob(1, new ROJobDescription(Enable, OnPeriod, 5000, ActionPressSkill, 1));
-        mROJobList.addJob(2, new ROJobDescription(Enable, OnPeriod, 8000, ActionPressItem, 2));
+        //mROJobList.addJob(1, new ROJobDescription(Enable, OnPeriod, 5000, ActionPressSkill, 1));
+        //mROJobList.addJob(2, new ROJobDescription(Enable, OnPeriod, 8000, ActionPressItem, 2));
         mAutoJobHandler.setExtra(0, mROJobList);
 
-        //Cmd cmd = new Cmd();
-        //cmd.getAdbDevices();
-        //cmd.runCommand("ls -l /sdcard", 0);
+        mDeviceList = Cmd.getInstance().getAdbDevices();
+        for (String device: mDeviceList) {
+            Log.d("Main", "adb device found: " + device);
+        }
 
         // shouldn't be started here, but we just want to test it out
-        mAutoJobHandler.startJob(0);
+        //mAutoJobHandler.startJob(0);
 
     }
 
@@ -73,6 +77,8 @@ public class Main extends Application implements AutoJobEventListener {
         initRootLayout();
 
         initJobMainView();
+
+        mJobViewController.updateTabName(mDeviceList);
     }
 
     /**
