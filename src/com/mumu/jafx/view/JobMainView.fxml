@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import javafx.collections.*?>
 <?import javafx.scene.control.*?>
@@ -7,11 +8,11 @@
 <?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mumu.jafx.JobViewController">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mumu.jafx.JobViewController">
    <children>
       <TabPane layoutX="50.0" layoutY="57.0" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
-          <Tab fx:id="mTab1" text="Nox 1">
+          <Tab fx:id="mTab1" text="無裝置">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -185,7 +186,7 @@
                                                         </FXCollections>
                                                     </items>
                                                 </ChoiceBox>
-                                                <Label fx:id="mStatusLabel" text="DEBUG" GridPane.columnIndex="2" />
+                                                <Label fx:id="mStatusLabel" text="條件數值" GridPane.columnIndex="2" />
                                                 <TextField GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                                 <TextField GridPane.columnIndex="2" GridPane.rowIndex="2" />
                                                 <TextField GridPane.columnIndex="2" GridPane.rowIndex="3" />
@@ -197,9 +198,12 @@
                                     </AnchorPane>
                               </content>
                             </TitledPane>
-                            <TitledPane animated="false" prefHeight="345.0" prefWidth="600.0" text="細項功能">
+                            <TitledPane animated="false" prefHeight="345.0" prefWidth="600.0" text="螢幕截圖">
                               <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <ImageView fx:id="mDeviceImage1" fitHeight="284.0" fitWidth="561.0" layoutX="19.6" layoutY="19.6" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="10.0" />
+                                       </children></AnchorPane>
                               </content>
                             </TitledPane>
                           </panes>
@@ -208,7 +212,7 @@
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab fx:id="mTab2" text="Nox 2">
+            <Tab fx:id="mTab2" text="無裝置">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -368,7 +372,7 @@
                                                       </FXCollections>
                                                    </items>
                                                 </ChoiceBox>
-                                                <Label fx:id="mStatusLabel1" text="DEBUG" GridPane.columnIndex="2" />
+                                                <Label fx:id="mStatusLabel1" text="條件數值" GridPane.columnIndex="2" />
                                                 <TextField GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                                 <TextField GridPane.columnIndex="2" GridPane.rowIndex="2" />
                                                 <TextField GridPane.columnIndex="2" GridPane.rowIndex="3" />
@@ -394,9 +398,12 @@
                                     </AnchorPane>
                                  </content>
                               </TitledPane>
-                              <TitledPane animated="false" prefHeight="345.0" prefWidth="600.0" text="細項功能">
+                              <TitledPane animated="false" prefHeight="345.0" prefWidth="600.0" text="螢幕截圖">
                                  <content>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <ImageView fx:id="mDeviceImage2" fitHeight="284.0" fitWidth="561.0" layoutX="19.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
+                                       </children></AnchorPane>
                                  </content>
                               </TitledPane>
                            </panes>
@@ -405,7 +412,7 @@
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab fx:id="mTab3" text="Nox 3">
+            <Tab fx:id="mTab3" text="無裝置">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -565,7 +572,7 @@
                                                       </FXCollections>
                                                    </items>
                                                 </ChoiceBox>
-                                                <Label fx:id="mStatusLabel2" text="DEBUG" GridPane.columnIndex="2" />
+                                                <Label fx:id="mStatusLabel2" text="條件數值" GridPane.columnIndex="2" />
                                                 <TextField GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                                 <TextField GridPane.columnIndex="2" GridPane.rowIndex="2" />
                                                 <TextField GridPane.columnIndex="2" GridPane.rowIndex="3" />
@@ -591,9 +598,12 @@
                                     </AnchorPane>
                                  </content>
                               </TitledPane>
-                              <TitledPane animated="false" prefHeight="345.0" prefWidth="600.0" text="細項功能">
+                              <TitledPane animated="false" prefHeight="345.0" prefWidth="600.0" text="螢幕截圖">
                                  <content>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <ImageView fx:id="mDeviceImage3" fitHeight="284.0" fitWidth="561.0" layoutX="19.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
+                                       </children></AnchorPane>
                                  </content>
                               </TitledPane>
                            </panes>

@@ -119,6 +119,10 @@ public class ROAutoRoutineJob extends AutoJob {
         }
     }
 
+    public void setJob(int index, ROJobDescription job) {
+        mJobRoutines.get(index).setJob(job);
+    }
+
     /*
      * onJobListChanged
      * Currently we will stop all jobs to accomplish new jobs
@@ -141,6 +145,10 @@ public class ROAutoRoutineJob extends AutoJob {
 
         public boolean isRunning() {
             return currentRunning;
+        }
+
+        public void setJob(ROJobDescription job) {
+            currentJob = job;
         }
 
         /*
@@ -170,8 +178,9 @@ public class ROAutoRoutineJob extends AutoJob {
                             Thread.sleep(500);
                     }
                 } else {
-                    Log.d(TAG, "Job " + currentIndex + " is not enabled, sleep for 5 seconds");
-                    Thread.sleep(500);
+                    Log.d(TAG, "Device: " + mCurrentDevice + " Job " + currentIndex + " is not enabled, sleep for 5 seconds");
+                    Log.d(TAG, "Job description: " + currentJob.toString());
+                    Thread.sleep(3000);
                 }
             }
         }

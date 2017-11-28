@@ -94,6 +94,14 @@ public class Cmd {
 
     }
 
+    public void pullAdbFile(String remote, String device) {
+        try {
+            runAdbCommandInternal("-s " + device + " pull " + remote + " .");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private String runAdbCommandInternal(String cmd) throws IOException {
         Runtime rt = Runtime.getRuntime();
         Process process = rt.exec("adb " + cmd);

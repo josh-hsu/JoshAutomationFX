@@ -11,10 +11,13 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import javax.swing.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class JobViewController {
@@ -26,10 +29,15 @@ public class JobViewController {
     @FXML private GridPane mGridPane1;
     @FXML private GridPane mGridPane2;
     @FXML private GridPane mGridPane3;
+    @FXML private ImageView mDeviceImage1;
+    @FXML private ImageView mDeviceImage2;
+    @FXML private ImageView mDeviceImage3;
 
     private ArrayList<Tab> mTabSet;
     private ArrayList<GridPane> mGridPaneSet;
     private ArrayList<AutoJobPane> mAutoJobPanes;
+    private ArrayList<ImageView> mScreenViewSet;
+
     private JobViewListener mListener;
 
     private EventHandler<ActionEvent> mNodeEventHandler = new EventHandler<ActionEvent>() {
@@ -72,9 +80,10 @@ public class JobViewController {
         mAutoJobPanes.add(formatAutoJobPane(mGridPane2));
         mAutoJobPanes.add(formatAutoJobPane(mGridPane3));
 
-        mAutoJobPanes.get(0).enableCheckBoxes.get(0).setSelected(true);
-        Log.d(TAG, "choice 0: " + mAutoJobPanes.get(0).whenChoiceBoxes.get(0).getSelectionModel().getSelectedIndex());
-        mAutoJobPanes.get(0).whenValueTextFields.get(0).setPromptText("%數(0~100)，或秒數(1秒是1000)");
+        mScreenViewSet = new ArrayList<>();
+        mScreenViewSet.add(mDeviceImage1);
+        mScreenViewSet.add(mDeviceImage2);
+        mScreenViewSet.add(mDeviceImage3);
 
     }
 
@@ -195,8 +204,18 @@ public class JobViewController {
         Platform.runLater(() -> mStatusLabel.setText("" + msg));
     }
 
+    public void updateScreenshot(int index, String path) {
+        if (index >= mScreenViewSet.size()) {
+            Log.w(TAG, "Invalid index to update screenshot");
+        } else {
+            ImageView imgView = mScreenViewSet.get(index);
+            imgView.setImage(new Image(path));
+        }
+    }
+
     private void sendJobRequest(int tabIndex, int row) {
         AutoJobPane jobPane = mAutoJobPanes.get(tabIndex);
+        int enable = jobPane.enableCheckBoxes.get(row - 1).selectedProperty().getValue() ? 1 : 0;
         int whenIndex = jobPane.whenChoiceBoxes.get(row - 1).getSelectionModel().getSelectedIndex();
         String whenString = jobPane.whenValueTextFields.get(row - 1).getText();
         int actionIndex = jobPane.actionChoiceBoxes.get(row - 1).getSelectionModel().getSelectedIndex();
@@ -219,11 +238,13 @@ public class JobViewController {
             }
         }
 
-        Log.d(TAG, "Checked info: when: " + whenIndex + ", whenValue: " + whenString + ", actionIndex: " + actionIndex);
+        Log.d(TAG, "Checked info: enable: " + enable + ", when: " + whenIndex + ", whenValue: " + whenString + ", actionIndex: " + actionIndex);
+        mListener.onItemEnableChanged(tabIndex, row, enable, whenIndex, whenValue, actionIndex);
     }
 
     private void alertFieldValueInvalid(int row, String msg) {
-
+        //TODO: use alert window
+        Log.w(TAG, "User input invalid value: " + msg);
     }
 
     private class AutoJobPane {

@@ -14,9 +14,11 @@ public class ROJobDescription {
     public final static int OnFollowStart  = 7;
     public final static int OnFollowEnd    = 8;
     public final static int OnServerDisconnected = 9;
+    public final static int OnDefaultState = 99;
 
     public final static int ActionPressItem  = 0;
     public final static int ActionPressSkill = 1;
+    public final static int ActionDefault    = 99;
 
     public static int defaultDetectInterval = 1500;
 
@@ -32,6 +34,19 @@ public class ROJobDescription {
         sWhenValue = whenValue;
         sAction = action;
         sActionValue = actionValue;
+    }
+
+    public ROJobDescription() {
+        sEnabled = Disable;
+        sWhen = OnDefaultState;
+        sWhenValue = 0;
+        sAction = ActionDefault;
+        sActionValue = -1;
+    }
+
+    public String toString() {
+        return "Enable: " + sEnabled + " when: " + sWhen + " whenValue: " + sWhenValue +
+                " action: " + sAction + " actionValue: " + sActionValue;
     }
 
 }

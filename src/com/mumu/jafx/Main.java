@@ -1,17 +1,22 @@
 package com.mumu.jafx;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import com.mumu.joshautomation.ro.ROAutoRoutineJob;
 import com.mumu.joshautomation.ro.ROJobDescription;
 import com.mumu.joshautomation.ro.ROJobList;
+import com.mumu.joshautomation.script.AutoJob;
 import com.mumu.joshautomation.script.AutoJobEventListener;
 import com.mumu.joshautomation.script.AutoJobHandler;
 import com.mumu.libjoshgame.Cmd;
 import com.mumu.libjoshgame.JoshGameLibrary;
 import com.mumu.libjoshgame.Log;
 import com.mumu.libjoshgame.ScreenPoint;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -22,7 +27,9 @@ import javafx.stage.Stage;
 import static com.mumu.joshautomation.ro.ROJobDescription.*;
 
 public class Main extends Application implements AutoJobEventListener, JobViewListener {
-
+    private static final String TAG = "Main";
+    private final String mCurrentWD = System.getProperty("user.dir");
+    private final int mMaxSupportJob = 5;
     private Stage mMainStage;
     private BorderPane mRootView;
     private AnchorPane mJobView;
@@ -30,7 +37,7 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
     private AutoJobHandler mAutoJobHandler;
     private JobViewController mJobViewController;
     private JoshGameLibrary mGL = JoshGameLibrary.getInstance();
-    private ROJobList mROJobList;
+    private ArrayList<ROJobList> mROJobListSet;
     private ArrayList<String> mDeviceList;
 
 
@@ -46,26 +53,9 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
         mGL.setPlatform(true);
         mGL.setChatty(false);
 
-        mAutoJobHandler = AutoJobHandler.getHandler();
-        mAutoJobHandler.addJob(new ROAutoRoutineJob("127.0.0.1:62026"));
-        mAutoJobHandler.setJobEventListener(0, this);
-
-        // test job list for easy debug
-        //TODO: removed when release
-        mROJobList = new ROJobList();
-        mROJobList.addJob(0, new ROJobDescription(Enable, OnMPLessThan, 50, ActionPressItem, 1));
-        //mROJobList.addJob(1, new ROJobDescription(Enable, OnPeriod, 5000, ActionPressSkill, 1));
-        //mROJobList.addJob(2, new ROJobDescription(Enable, OnPeriod, 8000, ActionPressItem, 2));
-        mAutoJobHandler.setExtra(0, mROJobList);
-
-        mDeviceList = Cmd.getInstance().getAdbDevices();
-        for (String device: mDeviceList) {
-            Log.d("Main", "adb device found: " + device);
-        }
-
-        // shouldn't be started here, but we just want to test it out
-        //mAutoJobHandler.startJob(0);
-
+        initDevices();
+        createAutoJob();
+        startAutoJob();
     }
 
 
@@ -80,6 +70,8 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
 
         mJobViewController.updateTabName(mDeviceList);
         mJobViewController.registerListener(this);
+
+        getCurrentScreenshot();
     }
 
     /**
@@ -119,6 +111,58 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
         }
     }
 
+    private void initDevices() {
+        mDeviceList = Cmd.getInstance().getAdbDevices();
+        for (String device: mDeviceList) {
+            Log.d(TAG, "adb device found: " + device);
+        }
+    }
+
+    private void getCurrentScreenshot() {
+        for (int i = 0; i < mDeviceList.size(); i++) {
+            Log.d(TAG, "get screenshot of device " + i + ": " + mDeviceList.get(i));
+            String filename = "/sdcard/screen" + i + ".png";
+            String localname = "screen" + i + ".png";
+            Cmd.getInstance().runCommand("screencap -p " + filename, mDeviceList.get(i));
+            Cmd.getInstance().pullAdbFile(filename, mDeviceList.get(i));
+            String path = mCurrentWD + "\\" + localname;
+            try {
+                URL pathUrl = new File(path).toURI().toURL();
+                mJobViewController.updateScreenshot(i, pathUrl.toString());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void createAutoJob() {
+        // initial phase
+        mAutoJobHandler = AutoJobHandler.getHandler();
+        mROJobListSet = new ArrayList<>();
+
+        // create jobs for all connected devices
+        for (int i = 0; i < mDeviceList.size(); i++) {
+            String device = mDeviceList.get(i);
+            ROJobList jobList = new ROJobList();
+
+            // add dummy empty job for initialize
+            for(int j = 0; j < mMaxSupportJob; j++) {
+                jobList.addJob(j, new ROJobDescription());
+            }
+
+            mROJobListSet.add(i, jobList);
+            mAutoJobHandler.addJob(new ROAutoRoutineJob(device));
+            mAutoJobHandler.setJobEventListener(i, this);
+            mAutoJobHandler.setExtra(i, jobList);
+        }
+    }
+
+    private void startAutoJob() {
+        for(int i = 0; i < mDeviceList.size(); i++) {
+            mAutoJobHandler.startJob(i);
+        }
+    }
+
     /**
      * Returns the main stage.
      * @return
@@ -150,7 +194,52 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
      */
     @Override
     public void onItemEnableChanged(int tab, int index, int enable, int whenIndex, int whenValue, int actionIndex) {
+        int when = 0;
+        int action = 0;
+        int actionValue = 0;
 
+        switch (whenIndex) {
+            case 0:
+                Log.d(TAG, "When HP < " + whenValue);
+                when = OnHPLessThan;
+                break;
+            case 1:
+                Log.d(TAG, "When HP > " + whenValue);
+                when = OnHPHigherThan;
+                break;
+            case 2:
+                Log.d(TAG, "When MP < " + whenValue);
+                when = OnMPLessThan;
+                break;
+            case 3:
+                Log.d(TAG, "When MP > " + whenValue);
+                when = OnMPHigherThan;
+                break;
+            case 4:
+                Log.d(TAG, "When about " + whenValue + " ms later");
+                when = OnPeriod;
+                break;
+            default:
+                Log.d(TAG, "When ... not supported");
+        }
+
+        if (actionIndex >= 0 && actionIndex < 5) {
+            Log.d(TAG, "do press item " + (actionIndex + 1));
+            action = ActionPressItem;
+            actionValue = actionIndex + 1;
+        } else if (actionIndex >= 5 && actionIndex < 11) {
+            Log.d(TAG, "do press skill " + (actionIndex - 4));
+            action = ActionPressSkill;
+            actionValue = actionIndex - 4;
+        }
+
+        mROJobListSet.get(tab).setJob(index - 1,
+                new ROJobDescription(enable, when, whenValue, action, actionValue));
+
+        AutoJob autoJob = mAutoJobHandler.getJob(tab);
+        if (autoJob instanceof ROAutoRoutineJob) {
+            ((ROAutoRoutineJob) autoJob).setJob(index - 1, mROJobListSet.get(tab).getJob(index - 1));
+        }
     }
 
     @Override
