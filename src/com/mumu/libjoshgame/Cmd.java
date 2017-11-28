@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 public class Cmd {
     private final String TAG = "Cmd";
-    private static Cmd mThis = new Cmd();
+    private static Cmd mThis;
     private static String mAdbDefaultIP = "127.0.0.1";
     private static int mMaxDevices = 3;
     private String[] mAdbDevicePort = {"62001", "62025", "62026"};
@@ -33,6 +33,8 @@ public class Cmd {
     }
 
     public static Cmd getInstance() {
+        if (mThis == null)
+            mThis = new Cmd();
         return mThis;
     }
 
@@ -58,6 +60,7 @@ public class Cmd {
     }
 
     private void tryConnect() {
+        Log.d(TAG, "try connect");
         for(int i = 0; i < mMaxDevices; i++) {
             String cmd = "connect " + mAdbDefaultIP + ":" + mAdbDevicePort[i];
             try {
