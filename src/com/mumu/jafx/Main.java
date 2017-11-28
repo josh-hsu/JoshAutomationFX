@@ -45,6 +45,9 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
      * Constructor
      */
     public Main() {
+
+        Log.d(TAG, " ===== Application Start ===== ");
+
         // setting up GL before AutoJob initialized
         mGL.setScreenDimension(1440,900);
         mGL.setGameOrientation(ScreenPoint.SO_Landscape);
@@ -72,6 +75,15 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
         mJobViewController.registerListener(this);
 
         getCurrentScreenshot();
+    }
+
+    @Override
+    public void stop(){
+        Log.d(TAG, "User close application.");
+        for(int i = 0; i < mDeviceList.size(); i++)
+            mAutoJobHandler.stopJob(i);
+
+        Log.d(TAG, " ===== Application Stop ===== ");
     }
 
     /**
