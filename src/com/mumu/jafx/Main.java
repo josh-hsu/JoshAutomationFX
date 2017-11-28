@@ -21,7 +21,7 @@ import javafx.stage.Stage;
 
 import static com.mumu.joshautomation.ro.ROJobDescription.*;
 
-public class Main extends Application implements AutoJobEventListener {
+public class Main extends Application implements AutoJobEventListener, JobViewListener {
 
     private Stage mMainStage;
     private BorderPane mRootView;
@@ -79,6 +79,7 @@ public class Main extends Application implements AutoJobEventListener {
         initJobMainView();
 
         mJobViewController.updateTabName(mDeviceList);
+        mJobViewController.registerListener(this);
     }
 
     /**
@@ -141,6 +142,19 @@ public class Main extends Application implements AutoJobEventListener {
 
     @Override
     public void onJobDone(String jobName) {
+
+    }
+
+    /*
+     * Implementation of JobViewListener
+     */
+    @Override
+    public void onItemEnableChanged(int tab, int index, int enable, int whenIndex, int whenValue, int actionIndex) {
+
+    }
+
+    @Override
+    public void onExit(JobViewController controller) {
 
     }
 }

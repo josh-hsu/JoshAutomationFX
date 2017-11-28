@@ -4,6 +4,8 @@ package com.mumu.jafx;
 import com.mumu.libjoshgame.Log;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -12,7 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import java.awt.*;
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class JobViewController {
@@ -28,6 +30,23 @@ public class JobViewController {
     private ArrayList<Tab> mTabSet;
     private ArrayList<GridPane> mGridPaneSet;
     private ArrayList<AutoJobPane> mAutoJobPanes;
+    private JobViewListener mListener;
+
+    private EventHandler<ActionEvent> mNodeEventHandler = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            Node node = (Node) event.getSource();
+
+            //if user check the checkbox, we send a message to Main handler
+            if (node instanceof CheckBox) {
+                AutoJobPaneNodeInfo info = getNodeLocationInfo(node);
+                sendJobRequest(info.pane, info.row);
+            }
+
+            Log.d(TAG, "Node info => " + getNodeLocationInfo(node).toString());
+
+        }
+    };
 
 
     private Stage dialogStage;
@@ -54,6 +73,16 @@ public class JobViewController {
         mAutoJobPanes.add(formatAutoJobPane(mGridPane3));
 
         mAutoJobPanes.get(0).enableCheckBoxes.get(0).setSelected(true);
+        Log.d(TAG, "choice 0: " + mAutoJobPanes.get(0).whenChoiceBoxes.get(0).getSelectionModel().getSelectedIndex());
+        mAutoJobPanes.get(0).whenValueTextFields.get(0).setPromptText("%數(0~100)，或秒數(1秒是1000)");
+
+    }
+
+    public void registerListener(JobViewListener listener) {
+        if (listener != null)
+            mListener = listener;
+        else
+            Log.d(TAG, "WTF, null listener?");
     }
 
     private AutoJobPane formatAutoJobPane(GridPane gridPane) {
@@ -68,24 +97,40 @@ public class JobViewController {
         //format enable box
         ArrayList<CheckBox> checkBoxes = new ArrayList<>();
         for(int i = 1; i < rowCount; i++) {
-            Log.d(TAG, "i = " + i);
-            checkBoxes.add((CheckBox) getNodeByRowColumnIndex(i, 0, gridPane));
+            CheckBox checkBox = (CheckBox) getNodeByRowColumnIndex(i, 0, gridPane);
+            if (checkBox != null) {
+                checkBox.setOnAction(mNodeEventHandler);
+                checkBoxes.add(checkBox);
+            }
         }
 
         //format when choice box
         ArrayList<ChoiceBox> choiceBoxes = new ArrayList<>();
         for(int i = 1; i < rowCount; i++) {
-            choiceBoxes.add((ChoiceBox) getNodeByRowColumnIndex(i, 1, gridPane));
+            ChoiceBox choiceBox = (ChoiceBox) getNodeByRowColumnIndex(i, 1, gridPane);
+            if (choiceBox != null) {
+                choiceBox.setOnAction(mNodeEventHandler);
+                choiceBoxes.add(choiceBox);
+            }
         }
 
         ArrayList<TextField> textFields = new ArrayList<>();
         for(int i = 1; i < rowCount; i++) {
-            textFields.add((TextField) getNodeByRowColumnIndex(i, 2, gridPane));
+            TextField textField = (TextField) getNodeByRowColumnIndex(i, 2, gridPane);
+            if (textField != null) {
+                textField.setOnAction(mNodeEventHandler);
+                textField.setPromptText("%數(0~100)，或秒數(1秒是1000)");
+                textFields.add(textField);
+            }
         }
 
         ArrayList<ChoiceBox> actionChoiceBoxes = new ArrayList<>();
         for(int i = 1; i < rowCount; i++) {
-            actionChoiceBoxes.add((ChoiceBox) getNodeByRowColumnIndex(i, 3, gridPane));
+            ChoiceBox choiceBox = (ChoiceBox) getNodeByRowColumnIndex(i, 3, gridPane);
+            if (choiceBox != null) {
+                choiceBox.setOnAction(mNodeEventHandler);
+                actionChoiceBoxes.add(choiceBox);
+            }
         }
 
         jobPane.enableCheckBoxes = checkBoxes;
@@ -98,8 +143,6 @@ public class JobViewController {
 
     private Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
         ObservableList<Node> children = gridPane.getChildren();
-
-        Log.d(TAG, "children count " + children.size());
 
         for (Node node : children) {
             Integer rowIndex = GridPane.getRowIndex(node);
@@ -115,6 +158,33 @@ public class JobViewController {
         return null;
     }
 
+    private AutoJobPaneNodeInfo getNodeLocationInfo(Node node) {
+        int tabIndex = -1;
+        Node parent = node.getParent();
+
+        if (parent instanceof GridPane) {
+            for(int i = 0; i < mGridPaneSet.size(); i++) {
+                if (parent == mGridPaneSet.get(i))
+                    tabIndex = i;
+            }
+        }
+
+        if (tabIndex == -1) {
+            Log.d(TAG, "Cannot find this node in all panes");
+            return null;
+        }
+
+        Integer row = GridPane.getRowIndex(node);
+        Integer column = GridPane.getColumnIndex(node);
+
+        if (row != null && column != null) {
+            return new AutoJobPaneNodeInfo(tabIndex, row, column);
+        } else {
+            Log.w(TAG, "this node might not have current row or column index");
+            return null;
+        }
+    }
+
     public void updateTabName(ArrayList<String> devices) {
         for(int i = 0; i < devices.size(); i++) {
             mTabSet.get(i).setText(devices.get(i));
@@ -125,6 +195,37 @@ public class JobViewController {
         Platform.runLater(() -> mStatusLabel.setText("" + msg));
     }
 
+    private void sendJobRequest(int tabIndex, int row) {
+        AutoJobPane jobPane = mAutoJobPanes.get(tabIndex);
+        int whenIndex = jobPane.whenChoiceBoxes.get(row - 1).getSelectionModel().getSelectedIndex();
+        String whenString = jobPane.whenValueTextFields.get(row - 1).getText();
+        int actionIndex = jobPane.actionChoiceBoxes.get(row - 1).getSelectionModel().getSelectedIndex();
+        int whenValue = -1;
+
+        if (whenString.equals("")) {
+            alertFieldValueInvalid(row, "您沒有設定條件數值。");
+            return;
+        } else {
+            try {
+                whenValue = Integer.parseInt(whenString);
+            } catch (NumberFormatException e) {
+                alertFieldValueInvalid(row, "您輸入的數值有問題。");
+                return;
+            }
+
+            if (whenValue <= 0) {
+                alertFieldValueInvalid(row, "您輸入的數值必須大於0");
+                return;
+            }
+        }
+
+        Log.d(TAG, "Checked info: when: " + whenIndex + ", whenValue: " + whenString + ", actionIndex: " + actionIndex);
+    }
+
+    private void alertFieldValueInvalid(int row, String msg) {
+
+    }
+
     private class AutoJobPane {
         int columnCount = 4;
         int rowCount = 6;
@@ -133,5 +234,21 @@ public class JobViewController {
         ArrayList<ChoiceBox> whenChoiceBoxes;
         ArrayList<TextField> whenValueTextFields;
         ArrayList<ChoiceBox> actionChoiceBoxes;
+    }
+
+    private class AutoJobPaneNodeInfo {
+        int pane;
+        int column;
+        int row;
+
+        AutoJobPaneNodeInfo(int p, int r, int c) {
+            pane = p;
+            column = c;
+            row = r;
+        }
+
+        public String toString() {
+            return "Node: (tab, row, column) = (" + pane + ", " + row + " ," + column + ")";
+        }
     }
 }
