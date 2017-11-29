@@ -13,6 +13,8 @@ public class Log {
     public static final int VERBOSE = 2;
     public static final int WARN = 5;
 
+    public static final String logFilePath = System.getProperty("user.dir") + "\\JAFXLog_" + getCurrentTimeSimple() + ".txt";
+
     public static void v(String tag, String msg) {
         System.out.print(logFormatted(tag, msg, VERBOSE));
         saveLogToFile(tag, msg, VERBOSE);
@@ -39,15 +41,19 @@ public class Log {
     }
 
     private static void saveLogToFile(String tag, String msg, int level) {
-        String path = System.getProperty("user.dir") + "\\UserLog.txt";
         String log = logFormatted(tag, msg, level);
         try {
-            FileOutputStream fos = new FileOutputStream(path, true);
+            FileOutputStream fos = new FileOutputStream(logFilePath, true);
             fos.write(log.getBytes());
             fos.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static String getCurrentTimeSimple() {
+        DateFormat df = new SimpleDateFormat("MM-dd_hh-mm", Locale.getDefault());
+        return df.format(Calendar.getInstance().getTime());
     }
 
     private static String logFormatted(String tag, String msg, int level) {

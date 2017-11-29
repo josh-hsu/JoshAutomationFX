@@ -18,7 +18,7 @@ package com.mumu.libjoshgame;
 
 
 /*
- * Josh Game Library - Version 1.41
+ * Josh Game Library - Version 1.50
  */
 /*
    JoshGameLibrary (GL)
@@ -26,14 +26,16 @@ package com.mumu.libjoshgame;
 
    JoshGameLibrary mGL;
    mGL = JoshGameLibrary.getInstance();               //this make sure there will be only one instance
-   mGL.setContext(this);                              //this can also be setPackageManager
+   mGL.setPlatform(true);                             //setting to PC mode (required)
    mGL.setGameOrientation(ScreenPoint.SO_Landscape);  //setting game orientation for point check
    mGL.setScreenDimension(1080, 1920);                //setting the dimension of screen for point check
-   mGL.setTouchShift(6)                               //setting the touch random shift size
+   mGL.setTouchShift(6)                               //setting the touch random shift size (for cheating detection)
 
    Note: with version 1.30 or higher, all the waiting functions are throwing InterruptExceptions
    Note: JoshGameLibrary support minimal SDK version of Android 7.0, if you are using Android 6.0 or below
          you should see Josh-Tool instead.
+   Note: with version 1.50 or higher, it only compatibles with PC mode. This means it should only run by PC
+         with devices connected through ADB.
  */
 public class JoshGameLibrary {
     private InputService mInputService;
