@@ -38,18 +38,22 @@ package com.mumu.libjoshgame;
 public class JoshGameLibrary {
     private InputService mInputService;
     private CaptureService mCaptureService;
-    private static Cmd mCmd = Cmd.getInstance();
+    private static Cmd mCmd;
     private int width, height;
 
-    private static JoshGameLibrary currentRuntime = new JoshGameLibrary();
+    private static JoshGameLibrary currentRuntime;
 
     public static JoshGameLibrary getInstance() {
+        if (currentRuntime == null) {
+            currentRuntime = new JoshGameLibrary();
+        }
         return currentRuntime;
     }
 
     private JoshGameLibrary() {
         mCaptureService = new CaptureService();
         mInputService = new InputService(mCaptureService);
+        mCmd = Cmd.getInstance();
     }
 
     public void setScreenDimension(int w, int h) {

@@ -36,30 +36,18 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
 
     private AutoJobHandler mAutoJobHandler;
     private JobViewController mJobViewController;
-    private JoshGameLibrary mGL = JoshGameLibrary.getInstance();
+    private JoshGameLibrary mGL;
     private ArrayList<ROJobList> mROJobListSet;
     private ArrayList<String> mDeviceList;
 
     private PeriodUpdateThread mUpdateThread;
+    private boolean mDeviceIntialized = false;
 
     /**
      * Constructor
      */
     public Main() {
-
         Log.d(TAG, " ===== Application Start ===== ");
-
-        // setting up GL before AutoJob initialized
-        mGL.setScreenDimension(1440,900);
-        mGL.setGameOrientation(ScreenPoint.SO_Landscape);
-        mGL.setTouchShift(0);
-        mGL.setAmbiguousRange(new int[] {9,9,9});
-        mGL.setPlatform(true);
-        mGL.setChatty(false);
-
-        initDevices();
-        createAutoJob();
-        startAutoJob();
     }
 
 
@@ -69,14 +57,13 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
         this.mMainStage.setTitle("RO Nox Tool");
 
         initRootLayout();
-
         initJobMainView();
 
-        mJobViewController.updateTabName(mDeviceList);
         mJobViewController.registerListener(this);
         mJobViewController.setMainApp(this);
 
-        //getCurrentScreenshot();
+        new DeviceInitialThread().start();
+
         mUpdateThread = new PeriodUpdateThread();
         mUpdateThread.start();
     }
@@ -130,7 +117,7 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
         }
     }
 
-    private void initDevices() {
+    private void checkConnectedDevices() {
         mDeviceList = Cmd.getInstance().getAdbDevices();
         for (String device: mDeviceList) {
             Log.d(TAG, "adb device found: " + device);
@@ -142,6 +129,11 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
      * This function shouldn't be called directly in UI Thread
      */
     private void getCurrentScreenshot() {
+        if (mJobViewController == null || mDeviceList == null || !mDeviceIntialized) {
+            Log.d(TAG, "Waiting for view created.");
+            return;
+        }
+
         for (int i = 0; i < mDeviceList.size(); i++) {
             String filename = "/sdcard/screen" + i + ".png";
             String localname = "screen" + i + ".png";
@@ -270,6 +262,31 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
 
     }
 
+    private class DeviceInitialThread extends Thread {
+
+        @Override
+        public void run() {
+            super.run();
+
+            mGL = JoshGameLibrary.getInstance();
+
+            // setting up GL before AutoJob initialized
+            mGL.setScreenDimension(1440,900);
+            mGL.setGameOrientation(ScreenPoint.SO_Landscape);
+            mGL.setTouchShift(0);
+            mGL.setAmbiguousRange(new int[] {9,9,9});
+            mGL.setPlatform(true);
+            mGL.setChatty(false);
+
+            checkConnectedDevices();
+            createAutoJob();
+            startAutoJob();
+
+            mJobViewController.updateTabName(mDeviceList);
+            mDeviceIntialized = true;
+        }
+    }
+
     private class PeriodUpdateThread extends Thread {
         private boolean shouldRunning = false;
 
@@ -287,6 +304,7 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
                 } catch (InterruptedException e) {
                     shouldRunning = false;
                     Log.w(TAG, "Update Thread interrupted");
+                    break;
                 }
             }
         }

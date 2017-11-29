@@ -35,7 +35,7 @@ public class InputService extends JoshGameLibrary.GLService {
 
 
     InputService(CaptureService cs) {
-        Log.d(TAG, "InputService instance is created. \n");
+        Log.d(TAG, "InputService instance is created.");
         mCaptureService = cs;
     }
 
