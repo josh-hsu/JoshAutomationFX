@@ -40,6 +40,8 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
     private ArrayList<ROJobList> mROJobListSet;
     private ArrayList<String> mDeviceList;
 
+    private PeriodUpdateThread mUpdateThread;
+
 
     /**
      * Constructor
@@ -74,7 +76,9 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
         mJobViewController.updateTabName(mDeviceList);
         mJobViewController.registerListener(this);
 
-        getCurrentScreenshot();
+        //getCurrentScreenshot();
+        mUpdateThread = new PeriodUpdateThread();
+        mUpdateThread.start();
     }
 
     @Override
@@ -82,6 +86,9 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
         Log.d(TAG, "User close application.");
         for(int i = 0; i < mDeviceList.size(); i++)
             mAutoJobHandler.stopJob(i);
+
+        if (mUpdateThread != null)
+            mUpdateThread.interrupt();
 
         Log.d(TAG, " ===== Application Stop ===== ");
     }
@@ -130,9 +137,12 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
         }
     }
 
+    /*
+     * Get current screenshot of all devices
+     * This function shouldn't be called directly in UI Thread
+     */
     private void getCurrentScreenshot() {
         for (int i = 0; i < mDeviceList.size(); i++) {
-            Log.d(TAG, "get screenshot of device " + i + ": " + mDeviceList.get(i));
             String filename = "/sdcard/screen" + i + ".png";
             String localname = "screen" + i + ".png";
             Cmd.getInstance().runCommand("screencap -p " + filename, mDeviceList.get(i));
@@ -142,6 +152,7 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
                 URL pathUrl = new File(path).toURI().toURL();
                 mJobViewController.updateScreenshot(i, pathUrl.toString());
             } catch (MalformedURLException e) {
+                Log.e(TAG, "Screenshot format URL failed: " + e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -257,5 +268,22 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
     @Override
     public void onExit(JobViewController controller) {
 
+    }
+
+    private class PeriodUpdateThread extends Thread {
+        @Override
+        public void run() {
+            super.run();
+
+            while(true) {
+                getCurrentScreenshot();
+
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
