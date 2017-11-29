@@ -29,7 +29,7 @@ import static com.mumu.joshautomation.ro.ROJobDescription.*;
 public class Main extends Application implements AutoJobEventListener, JobViewListener {
     private static final String TAG = "Main";
     private final String mCurrentWD = System.getProperty("user.dir");
-    private final int mMaxSupportJob = 5;
+    private final int mMaxSupportJob = 7;
     private Stage mMainStage;
     private BorderPane mRootView;
     private AnchorPane mJobView;
@@ -271,16 +271,21 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
     }
 
     private class PeriodUpdateThread extends Thread {
+        private boolean shouldRunning = false;
+
         @Override
         public void run() {
             super.run();
 
-            while(true) {
+            shouldRunning = true;
+
+            while(shouldRunning) {
                 getCurrentScreenshot();
 
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
+                    shouldRunning = false;
                     Log.w(TAG, "Update Thread interrupted");
                 }
             }

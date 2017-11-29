@@ -10,7 +10,7 @@
 
 <AnchorPane minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mumu.jafx.JobViewController">
    <children>
-      <TabPane layoutX="50.0" layoutY="57.0" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <TabPane layoutX="50.0" layoutY="57.0" prefHeight="410.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
           <Tab fx:id="mTab1" text="無裝置">
             <content>
@@ -30,12 +30,14 @@
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                             </columnConstraints>
                                             <rowConstraints>
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                                              <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                              <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
                                                 <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="1" />
@@ -192,17 +194,92 @@
                                                 <TextField GridPane.columnIndex="2" GridPane.rowIndex="3" />
                                                 <TextField GridPane.columnIndex="2" GridPane.rowIndex="4" />
                                                 <TextField GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                                                <ChoiceBox prefWidth="150.0" value="如果 HP 小於" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="如果 HP 小於" />
+                                                         <String fx:value="如果 HP 大於" />
+                                                         <String fx:value="如果 MP 小於" />
+                                                         <String fx:value="如果 MP 大於" />
+                                                         <String fx:value="定時" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <ChoiceBox prefWidth="150.0" value="如果 HP 小於" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="如果 HP 小於" />
+                                                         <String fx:value="如果 HP 大於" />
+                                                         <String fx:value="如果 MP 小於" />
+                                                         <String fx:value="如果 MP 大於" />
+                                                         <String fx:value="定時" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                                                <ChoiceBox prefWidth="150.0" value="使用物品 1" GridPane.columnIndex="3" GridPane.rowIndex="6">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="使用物品 1" />
+                                                         <String fx:value="使用物品 2" />
+                                                         <String fx:value="使用物品 3" />
+                                                         <String fx:value="使用物品 4" />
+                                                         <String fx:value="使用物品 5" />
+                                                         <String fx:value="使用技能 1" />
+                                                         <String fx:value="使用技能 2" />
+                                                         <String fx:value="使用技能 3" />
+                                                         <String fx:value="使用技能 4" />
+                                                         <String fx:value="使用技能 5" />
+                                                         <String fx:value="使用技能 6" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <ChoiceBox prefWidth="150.0" value="使用物品 1" GridPane.columnIndex="3" GridPane.rowIndex="7">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="使用物品 1" />
+                                                         <String fx:value="使用物品 2" />
+                                                         <String fx:value="使用物品 3" />
+                                                         <String fx:value="使用物品 4" />
+                                                         <String fx:value="使用物品 5" />
+                                                         <String fx:value="使用技能 1" />
+                                                         <String fx:value="使用技能 2" />
+                                                         <String fx:value="使用技能 3" />
+                                                         <String fx:value="使用技能 4" />
+                                                         <String fx:value="使用技能 5" />
+                                                         <String fx:value="使用技能 6" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
                                              </children>
                                           </GridPane>
                                        </children>
                                     </AnchorPane>
                               </content>
                             </TitledPane>
-                            <TitledPane animated="false" prefHeight="345.0" prefWidth="600.0" text="螢幕截圖">
-                              <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                              <TitledPane animated="false" text="細項功能 (開發中，歡迎提供點子)">
+                                <content>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
-                                          <ImageView fx:id="mDeviceImage1" fitHeight="284.0" fitWidth="561.0" layoutX="19.6" layoutY="19.6" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="10.0" />
+                                          <VBox layoutX="152.0" layoutY="25.0" prefHeight="200.0" prefWidth="100.0" spacing="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <CheckBox mnemonicParsing="false" text="自動跟隨第一位隊員" />
+                                                <CheckBox mnemonicParsing="false" text="自動斷線恢復自動戰鬥" />
+                                                <CheckBox mnemonicParsing="false" text="確保自動戰鬥開啟(全部魔物)" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </AnchorPane>
+                                </content>
+                              </TitledPane>
+                            <TitledPane animated="false" text="螢幕截圖 (約三秒刷新)">
+                              <content>
+                                <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0">
+                                       <children>
+                                          <ImageView fx:id="mDeviceImage1" fitHeight="284.0" fitWidth="561.0" layoutX="19.6" layoutY="19.6" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
                                        </children></AnchorPane>
                               </content>
                             </TitledPane>
@@ -216,7 +293,7 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Accordion prefHeight="371.0" prefWidth="600.0">
+                        <Accordion prefHeight="371.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <panes>
                               <TitledPane animated="false" text="自動技能與物品">
                                  <content>
@@ -378,6 +455,66 @@
                                                 <TextField GridPane.columnIndex="2" GridPane.rowIndex="3" />
                                                 <TextField GridPane.columnIndex="2" GridPane.rowIndex="4" />
                                                 <TextField GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                                                <ChoiceBox prefWidth="150.0" value="如果 HP 小於" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="如果 HP 小於" />
+                                                         <String fx:value="如果 HP 大於" />
+                                                         <String fx:value="如果 MP 小於" />
+                                                         <String fx:value="如果 MP 大於" />
+                                                         <String fx:value="定時" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <ChoiceBox prefWidth="150.0" value="如果 HP 小於" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="如果 HP 小於" />
+                                                         <String fx:value="如果 HP 大於" />
+                                                         <String fx:value="如果 MP 小於" />
+                                                         <String fx:value="如果 MP 大於" />
+                                                         <String fx:value="定時" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                                                <ChoiceBox prefWidth="150.0" value="使用物品 1" GridPane.columnIndex="3" GridPane.rowIndex="6">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="使用物品 1" />
+                                                         <String fx:value="使用物品 2" />
+                                                         <String fx:value="使用物品 3" />
+                                                         <String fx:value="使用物品 4" />
+                                                         <String fx:value="使用物品 5" />
+                                                         <String fx:value="使用技能 1" />
+                                                         <String fx:value="使用技能 2" />
+                                                         <String fx:value="使用技能 3" />
+                                                         <String fx:value="使用技能 4" />
+                                                         <String fx:value="使用技能 5" />
+                                                         <String fx:value="使用技能 6" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <ChoiceBox prefWidth="150.0" value="使用物品 1" GridPane.columnIndex="3" GridPane.rowIndex="7">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="使用物品 1" />
+                                                         <String fx:value="使用物品 2" />
+                                                         <String fx:value="使用物品 3" />
+                                                         <String fx:value="使用物品 4" />
+                                                         <String fx:value="使用物品 5" />
+                                                         <String fx:value="使用技能 1" />
+                                                         <String fx:value="使用技能 2" />
+                                                         <String fx:value="使用技能 3" />
+                                                         <String fx:value="使用技能 4" />
+                                                         <String fx:value="使用技能 5" />
+                                                         <String fx:value="使用技能 6" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
                                              </children>
                                              <columnConstraints>
                                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
@@ -386,19 +523,21 @@
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                              </columnConstraints>
                                              <rowConstraints>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
                                              </rowConstraints>
                                           </GridPane>
                                        </children>
                                     </AnchorPane>
                                  </content>
                               </TitledPane>
-                              <TitledPane animated="false" prefHeight="345.0" prefWidth="600.0" text="螢幕截圖">
+                              <TitledPane animated="false" prefHeight="345.0" prefWidth="600.0" text="螢幕截圖 (約三秒刷新)">
                                  <content>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
@@ -416,7 +555,7 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Accordion prefHeight="371.0" prefWidth="600.0">
+                        <Accordion prefHeight="371.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <panes>
                               <TitledPane animated="false" text="自動技能與物品">
                                  <content>
@@ -578,6 +717,66 @@
                                                 <TextField GridPane.columnIndex="2" GridPane.rowIndex="3" />
                                                 <TextField GridPane.columnIndex="2" GridPane.rowIndex="4" />
                                                 <TextField GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                                                <ChoiceBox prefWidth="150.0" value="如果 HP 小於" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="如果 HP 小於" />
+                                                         <String fx:value="如果 HP 大於" />
+                                                         <String fx:value="如果 MP 小於" />
+                                                         <String fx:value="如果 MP 大於" />
+                                                         <String fx:value="定時" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <ChoiceBox prefWidth="150.0" value="如果 HP 小於" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="如果 HP 小於" />
+                                                         <String fx:value="如果 HP 大於" />
+                                                         <String fx:value="如果 MP 小於" />
+                                                         <String fx:value="如果 MP 大於" />
+                                                         <String fx:value="定時" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                                                <ChoiceBox prefWidth="150.0" value="使用物品 1" GridPane.columnIndex="3" GridPane.rowIndex="6">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="使用物品 1" />
+                                                         <String fx:value="使用物品 2" />
+                                                         <String fx:value="使用物品 3" />
+                                                         <String fx:value="使用物品 4" />
+                                                         <String fx:value="使用物品 5" />
+                                                         <String fx:value="使用技能 1" />
+                                                         <String fx:value="使用技能 2" />
+                                                         <String fx:value="使用技能 3" />
+                                                         <String fx:value="使用技能 4" />
+                                                         <String fx:value="使用技能 5" />
+                                                         <String fx:value="使用技能 6" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
+                                                <ChoiceBox prefWidth="150.0" value="使用物品 1" GridPane.columnIndex="3" GridPane.rowIndex="7">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="使用物品 1" />
+                                                         <String fx:value="使用物品 2" />
+                                                         <String fx:value="使用物品 3" />
+                                                         <String fx:value="使用物品 4" />
+                                                         <String fx:value="使用物品 5" />
+                                                         <String fx:value="使用技能 1" />
+                                                         <String fx:value="使用技能 2" />
+                                                         <String fx:value="使用技能 3" />
+                                                         <String fx:value="使用技能 4" />
+                                                         <String fx:value="使用技能 5" />
+                                                         <String fx:value="使用技能 6" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
                                              </children>
                                              <columnConstraints>
                                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
@@ -586,19 +785,21 @@
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                              </columnConstraints>
                                              <rowConstraints>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
                                              </rowConstraints>
                                           </GridPane>
                                        </children>
                                     </AnchorPane>
                                  </content>
                               </TitledPane>
-                              <TitledPane animated="false" prefHeight="345.0" prefWidth="600.0" text="螢幕截圖">
+                              <TitledPane animated="false" prefHeight="345.0" prefWidth="600.0" text="螢幕截圖 (約三秒刷新)">
                                  <content>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>

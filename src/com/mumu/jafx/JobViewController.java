@@ -16,8 +16,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class JobViewController {
@@ -179,7 +177,7 @@ public class JobViewController {
         }
 
         if (tabIndex == -1) {
-            Log.d(TAG, "Cannot find this node in all panes");
+            Log.w(TAG, "Cannot find this node in all panes");
             return null;
         }
 
@@ -195,9 +193,12 @@ public class JobViewController {
     }
 
     public void updateTabName(ArrayList<String> devices) {
-        for(int i = 0; i < devices.size(); i++) {
-            mTabSet.get(i).setText(devices.get(i));
-        }
+        Platform.runLater(() -> {
+                for(int i = 0; i < devices.size(); i++) {
+                    mTabSet.get(i).setText(devices.get(i));
+                }
+            }
+        );
     }
 
     public void updateStatus(String msg) {
@@ -214,7 +215,6 @@ public class JobViewController {
                 }
             }
         );
-
     }
 
     private void sendJobRequest(int tabIndex, int row) {
@@ -253,7 +253,7 @@ public class JobViewController {
 
     private class AutoJobPane {
         int columnCount = 4;
-        int rowCount = 6;
+        int rowCount = 8; //if we want to dynamically generate job table, this should be editable
 
         ArrayList<CheckBox> enableCheckBoxes;
         ArrayList<ChoiceBox> whenChoiceBoxes;
