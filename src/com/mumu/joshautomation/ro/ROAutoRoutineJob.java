@@ -178,8 +178,6 @@ public class ROAutoRoutineJob extends AutoJob {
                             Thread.sleep(500);
                     }
                 } else {
-                    Log.d(TAG, "Device: " + mCurrentDevice + " Job " + currentIndex + " is not enabled, sleep for 5 seconds");
-                    Log.d(TAG, "Job description: " + currentJob.toString());
                     Thread.sleep(3000);
                 }
             }

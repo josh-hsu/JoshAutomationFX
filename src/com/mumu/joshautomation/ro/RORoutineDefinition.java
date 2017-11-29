@@ -21,11 +21,13 @@ public class RORoutineDefinition {
     static ScreenCoord pointHPStart = new ScreenCoord(49,138,ScreenPoint.SO_Landscape);
     static ScreenCoord pointHPEnd   = new ScreenCoord(157,138,ScreenPoint.SO_Landscape);
     static ScreenColor pointHPColor = new ScreenColor(137,214,37,0xff);
+    static ScreenColor pointHPEmptyColor = new ScreenColor(97,99,101,0xff);
 
     // MP supply gauge point info
     static ScreenCoord pointMPStart = new ScreenCoord(49,149,ScreenPoint.SO_Landscape);
     static ScreenCoord pointMPEnd   = new ScreenCoord(157,149,ScreenPoint.SO_Landscape);
     static ScreenColor pointMPColor = new ScreenColor(113,145,232,0xff);
+    static ScreenColor pointMPEmptyColor = new ScreenColor(97,99,101,0xff);
 
     /*
      *    Item5   Item4    Item3    Item2    Item1    Auto
