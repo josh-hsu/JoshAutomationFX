@@ -4,24 +4,24 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mumu.jafx.RootViewController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" text="檔案">
+          <Menu mnemonicParsing="false" text="控制">
             <items>
-              <MenuItem mnemonicParsing="false" text="關閉程式" />
+              <MenuItem fx:id="mMenuExit" mnemonicParsing="false" text="關閉程式" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="RO">
             <items>
-              <MenuItem mnemonicParsing="false" text="立即刷新" />
+              <MenuItem fx:id="mMenuRORefresh" mnemonicParsing="false" text="立即刷新" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="幫助">
             <items>
-              <MenuItem mnemonicParsing="false" text="錯誤回報" />
-                  <MenuItem mnemonicParsing="false" text="關於" />
+              <MenuItem fx:id="mMenuReportIssue" mnemonicParsing="false" text="錯誤回報" />
+                  <MenuItem fx:id="mMenuAbout" mnemonicParsing="false" text="關於" />
             </items>
           </Menu>
         </menus>

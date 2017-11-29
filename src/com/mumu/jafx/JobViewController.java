@@ -47,9 +47,13 @@ public class JobViewController {
             Node node = (Node) event.getSource();
 
             //if user check the checkbox, we send a message to Main handler
+            AutoJobPaneNodeInfo info = getNodeLocationInfo(node);
+
             if (node instanceof CheckBox) {
-                AutoJobPaneNodeInfo info = getNodeLocationInfo(node);
                 sendJobRequest(info.pane, info.row);
+            } else {
+                CheckBox checkBox = getCheckboxInIndex(info.pane, info.row);
+                checkBox.setSelected(false);
             }
 
             Log.d(TAG, "Node info => " + getNodeLocationInfo(node).toString());
@@ -168,6 +172,18 @@ public class JobViewController {
         return null;
     }
 
+    private CheckBox getCheckboxInIndex(final int tab, final int row) {
+        GridPane gridPane = mGridPaneSet.get(tab);
+        Node node = getNodeByRowColumnIndex(row, 0, gridPane);
+        if (node != null) {
+            if (node instanceof CheckBox) {
+                return (CheckBox) node;
+            }
+        }
+
+        return null;
+    }
+
     private AutoJobPaneNodeInfo getNodeLocationInfo(Node node) {
         int tabIndex = -1;
         Node parent = node.getParent();
@@ -257,7 +273,6 @@ public class JobViewController {
     }
 
     private void alertFieldValueInvalid(int row, String msg) {
-        //TODO: use alert window
         Log.w(TAG, "User input invalid value: " + msg);
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.initOwner(mMainApp.getMainStage());

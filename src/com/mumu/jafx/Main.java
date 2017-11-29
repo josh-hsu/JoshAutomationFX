@@ -34,14 +34,16 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
     private BorderPane mRootView;
     private AnchorPane mJobView;
 
-    private AutoJobHandler mAutoJobHandler;
     private JobViewController mJobViewController;
+    private RootViewController mRootViewController;
+
+    private AutoJobHandler mAutoJobHandler;
     private JoshGameLibrary mGL;
     private ArrayList<ROJobList> mROJobListSet;
     private ArrayList<String> mDeviceList;
 
     private PeriodUpdateThread mUpdateThread;
-    private boolean mDeviceIntialized = false;
+    private boolean mDeviceInitialized = false;
 
     /**
      * Constructor
@@ -58,6 +60,8 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
 
         initRootLayout();
         initJobMainView();
+
+        mRootViewController.setMainApp(this);
 
         mJobViewController.registerListener(this);
         mJobViewController.setMainApp(this);
@@ -89,6 +93,7 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("view/RootLayout.fxml"));
             mRootView = loader.load();
+            mRootViewController = loader.getController();
 
             // Show the scene containing the root layout.
             Scene scene = new Scene(mRootView);
@@ -128,18 +133,18 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
      * Get current screenshot of all devices
      * This function shouldn't be called directly in UI Thread
      */
-    private void getCurrentScreenshot() {
-        if (mJobViewController == null || mDeviceList == null || !mDeviceIntialized) {
+    private boolean getCurrentScreenshot() {
+        if (mJobViewController == null || mDeviceList == null || !mDeviceInitialized) {
             Log.d(TAG, "Waiting for view created.");
-            return;
+            return false;
         }
 
         for (int i = 0; i < mDeviceList.size(); i++) {
             String filename = "/sdcard/screen" + i + ".png";
-            String localname = "screen" + i + ".png";
+            String localName = "screen" + i + ".png";
             Cmd.getInstance().runCommand("screencap -p " + filename, mDeviceList.get(i));
             Cmd.getInstance().pullAdbFile(filename, mDeviceList.get(i));
-            String path = mCurrentWD + "\\" + localname;
+            String path = mCurrentWD + "\\" + localName;
             try {
                 URL pathUrl = new File(path).toURI().toURL();
                 mJobViewController.updateScreenshot(i, pathUrl.toString());
@@ -148,6 +153,8 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
                 e.printStackTrace();
             }
         }
+
+        return true;
     }
 
     private void createAutoJob() {
@@ -248,8 +255,13 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
             actionValue = actionIndex - 4;
         }
 
-        mROJobListSet.get(tab).setJob(index - 1,
-                new ROJobDescription(enable, when, whenValue, action, actionValue));
+        if (mROJobListSet.size() > tab) {
+            mROJobListSet.get(tab).setJob(index - 1,
+                    new ROJobDescription(enable, when, whenValue, action, actionValue));
+        } else {
+            Log.w(TAG, "No device in this tab");
+            return;
+        }
 
         AutoJob autoJob = mAutoJobHandler.getJob(tab);
         if (autoJob instanceof ROAutoRoutineJob) {
@@ -283,7 +295,7 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
             startAutoJob();
 
             mJobViewController.updateTabName(mDeviceList);
-            mDeviceIntialized = true;
+            mDeviceInitialized = true;
         }
     }
 
@@ -297,10 +309,13 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
             shouldRunning = true;
 
             while(shouldRunning) {
-                getCurrentScreenshot();
+                boolean updateDone = getCurrentScreenshot();
 
                 try {
-                    Thread.sleep(100);
+                    if (updateDone)
+                        Thread.sleep(100);
+                    else
+                        Thread.sleep(2500);
                 } catch (InterruptedException e) {
                     shouldRunning = false;
                     Log.w(TAG, "Update Thread interrupted");

@@ -58,13 +58,23 @@ class RORoutine {
         return null;
     }
 
-    boolean isMPLowerThan(float percent) {
+    private boolean isMPLowerThan(float percent) {
         ScreenPoint point = new ScreenPoint(getTargetGaugeCoord(percent, GAUGE_TYPE_MP), pointMPEmptyColor);
         return mGL.getCaptureService().colorIs(point, mDevice);
     }
 
-    boolean isHPLowerThan(float percent) {
+    private boolean isHPLowerThan(float percent) {
         ScreenPoint point = new ScreenPoint(getTargetGaugeCoord(percent, GAUGE_TYPE_HP), pointHPEmptyColor);
+        return mGL.getCaptureService().colorIs(point, mDevice);
+    }
+
+    private boolean isMPHigherThan(float percent) {
+        ScreenPoint point = new ScreenPoint(getTargetGaugeCoord(percent, GAUGE_TYPE_MP), pointMPColor);
+        return mGL.getCaptureService().colorIs(point, mDevice);
+    }
+
+    private boolean isHPHigherThan(float percent) {
+        ScreenPoint point = new ScreenPoint(getTargetGaugeCoord(percent, GAUGE_TYPE_HP), pointHPColor);
         return mGL.getCaptureService().colorIs(point, mDevice);
     }
 
@@ -99,8 +109,16 @@ class RORoutine {
                 if (isHPLowerThan((float)typeValue))
                     return true;
                 break;
+            case OnHPHigherThan:
+                if (isHPHigherThan((float)typeValue))
+                    return true;
+                break;
             case OnMPLessThan:
                 if (isMPLowerThan((float)typeValue))
+                    return true;
+                break;
+            case OnMPHigherThan:
+                if (isMPHigherThan((float)typeValue))
                     return true;
                 break;
             default:
