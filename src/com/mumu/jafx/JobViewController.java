@@ -2,6 +2,7 @@ package com.mumu.jafx;
 
 
 import com.mumu.libjoshgame.Log;
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,6 +21,8 @@ import java.util.ArrayList;
 
 public class JobViewController {
     private static final String TAG = "ViewController";
+    private Main mMainApp;
+
     @FXML private Label mStatusLabel;
     @FXML private Tab mTab1;
     @FXML private Tab mTab2;
@@ -192,6 +195,10 @@ public class JobViewController {
         }
     }
 
+    public void setMainApp(Main app) {
+        mMainApp = app;
+    }
+
     public void updateTabName(ArrayList<String> devices) {
         Platform.runLater(() -> {
                 for(int i = 0; i < devices.size(); i++) {
@@ -227,17 +234,20 @@ public class JobViewController {
 
         if (whenString.equals("")) {
             alertFieldValueInvalid(row, "您沒有設定條件數值。");
+            jobPane.enableCheckBoxes.get(row - 1).setSelected(false);
             return;
         } else {
             try {
                 whenValue = Integer.parseInt(whenString);
             } catch (NumberFormatException e) {
-                alertFieldValueInvalid(row, "您輸入的數值有問題。");
+                alertFieldValueInvalid(row, "您輸入的數值有問題。\n" + " > " + whenString + " 應該不是數字吧？");
+                jobPane.enableCheckBoxes.get(row - 1).setSelected(false);
                 return;
             }
 
             if (whenValue <= 0) {
-                alertFieldValueInvalid(row, "您輸入的數值必須大於0");
+                alertFieldValueInvalid(row, "您輸入的數值必須大於0。");
+                jobPane.enableCheckBoxes.get(row - 1).setSelected(false);
                 return;
             }
         }
@@ -249,6 +259,13 @@ public class JobViewController {
     private void alertFieldValueInvalid(int row, String msg) {
         //TODO: use alert window
         Log.w(TAG, "User input invalid value: " + msg);
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.initOwner(mMainApp.getMainStage());
+        alert.setTitle("錯誤");
+        alert.setHeaderText("請檢查第 " + row + " 行的參數設定");
+        alert.setContentText(msg);
+
+        alert.showAndWait();
     }
 
     private class AutoJobPane {

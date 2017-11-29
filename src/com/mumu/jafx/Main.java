@@ -42,7 +42,6 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
 
     private PeriodUpdateThread mUpdateThread;
 
-
     /**
      * Constructor
      */
@@ -75,6 +74,7 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
 
         mJobViewController.updateTabName(mDeviceList);
         mJobViewController.registerListener(this);
+        mJobViewController.setMainApp(this);
 
         //getCurrentScreenshot();
         mUpdateThread = new PeriodUpdateThread();
