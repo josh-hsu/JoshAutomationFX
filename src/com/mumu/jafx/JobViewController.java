@@ -205,12 +205,16 @@ public class JobViewController {
     }
 
     public void updateScreenshot(int index, String path) {
-        if (index >= mScreenViewSet.size()) {
-            Log.w(TAG, "Invalid index to update screenshot");
-        } else {
-            ImageView imgView = mScreenViewSet.get(index);
-            imgView.setImage(new Image(path));
-        }
+        Platform.runLater(() -> {
+                if (index >= mScreenViewSet.size()) {
+                    Log.w(TAG, "Invalid index to update screenshot");
+                } else {
+                    ImageView imgView = mScreenViewSet.get(index);
+                    imgView.setImage(new Image(path));
+                }
+            }
+        );
+
     }
 
     private void sendJobRequest(int tabIndex, int row) {

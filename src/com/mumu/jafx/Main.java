@@ -281,7 +281,7 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Log.w(TAG, "Update Thread interrupted");
                 }
             }
         }
