@@ -68,6 +68,7 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
 
         new DeviceInitialThread().start();
 
+        createScreenshotDirectory();
         mUpdateThread = new PeriodUpdateThread();
         mUpdateThread.start();
     }
@@ -129,6 +130,26 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
         }
     }
 
+    private void createScreenshotDirectory() {
+        File theDir = new File(mCurrentWD + "\\Screenshot");
+
+        if (!theDir.exists()) {
+            boolean result = false;
+
+            try{
+                theDir.mkdir();
+                result = true;
+            }
+            catch(SecurityException se){
+                //handle it
+            }
+
+            if(result) {
+                System.out.println("DIR created");
+            }
+        }
+    }
+
     /*
      * Get current screenshot of all devices
      * This function shouldn't be called directly in UI Thread
@@ -142,11 +163,12 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
         for (int i = 0; i < mDeviceList.size(); i++) {
             String filename = "/sdcard/screen" + i + ".png";
             String localName = "screen" + i + ".png";
+            String path = mCurrentWD + "\\Screenshot\\";
             Cmd.getInstance().runCommand("screencap -p " + filename, mDeviceList.get(i));
-            Cmd.getInstance().pullAdbFile(filename, mDeviceList.get(i));
-            String path = mCurrentWD + "\\" + localName;
+            Cmd.getInstance().pullAdbFile(filename, path, mDeviceList.get(i));
+
             try {
-                URL pathUrl = new File(path).toURI().toURL();
+                URL pathUrl = new File(path + localName).toURI().toURL();
                 mJobViewController.updateScreenshot(i, pathUrl.toString());
             } catch (MalformedURLException e) {
                 Log.e(TAG, "Screenshot format URL failed: " + e.getMessage());

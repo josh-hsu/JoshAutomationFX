@@ -1,5 +1,6 @@
 package com.mumu.libjoshgame;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -13,7 +14,8 @@ public class Log {
     public static final int VERBOSE = 2;
     public static final int WARN = 5;
 
-    public static final String logFilePath = System.getProperty("user.dir") + "\\JAFXLog_" + getCurrentTimeSimple() + ".txt";
+    public static final String logFilePath = System.getProperty("user.dir") + "\\Log\\JAFXLog_" + getCurrentTimeSimple() + ".txt";
+    private static boolean LogDirCreated = false;
 
     public static void v(String tag, String msg) {
         System.out.print(logFormatted(tag, msg, VERBOSE));
@@ -40,8 +42,34 @@ public class Log {
         saveLogToFile(tag, msg, WARN);
     }
 
+    private static void createLogDirectory() {
+        File theDir = new File(System.getProperty("user.dir") + "\\Log");
+
+        if (!theDir.exists()) {
+            boolean result = false;
+
+            try{
+                theDir.mkdir();
+                result = true;
+            }
+            catch(SecurityException se){
+                //handle it
+            }
+
+            if(result) {
+                System.out.println("DIR created");
+            }
+        }
+
+        LogDirCreated = true;
+    }
+
     private static void saveLogToFile(String tag, String msg, int level) {
         String log = logFormatted(tag, msg, level);
+
+        if (!LogDirCreated)
+            createLogDirectory();
+
         try {
             FileOutputStream fos = new FileOutputStream(logFilePath, true);
             fos.write(log.getBytes());

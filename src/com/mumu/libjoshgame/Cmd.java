@@ -25,8 +25,7 @@ public class Cmd {
     private final String TAG = "Cmd";
     private static Cmd mThis;
     private static String mAdbDefaultIP = "127.0.0.1";
-    private static int mMaxDevices = 3;
-    private String[] mAdbDevicePort = {"62001", "62025", "62026"};
+    private String[] mAdbDevicePort = {"62001", "62025", "62026", "62027", "62028", "62029"};
 
     private Cmd() {
         tryConnect();
@@ -61,8 +60,8 @@ public class Cmd {
 
     private void tryConnect() {
         Log.d(TAG, "try connect");
-        for(int i = 0; i < mMaxDevices; i++) {
-            String cmd = "connect " + mAdbDefaultIP + ":" + mAdbDevicePort[i];
+        for (String port : mAdbDevicePort) {
+            String cmd = "connect " + mAdbDefaultIP + ":" + port;
             try {
                 runAdbCommandInternal(cmd);
             } catch (Exception e) {
@@ -97,12 +96,43 @@ public class Cmd {
 
     }
 
-    public void pullAdbFile(String remote, String device) {
+    public void pullAdbFile(String remote, String destination, String device) {
         try {
-            runAdbCommandInternal("-s " + device + " pull " + remote + " .");
+            runAdbCommandInternal("-s " + device + " pull " + remote + " " + destination);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String runSystemCommand(String cmd) {
+        try {
+            Runtime rt = Runtime.getRuntime();
+            Process process = rt.exec(cmd);
+
+            BufferedReader stdInput = new BufferedReader(new
+                    InputStreamReader(process.getInputStream()));
+
+            BufferedReader stdError = new BufferedReader(new
+                    InputStreamReader(process.getErrorStream()));
+
+            // read the output from the command
+            String s, result = "";
+            while ((s = stdInput.readLine()) != null) {
+                result += s;
+            }
+
+            // read any errors from the attempted command
+            while ((s = stdError.readLine()) != null) {
+                Log.w(TAG, "Fail to execute command " + cmd + ": " + s);
+            }
+
+            return result;
+
+        } catch (Exception e) {
+            Log.e(TAG, "command error");
+        }
+
+        return "";
     }
 
     private String runAdbCommandInternal(String cmd) throws IOException {

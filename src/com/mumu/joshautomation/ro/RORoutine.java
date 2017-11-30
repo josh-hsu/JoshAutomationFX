@@ -86,6 +86,10 @@ class RORoutine {
         return 0.0f;
     }
 
+    public boolean isInBattleMode() {
+        return isHPHigherThan(50) || isHPLowerThan(50);
+    }
+
     void tapOnQuickItem(int index) {
         if (index < 1)
             return;

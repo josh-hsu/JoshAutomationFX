@@ -133,7 +133,7 @@ public class JobViewController {
             TextField textField = (TextField) getNodeByRowColumnIndex(i, 2, gridPane);
             if (textField != null) {
                 textField.setOnAction(mNodeEventHandler);
-                textField.setPromptText("%數(0~100)，或秒數(1秒是1000)");
+                textField.setPromptText("%數(0~100)，或秒數(1是1秒)");
                 textFields.add(textField);
             }
         }

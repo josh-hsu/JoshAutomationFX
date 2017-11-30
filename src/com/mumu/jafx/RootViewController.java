@@ -63,7 +63,7 @@ public class RootViewController {
                 "這個 App 不用錢，如果你不幸花錢買了這個 App ... 請你聯絡我，我會給你免費連結\n\n" +
                 "聯絡我: alenbos0517@gmail.com\n" +
                 "釋出日期: 2017-11-29\n" +
-                "版本: 0.11N (Beta)");
+                "版本: 0.19C (Beta)");
 
         alert.showAndWait();
     }

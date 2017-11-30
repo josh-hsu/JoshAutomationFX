@@ -137,6 +137,7 @@ public class ROAutoRoutineJob extends AutoJob {
         private ROJobDescription currentJob;
         private int currentIndex;
         private boolean currentRunning = false;
+        private boolean deferAction = false;
 
         ROJobRoutine(int index, ROJobDescription job) {
             currentJob = job;
@@ -151,6 +152,15 @@ public class ROAutoRoutineJob extends AutoJob {
             currentJob = job;
         }
 
+        private int getNextSleepTime(int originalSleepTime) {
+            if (deferAction) {
+                deferAction = false;
+                return 1000;
+            } else {
+                return originalSleepTime;
+            }
+        }
+
         /*
          * main function should handle job parsing and running
          */
@@ -163,14 +173,26 @@ public class ROAutoRoutineJob extends AutoJob {
                     switch (currentJob.sWhen) {
                         case OnMPLessThan:
                         case OnHPLessThan:
-                            Thread.sleep(defaultDetectInterval);
+                            Thread.sleep(getNextSleepTime(defaultDetectInterval));
                             Log.d(TAG, "checking " + currentIndex + " for values");
+
+                            if (!mRO.isInBattleMode()) {
+                                deferAction = true;
+                                continue;
+                            }
+
                             if (mRO.checkBattleSupply(currentJob.sWhen, currentJob.sWhenValue))
                                 mRO.executeAction(currentJob.sAction, currentJob.sActionValue);
                             break;
                         case OnPeriod:
-                            Thread.sleep(currentJob.sWhenValue);
+                            Thread.sleep(getNextSleepTime(currentJob.sWhenValue * 1000));
                             Log.d(TAG, "checking " + currentIndex + " for period job");
+
+                            if (!mRO.isInBattleMode()) {
+                                deferAction = true;
+                                continue;
+                            }
+
                             mRO.executeAction(currentJob.sAction, currentJob.sActionValue);
                             break;
                         default:
