@@ -22,6 +22,7 @@ import java.util.ArrayList;
 public class JobViewController {
     private static final String TAG = "ViewController";
     private Main mMainApp;
+    private int mMaxSupportJob = 3;
 
     @FXML private Label mStatusLabel;
     @FXML private Tab mTab1;
@@ -217,8 +218,11 @@ public class JobViewController {
 
     public void updateTabName(ArrayList<String> devices) {
         Platform.runLater(() -> {
-                for(int i = 0; i < devices.size(); i++) {
-                    mTabSet.get(i).setText(devices.get(i));
+                for(int i = 0; i < mMaxSupportJob; i++) {
+                    if (i < devices.size())
+                        mTabSet.get(i).setText(devices.get(i));
+                    else
+                        mTabSet.get(i).setText("無裝置");
                 }
             }
         );

@@ -12,7 +12,7 @@
    <children>
       <TabPane layoutX="50.0" layoutY="57.0" prefHeight="410.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
-          <Tab fx:id="mTab1" text="無裝置">
+          <Tab fx:id="mTab1" text="搜尋裝置中..">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -289,7 +289,7 @@
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab fx:id="mTab2" text="無裝置">
+            <Tab fx:id="mTab2" text="搜尋裝置中..">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -551,7 +551,7 @@
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab fx:id="mTab3" text="無裝置">
+            <Tab fx:id="mTab3" text="搜尋裝置中..">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
