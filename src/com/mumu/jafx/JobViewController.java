@@ -1,6 +1,7 @@
 package com.mumu.jafx;
 
 
+import com.mumu.joshautomation.ro.ROJobDescription;
 import com.mumu.libjoshgame.Log;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -125,6 +126,7 @@ public class JobViewController {
             ChoiceBox choiceBox = (ChoiceBox) getNodeByRowColumnIndex(i, 1, gridPane);
             if (choiceBox != null) {
                 choiceBox.setOnAction(mNodeEventHandler);
+                choiceBox.setItems(ROJobDescription.getWhenList());
                 choiceBoxes.add(choiceBox);
             }
         }
@@ -144,6 +146,7 @@ public class JobViewController {
             ChoiceBox choiceBox = (ChoiceBox) getNodeByRowColumnIndex(i, 3, gridPane);
             if (choiceBox != null) {
                 choiceBox.setOnAction(mNodeEventHandler);
+                choiceBox.setItems(ROJobDescription.getActionList());
                 actionChoiceBoxes.add(choiceBox);
             }
         }
@@ -270,6 +273,12 @@ public class JobViewController {
                 jobPane.enableCheckBoxes.get(row - 1).setSelected(false);
                 return;
             }
+        }
+
+        if (whenIndex < 0 || actionIndex < 0) {
+            alertFieldValueInvalid(row, "條件內容或動作沒有選擇，請下拉選單選擇");
+            jobPane.enableCheckBoxes.get(row - 1).setSelected(false);
+            return;
         }
 
         Log.d(TAG, "Checked info: enable: " + enable + ", when: " + whenIndex + ", whenValue: " + whenString + ", actionIndex: " + actionIndex);

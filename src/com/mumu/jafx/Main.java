@@ -243,28 +243,28 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
         int actionValue = 0;
 
         switch (whenIndex) {
-            case 0:
+            case OnHPLessThan:
                 Log.d(TAG, "When HP < " + whenValue);
                 when = OnHPLessThan;
                 break;
-            case 1:
+            case OnHPHigherThan:
                 Log.d(TAG, "When HP > " + whenValue);
                 when = OnHPHigherThan;
                 break;
-            case 2:
+            case OnMPLessThan:
                 Log.d(TAG, "When MP < " + whenValue);
                 when = OnMPLessThan;
                 break;
-            case 3:
+            case OnMPHigherThan:
                 Log.d(TAG, "When MP > " + whenValue);
                 when = OnMPHigherThan;
                 break;
-            case 4:
-                Log.d(TAG, "When about " + whenValue + " ms later");
+            case OnPeriod:
+                Log.d(TAG, "When about " + whenValue + " seconds later");
                 when = OnPeriod;
                 break;
             default:
-                Log.d(TAG, "When ... not supported");
+                Log.d(TAG, "When ... not supported, maybe future");
         }
 
         if (actionIndex >= 0 && actionIndex < 5) {
@@ -275,6 +275,10 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
             Log.d(TAG, "do press skill " + (actionIndex - 4));
             action = ActionPressSkill;
             actionValue = actionIndex - 4;
+        } else if (actionIndex == 11) { /* action step */
+            Log.d(TAG, "do moving a step");
+            action = ActionMoveAStep;
+            actionValue = -1;
         }
 
         if (mROJobListSet.size() > tab) {
