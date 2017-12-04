@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import static com.mumu.joshautomation.ro.ROJobDescription.*;
 
 public class ROAutoRoutineJob extends AutoJob {
-    private static final String TAG = "ROAutoRoutine";
+    private String TAG = "ROAutoRoutine";
     private ArrayList<ROJobRoutine> mJobRoutines;
     private JoshGameLibrary mGL;
     private AutoJobEventListener mListener;
@@ -32,6 +32,7 @@ public class ROAutoRoutineJob extends AutoJob {
         mGL.setGameOrientation(ScreenPoint.SO_Landscape);
 
         mRO = new RORoutine(mGL, mListener, device);
+        TAG = TAG + "(" + device + ")"; //make us easy to find out which device
         mSelf = this;
         mCurrentDevice = device;
     }
@@ -44,6 +45,7 @@ public class ROAutoRoutineJob extends AutoJob {
         mGL.setGameOrientation(ScreenPoint.SO_Landscape);
 
         mRO = new RORoutine(mGL, mListener, null);
+        TAG = TAG + "(null)"; //make us easy to find out which device
         mSelf = this;
     }
 
@@ -173,10 +175,13 @@ public class ROAutoRoutineJob extends AutoJob {
                     switch (currentJob.sWhen) {
                         case OnMPLessThan:
                         case OnHPLessThan:
+                        case OnHPHigherThan:
+                        case OnMPHigherThan:
                             Thread.sleep(getNextSleepTime(defaultDetectInterval));
-                            Log.d(TAG, "checking " + currentIndex + " for values");
+                            Log.d(TAG, "sleep end checking " + currentIndex + " for values");
 
                             if (!mRO.isInBattleMode()) {
+                                Log.d(TAG, "Not in battle mode, defer it.");
                                 deferAction = true;
                                 continue;
                             }
@@ -186,9 +191,10 @@ public class ROAutoRoutineJob extends AutoJob {
                             break;
                         case OnPeriod:
                             Thread.sleep(getNextSleepTime(currentJob.sWhenValue * 1000));
-                            Log.d(TAG, "checking " + currentIndex + " for period job");
+                            Log.d(TAG, "sleep end, checking " + currentIndex + " for period job");
 
                             if (!mRO.isInBattleMode()) {
+                                Log.d(TAG, "Not in battle mode, defer it.");
                                 deferAction = true;
                                 continue;
                             }

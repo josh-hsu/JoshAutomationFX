@@ -62,8 +62,8 @@ public class RootViewController {
         alert.setContentText("哈囉，本軟體是利用 JavaFX 撰寫的程式，其架構用於 RO 的手機板，因為我也是個懶惰又愛玩遊戲的人。\n" +
                 "這個 App 不用錢，如果你不幸花錢買了這個 App ... 請你聯絡我，我會給你免費連結\n\n" +
                 "聯絡我: alenbos0517@gmail.com\n" +
-                "釋出日期: 2017-12-02\n" +
-                "版本: 0.20S (Beta)");
+                "釋出日期: 2017-12-05\n" +
+                "版本: 0.21A (Beta)");
 
         alert.showAndWait();
     }
