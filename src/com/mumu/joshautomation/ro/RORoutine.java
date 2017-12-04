@@ -106,6 +106,15 @@ class RORoutine {
         mGL.getInputService().tapOnScreen(skillCoord, mDevice);
     }
 
+    void tapOnRandomSpot(int radius) {
+        int center_x = mGL.getScreenWidth() / 2;
+        int center_y = mGL.getScreenHeight() / 2;
+        int x_shift = (int) (Math.random() * radius) - radius/2;
+        int y_shift = (int) (Math.random() * radius) - radius/2;
+        ScreenCoord tapPoint = new ScreenCoord(center_x + x_shift, center_y + y_shift, mGL.getScreenOrientation());
+        mGL.getInputService().tapOnScreen(tapPoint, mDevice);
+    }
+
     boolean checkBattleSupply(int type, int typeValue) {
         // check on character HP and MP
         switch (type) {
@@ -139,6 +148,9 @@ class RORoutine {
                 break;
             case ActionPressSkill:
                 tapOnSkill(actionValue);
+                break;
+            case ActionMoveAStep:
+                tapOnRandomSpot(80);
                 break;
             default:
                 Log.d(TAG, "Unknown supply action: " + action);

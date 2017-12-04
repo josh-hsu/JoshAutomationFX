@@ -41,7 +41,7 @@ public class JoshGameLibrary {
     private InputService mInputService;
     private CaptureService mCaptureService;
     private static Cmd mCmd;
-    private int width, height;
+    private int width, height, orientation;
 
     private static JoshGameLibrary currentRuntime;
 
@@ -66,6 +66,7 @@ public class JoshGameLibrary {
     }
 
     public void setGameOrientation(int orientation) {
+        this.orientation = orientation;
         mInputService.setGameOrientation(orientation);
         mCaptureService.setScreenOrientation(orientation);
     }
@@ -121,6 +122,10 @@ public class JoshGameLibrary {
 
     public int getScreenHeight() {
         return height;
+    }
+
+    public int getScreenOrientation() {
+        return orientation;
     }
 
     static class GLService {
