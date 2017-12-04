@@ -150,7 +150,7 @@ public class CaptureService extends JoshGameLibrary.GLService {
      * filename: dump file path
      * coord: ScreenCoord to be used
      */
-    public void getColorOnDump(ScreenColor sc, String filename, ScreenCoord coord, String dev) {
+    private void getColorOnDump(ScreenColor sc, String filename, ScreenCoord coord, String dev) {
         RandomAccessFile dumpFile;
         int offset;
         byte[] colorInfo = new byte[4];
@@ -177,6 +177,8 @@ public class CaptureService extends JoshGameLibrary.GLService {
                     sc.g = 0;
                     sc.b = 0;
                     sc.t = 0;
+                } catch (IndexOutOfBoundsException e) {
+                    Log.f(TAG, "!!!FATAL EXCEPTION!!! index out of bound, content: " + result, e);
                 }
             }
         } else {
@@ -195,7 +197,7 @@ public class CaptureService extends JoshGameLibrary.GLService {
         }
     }
 
-    public void getColorOnDump(ScreenColor sc, String filename, ScreenCoord coord) {
+    private void getColorOnDump(ScreenColor sc, String filename, ScreenCoord coord) {
         getColorOnDump(sc, filename, coord, null);
     }
 
@@ -204,14 +206,13 @@ public class CaptureService extends JoshGameLibrary.GLService {
      * sc: ScreenColor to be saved
      * coord: ScreenCoord to be used to get color
      */
-    public void getColorOnScreen(ScreenColor sc, ScreenCoord coord, String dev) {
+    synchronized public void getColorOnScreen(ScreenColor sc, ScreenCoord coord, String dev) {
         dumpScreen(dev);
         getColorOnDumpInternal(sc, coord, dev);
     }
 
     public void getColorOnScreen(ScreenColor sc, ScreenCoord coord) {
-        dumpScreen();
-        getColorOnDumpInternal(sc, coord, null);
+        getColorOnScreen(sc, coord, null);
     }
 
     /*

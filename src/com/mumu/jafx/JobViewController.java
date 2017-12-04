@@ -3,7 +3,6 @@ package com.mumu.jafx;
 
 import com.mumu.joshautomation.ro.ROJobDescription;
 import com.mumu.libjoshgame.Log;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -35,15 +35,23 @@ public class JobViewController {
     @FXML private ImageView mDeviceImage1;
     @FXML private ImageView mDeviceImage2;
     @FXML private ImageView mDeviceImage3;
+    @FXML private VBox mVBox1;
+    @FXML private VBox mVBox2;
+    @FXML private VBox mVBox3;
 
     private ArrayList<Tab> mTabSet;
     private ArrayList<GridPane> mGridPaneSet;
     private ArrayList<AutoJobPane> mAutoJobPanes;
     private ArrayList<ImageView> mScreenViewSet;
+    private ArrayList<VBox> mVBoxes;
+    private ArrayList<DetailJobPane> mDetailJobPanes;
 
     private JobViewListener mListener;
 
-    private EventHandler<ActionEvent> mNodeEventHandler = new EventHandler<ActionEvent>() {
+    /*
+     * Handle every event from GridPane
+     */
+    private EventHandler<ActionEvent> mGridNodeEventHandler = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
             Node node = (Node) event.getSource();
@@ -59,6 +67,21 @@ public class JobViewController {
             }
 
             Log.d(TAG, "Node info => " + getNodeLocationInfo(node).toString());
+
+        }
+    };
+
+    /*
+     * Handle every event from DetailVBox
+     */
+    private EventHandler<ActionEvent> mDetailNodeEventHandler = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            Node node = (Node) event.getSource();
+
+            if (node instanceof CheckBox) {
+                Log.d(TAG, "check box selected");
+            }
 
         }
     };
@@ -92,6 +115,15 @@ public class JobViewController {
         mScreenViewSet.add(mDeviceImage2);
         mScreenViewSet.add(mDeviceImage3);
 
+        mVBoxes = new ArrayList<>();
+        mVBoxes.add(mVBox1);
+        mVBoxes.add(mVBox2);
+        mVBoxes.add(mVBox3);
+
+        mDetailJobPanes = new ArrayList<>();
+        mDetailJobPanes.add(formatDetailJobPane(mVBox1));
+        mDetailJobPanes.add(formatDetailJobPane(mVBox2));
+        mDetailJobPanes.add(formatDetailJobPane(mVBox3));
     }
 
     public void registerListener(JobViewListener listener) {
@@ -115,7 +147,7 @@ public class JobViewController {
         for(int i = 1; i < rowCount; i++) {
             CheckBox checkBox = (CheckBox) getNodeByRowColumnIndex(i, 0, gridPane);
             if (checkBox != null) {
-                checkBox.setOnAction(mNodeEventHandler);
+                checkBox.setOnAction(mGridNodeEventHandler);
                 checkBoxes.add(checkBox);
             }
         }
@@ -125,7 +157,7 @@ public class JobViewController {
         for(int i = 1; i < rowCount; i++) {
             ChoiceBox choiceBox = (ChoiceBox) getNodeByRowColumnIndex(i, 1, gridPane);
             if (choiceBox != null) {
-                choiceBox.setOnAction(mNodeEventHandler);
+                choiceBox.setOnAction(mGridNodeEventHandler);
                 choiceBox.setItems(ROJobDescription.getWhenList());
                 choiceBoxes.add(choiceBox);
             }
@@ -135,7 +167,7 @@ public class JobViewController {
         for(int i = 1; i < rowCount; i++) {
             TextField textField = (TextField) getNodeByRowColumnIndex(i, 2, gridPane);
             if (textField != null) {
-                textField.setOnAction(mNodeEventHandler);
+                textField.setOnAction(mGridNodeEventHandler);
                 textField.setPromptText("%數(0~100)，或秒數(1是1秒)");
                 textFields.add(textField);
             }
@@ -145,7 +177,7 @@ public class JobViewController {
         for(int i = 1; i < rowCount; i++) {
             ChoiceBox choiceBox = (ChoiceBox) getNodeByRowColumnIndex(i, 3, gridPane);
             if (choiceBox != null) {
-                choiceBox.setOnAction(mNodeEventHandler);
+                choiceBox.setOnAction(mGridNodeEventHandler);
                 choiceBox.setItems(ROJobDescription.getActionList());
                 actionChoiceBoxes.add(choiceBox);
             }
@@ -156,6 +188,16 @@ public class JobViewController {
         jobPane.whenValueTextFields = textFields;
         jobPane.actionChoiceBoxes = actionChoiceBoxes;
 
+        return jobPane;
+    }
+
+    private DetailJobPane formatDetailJobPane(VBox vbox) {
+        DetailJobPane jobPane = new DetailJobPane();
+        jobPane.checkBoxAutoFollowFirstMember = (CheckBox) vbox.getChildren().get(0);
+        jobPane.checkBoxAutoEnableAutoBattle = (CheckBox) vbox.getChildren().get(1);
+
+        jobPane.checkBoxAutoFollowFirstMember.setOnAction(mDetailNodeEventHandler);
+        jobPane.checkBoxAutoEnableAutoBattle.setOnAction(mDetailNodeEventHandler);
         return jobPane;
     }
 
@@ -296,6 +338,10 @@ public class JobViewController {
         alert.showAndWait();
     }
 
+    /*
+     * AutoJobPane
+     * consists with a outer GridPane with varies node insides it
+     */
     private class AutoJobPane {
         int columnCount = 4;
         int rowCount = 8; //if we want to dynamically generate job table, this should be editable
@@ -320,5 +366,16 @@ public class JobViewController {
         public String toString() {
             return "Node: (tab, row, column) = (" + pane + ", " + row + " ," + column + ")";
         }
+    }
+
+    /*
+     * DetailJobPane
+     * consists with a outer VBox with checkboxes insides it
+     * because all checkboxes are not related to each other, so we made it
+     * each separate from each other.
+     */
+    private class DetailJobPane {
+        public CheckBox checkBoxAutoFollowFirstMember;
+        public CheckBox checkBoxAutoEnableAutoBattle;
     }
 }

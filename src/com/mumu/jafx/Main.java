@@ -101,7 +101,7 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
             mMainStage.setScene(scene);
             mMainStage.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.f(TAG, "WTF: init root layout cause an exception: " + e.getMessage(), e);
         }
     }
 
@@ -119,7 +119,7 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
             // Set person overview into the center of root layout.
             mRootView.setCenter(mJobView);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.f(TAG, "WTF: init job main view cause an exception: " + e.getMessage(), e);
         }
     }
 
@@ -141,11 +141,11 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
                 result = true;
             }
             catch(SecurityException se){
-                //handle it
+                Log.f(TAG, "WTF: mkdir cause an exception: " + se.getMessage(), se);
             }
 
             if(result) {
-                System.out.println("DIR created");
+                Log.d(TAG, "DIR created");
             }
         }
     }
@@ -171,8 +171,7 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
                 URL pathUrl = new File(path + localName).toURI().toURL();
                 mJobViewController.updateScreenshot(i, pathUrl.toString());
             } catch (MalformedURLException e) {
-                Log.e(TAG, "Screenshot format URL failed: " + e.getMessage());
-                e.printStackTrace();
+                Log.f(TAG, "Screenshot format URL failed: " + e.getMessage(), e);
             }
         }
 
@@ -346,6 +345,8 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
                     shouldRunning = false;
                     Log.w(TAG, "Update Thread interrupted");
                     break;
+                } catch (Exception e) {
+                    Log.f(TAG, "Update Thread cause an exception: ", e);
                 }
             }
         }

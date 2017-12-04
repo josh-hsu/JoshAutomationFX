@@ -2,6 +2,8 @@ package com.mumu.libjoshgame;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -13,6 +15,7 @@ public class Log {
     public static final int INFO = 4;
     public static final int VERBOSE = 2;
     public static final int WARN = 5;
+    public static final int FATAL = 7;
 
     public static final String logFilePath = System.getProperty("user.dir") + "\\Log\\JAFXLog_" + getCurrentTimeSimple() + ".txt";
     private static boolean LogDirCreated = false;
@@ -40,6 +43,15 @@ public class Log {
     public static void w(String tag, String msg) {
         System.out.print(logFormatted(tag, msg, WARN));
         saveLogToFile(tag, msg, WARN);
+    }
+
+    public static void f(String tag, String msg, Exception e) {
+        System.out.print(logFormatted(tag, msg, FATAL));
+        e.printStackTrace();
+        StringWriter errors = new StringWriter();
+        e.printStackTrace(new PrintWriter(errors));
+        saveLogToFile(tag, msg, FATAL);
+        saveLogToFile(tag, errors.toString(), FATAL);
     }
 
     private static void createLogDirectory() {
@@ -108,6 +120,9 @@ public class Log {
                 break;
             case VERBOSE:
                 ret = "VRBS";
+                break;
+            case FATAL:
+                ret = "FATL";
                 break;
         }
         return ret;

@@ -214,8 +214,10 @@ public class ROAutoRoutineJob extends AutoJob {
         public void run() {
             try {
                 main();
+            } catch (InterruptedException e) {
+                Log.w(TAG, "ROJobRoutine [" + currentIndex + "] caught an exception or been interrupted: " + e.getMessage());
             } catch (Exception e) {
-                Log.e(TAG, "ROJobRoutine [" + currentIndex + "] caught an exception or been interrupted: " + e.getMessage());
+                Log.f(TAG, "WTF: serious thing happened: " + e.getMessage(), e);
             }
         }
     }
