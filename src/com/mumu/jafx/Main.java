@@ -311,7 +311,7 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
             mGL.setScreenDimension(1440,900);
             mGL.setGameOrientation(ScreenPoint.SO_Landscape);
             mGL.setTouchShift(0);
-            mGL.setAmbiguousRange(new int[] {9,9,9});
+            mGL.setAmbiguousRange(new int[] {0xf,0xf,0xf});
             mGL.setPlatform(true);
             mGL.setChatty(false);
 
