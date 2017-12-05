@@ -133,7 +133,7 @@
                                                 <TextField GridPane.columnIndex="2" GridPane.rowIndex="4" />
                                                 <TextField GridPane.columnIndex="2" GridPane.rowIndex="5" />
                                                 <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.rowIndex="7" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="7" />
                                                 <TextField GridPane.columnIndex="2" GridPane.rowIndex="6" />
                                                 <TextField GridPane.columnIndex="2" GridPane.rowIndex="7" />
                                                 <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />

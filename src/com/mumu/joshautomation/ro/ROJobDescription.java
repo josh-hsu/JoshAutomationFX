@@ -42,6 +42,7 @@ public class ROJobDescription {
     public final static int ActionPressItem   = 0;
     public final static int ActionPressSkill  = 1;
     public final static int ActionMoveAStep   = 2;
+    public final static int ActionMakeSureFollow   = 2;
     private final static int ActionDefault    = 99;
 
     private final static String StringActionPressItem  = "使用物品";

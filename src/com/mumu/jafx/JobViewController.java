@@ -23,7 +23,8 @@ import java.util.ArrayList;
 public class JobViewController {
     private static final String TAG = "ViewController";
     private Main mMainApp;
-    private int mMaxSupportJob = 3;
+    private Stage dialogStage;
+    private final int mMaxSupportDevice = 3;
 
     @FXML private Label mStatusLabel;
     @FXML private Tab mTab1;
@@ -57,16 +58,16 @@ public class JobViewController {
             Node node = (Node) event.getSource();
 
             //if user check the checkbox, we send a message to Main handler
-            AutoJobPaneNodeInfo info = getNodeLocationInfo(node);
+            PaneNodeInfo info = getGridNodeLocationInfo(node);
 
             if (node instanceof CheckBox) {
                 sendJobRequest(info.pane, info.row);
             } else {
-                CheckBox checkBox = getCheckboxInIndex(info.pane, info.row);
+                CheckBox checkBox = getGridCheckboxInIndex(info.pane, info.row);
                 checkBox.setSelected(false);
             }
 
-            Log.d(TAG, "Node info => " + getNodeLocationInfo(node).toString());
+            Log.d(TAG, "Node info => " + getGridNodeLocationInfo(node).toString());
 
         }
     };
@@ -80,14 +81,12 @@ public class JobViewController {
             Node node = (Node) event.getSource();
 
             if (node instanceof CheckBox) {
-                Log.d(TAG, "check box selected");
+                PaneNodeInfo tab = getDetailNodeLocationInfo(node);
+                Log.d(TAG, "check box selected " + tab.toString());
             }
 
         }
     };
-
-
-    private Stage dialogStage;
 
     /**
      * Initializes the controller class. This method is automatically called
@@ -133,6 +132,14 @@ public class JobViewController {
             Log.d(TAG, "WTF, null listener?");
     }
 
+    public void setMainApp(Main app) {
+        mMainApp = app;
+    }
+
+
+    /*
+     * AutoJobPane mapping helper functions
+     */
     private AutoJobPane formatAutoJobPane(GridPane gridPane) {
         AutoJobPane jobPane = new AutoJobPane();
         int rowCount = jobPane.rowCount;
@@ -145,7 +152,7 @@ public class JobViewController {
         //format enable box
         ArrayList<CheckBox> checkBoxes = new ArrayList<>();
         for(int i = 1; i < rowCount; i++) {
-            CheckBox checkBox = (CheckBox) getNodeByRowColumnIndex(i, 0, gridPane);
+            CheckBox checkBox = (CheckBox) getGridNodeByPosition(i, 0, gridPane);
             if (checkBox != null) {
                 checkBox.setOnAction(mGridNodeEventHandler);
                 checkBoxes.add(checkBox);
@@ -155,7 +162,7 @@ public class JobViewController {
         //format when choice box
         ArrayList<ChoiceBox> choiceBoxes = new ArrayList<>();
         for(int i = 1; i < rowCount; i++) {
-            ChoiceBox choiceBox = (ChoiceBox) getNodeByRowColumnIndex(i, 1, gridPane);
+            ChoiceBox choiceBox = (ChoiceBox) getGridNodeByPosition(i, 1, gridPane);
             if (choiceBox != null) {
                 choiceBox.setOnAction(mGridNodeEventHandler);
                 choiceBox.setItems(ROJobDescription.getWhenList());
@@ -165,7 +172,7 @@ public class JobViewController {
 
         ArrayList<TextField> textFields = new ArrayList<>();
         for(int i = 1; i < rowCount; i++) {
-            TextField textField = (TextField) getNodeByRowColumnIndex(i, 2, gridPane);
+            TextField textField = (TextField) getGridNodeByPosition(i, 2, gridPane);
             if (textField != null) {
                 textField.setOnAction(mGridNodeEventHandler);
                 textField.setPromptText("%數(0~100)，或秒數(1是1秒)");
@@ -175,7 +182,7 @@ public class JobViewController {
 
         ArrayList<ChoiceBox> actionChoiceBoxes = new ArrayList<>();
         for(int i = 1; i < rowCount; i++) {
-            ChoiceBox choiceBox = (ChoiceBox) getNodeByRowColumnIndex(i, 3, gridPane);
+            ChoiceBox choiceBox = (ChoiceBox) getGridNodeByPosition(i, 3, gridPane);
             if (choiceBox != null) {
                 choiceBox.setOnAction(mGridNodeEventHandler);
                 choiceBox.setItems(ROJobDescription.getActionList());
@@ -191,17 +198,7 @@ public class JobViewController {
         return jobPane;
     }
 
-    private DetailJobPane formatDetailJobPane(VBox vbox) {
-        DetailJobPane jobPane = new DetailJobPane();
-        jobPane.checkBoxAutoFollowFirstMember = (CheckBox) vbox.getChildren().get(0);
-        jobPane.checkBoxAutoEnableAutoBattle = (CheckBox) vbox.getChildren().get(1);
-
-        jobPane.checkBoxAutoFollowFirstMember.setOnAction(mDetailNodeEventHandler);
-        jobPane.checkBoxAutoEnableAutoBattle.setOnAction(mDetailNodeEventHandler);
-        return jobPane;
-    }
-
-    private Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
+    private Node getGridNodeByPosition(final int row, final int column, GridPane gridPane) {
         ObservableList<Node> children = gridPane.getChildren();
 
         for (Node node : children) {
@@ -218,9 +215,9 @@ public class JobViewController {
         return null;
     }
 
-    private CheckBox getCheckboxInIndex(final int tab, final int row) {
+    private CheckBox getGridCheckboxInIndex(final int tab, final int row) {
         GridPane gridPane = mGridPaneSet.get(tab);
-        Node node = getNodeByRowColumnIndex(row, 0, gridPane);
+        Node node = getGridNodeByPosition(row, 0, gridPane);
         if (node != null) {
             if (node instanceof CheckBox) {
                 return (CheckBox) node;
@@ -230,7 +227,7 @@ public class JobViewController {
         return null;
     }
 
-    private AutoJobPaneNodeInfo getNodeLocationInfo(Node node) {
+    private PaneNodeInfo getGridNodeLocationInfo(Node node) {
         int tabIndex = -1;
         Node parent = node.getParent();
 
@@ -250,20 +247,59 @@ public class JobViewController {
         Integer column = GridPane.getColumnIndex(node);
 
         if (row != null && column != null) {
-            return new AutoJobPaneNodeInfo(tabIndex, row, column);
+            return new PaneNodeInfo(tabIndex, row, column);
         } else {
             Log.w(TAG, "this node might not have current row or column index");
             return null;
         }
     }
 
-    public void setMainApp(Main app) {
-        mMainApp = app;
+    /*
+     * DetailJobPane mapping helper functions
+     */
+    private DetailJobPane formatDetailJobPane(VBox vbox) {
+        DetailJobPane jobPane = new DetailJobPane();
+
+        jobPane.addAndInit(vbox.getChildren().get(0), 0, "checkBoxAutoFollowFirstMember", mDetailNodeEventHandler);
+        jobPane.addAndInit(vbox.getChildren().get(1), 1, "checkBoxAutoEnableAutoBattle", mDetailNodeEventHandler);
+
+        return jobPane;
     }
 
+    private Node getDetailNodeByPosition(final int tab, final int index) {
+        if (tab < mDetailJobPanes.size()) {
+            DetailJobPane pane = mDetailJobPanes.get(tab);
+            return pane.getNode(index);
+        } else {
+            Log.w(TAG, "request detail node with invalid tab " + tab);
+            return null;
+        }
+    }
+
+    private PaneNodeInfo getDetailNodeLocationInfo(Node node) {
+        int tab = 0, index = -1;
+        for(int i = 0; i < mMaxSupportDevice; i++) {
+            DetailJobPane pane = mDetailJobPanes.get(i);
+            index = pane.getIndex(node);
+            if (index >= 0) {
+                tab = i;
+                break;
+            }
+        }
+
+        if (index >= 0) {
+            return new PaneNodeInfo(tab, index, -1);
+        }
+
+        return null;
+    }
+
+    /*
+     * UI Updating
+     */
     public void updateTabName(ArrayList<String> devices) {
         Platform.runLater(() -> {
-                for(int i = 0; i < mMaxSupportJob; i++) {
+                for(int i = 0; i < mMaxSupportDevice; i++) {
                     if (i < devices.size())
                         mTabSet.get(i).setText(devices.get(i));
                     else
@@ -289,6 +325,9 @@ public class JobViewController {
         );
     }
 
+    /*
+     * Auto Job Request
+     */
     private void sendJobRequest(int tabIndex, int row) {
         AutoJobPane jobPane = mAutoJobPanes.get(tabIndex);
         int enable = jobPane.enableCheckBoxes.get(row - 1).selectedProperty().getValue() ? 1 : 0;
@@ -352,15 +391,21 @@ public class JobViewController {
         ArrayList<ChoiceBox> actionChoiceBoxes;
     }
 
-    private class AutoJobPaneNodeInfo {
+    /*
+     * PaneNodeInfo
+     * can be used for both AutoJobPane and DetailJobPane
+     * when it used for DetailJobPane, the value of column remain undefined (-1) and use
+     * row value for its location in VBox in DetailJobPane
+     */
+    private class PaneNodeInfo {
         int pane;
-        int column;
         int row;
+        int column;
 
-        AutoJobPaneNodeInfo(int p, int r, int c) {
+        PaneNodeInfo(int p, int r, int c) {
             pane = p;
-            column = c;
             row = r;
+            column = c;
         }
 
         public String toString() {
@@ -375,7 +420,61 @@ public class JobViewController {
      * each separate from each other.
      */
     private class DetailJobPane {
-        public CheckBox checkBoxAutoFollowFirstMember;
-        public CheckBox checkBoxAutoEnableAutoBattle;
+        private ArrayList<Node> nodeList;
+        private ArrayList<String> nameList;
+        private int count;
+
+        public DetailJobPane() {
+            nodeList = new ArrayList<>();
+            nameList = new ArrayList<>();
+            count = 0;
+        }
+
+        public void addAndInit(Node node, int index, String name, EventHandler<ActionEvent> handler) {
+            add(node, index, name);
+            if (node instanceof CheckBox) {
+                ((CheckBox) node).setOnAction(handler);
+            } else {
+                Log.w(TAG, "Node: " + name + " is not a checkbox, skip adding handler");
+            }
+        }
+
+        private void add(Node node, int index, String name) {
+            nodeList.add(index, node);
+            nameList.add(index, name);
+            count++;
+        }
+
+        public Node getNode(int index) {
+            if (index >= 0 && index < count)
+                return nodeList.get(index);
+            else
+                return null;
+        }
+
+        public int getIndex(Node node) {
+            for(int i = 0; i < count; i++) {
+                if (nodeList.get(i) == node)
+                    return i;
+            }
+
+            return -1;
+        }
+
+        public String getName(Node node) {
+            int index = getIndex(node);
+            if (index < 0) {
+                return null;
+            } else {
+                return nameList.get(index);
+            }
+        }
+
+        public String getName(int index) {
+            if (index >= 0 && index < count)
+                return nameList.get(index);
+            else
+                return null;
+        }
     }
 }
