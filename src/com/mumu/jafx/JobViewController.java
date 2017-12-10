@@ -68,7 +68,6 @@ public class JobViewController {
             }
 
             Log.d(TAG, "Node info => " + getGridNodeLocationInfo(node).toString());
-
         }
     };
 
@@ -81,10 +80,11 @@ public class JobViewController {
             Node node = (Node) event.getSource();
 
             if (node instanceof CheckBox) {
-                PaneNodeInfo tab = getDetailNodeLocationInfo(node);
-                Log.d(TAG, "check box selected " + tab.toString());
-            }
+                PaneNodeInfo info = getDetailNodeLocationInfo(node);
+                Log.d(TAG, "check box selected " + info.toString());
 
+                mListener.onDetailFeatureChanged(info.pane, info.row, ((CheckBox) node).isSelected());
+            }
         }
     };
 
@@ -135,7 +135,6 @@ public class JobViewController {
     public void setMainApp(Main app) {
         mMainApp = app;
     }
-
 
     /*
      * AutoJobPane mapping helper functions

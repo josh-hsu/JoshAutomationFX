@@ -13,7 +13,7 @@ import static com.mumu.joshautomation.ro.ROJobDescription.*;
 
 public class ROAutoRoutineJob extends AutoJob {
     private String TAG = "ROAutoRoutine";
-    private ArrayList<ROJobRoutine> mJobRoutines;
+    private ArrayList<Thread> mJobRoutines;
     private JoshGameLibrary mGL;
     private AutoJobEventListener mListener;
 
@@ -55,6 +55,7 @@ public class ROAutoRoutineJob extends AutoJob {
         Log.d(TAG, "starting job " + getJobName());
 
         formatNewJobs();
+        formatDetectionJobs();
         startAllJobs();
     }
 
@@ -104,13 +105,59 @@ public class ROAutoRoutineJob extends AutoJob {
         }
     }
 
+    private void formatDetectionJobs() {
+        // Detect of auto battle button
+        // index : 7
+        class DetectAutoFollow extends RODetectionRoutine {
+            private DetectAutoFollow(int index, String name) {
+                super(index, name, false);
+            }
+
+            @Override
+            public boolean onCondition() {
+                return !mRO.isFollowingFirst();
+            }
+
+            @Override
+            public void doAction() throws InterruptedException {
+                Log.d(TAG, "try following " + super.currentName);
+                mRO.tryFollowingFirst();
+            }
+        }
+        mJobRoutines.add(new DetectAutoFollow(7, "detectAutoBattle"));
+
+        // Detect of auto battle button
+        // index : 8
+        class DetectAutoBattle extends RODetectionRoutine {
+            private DetectAutoBattle(int index, String name) {
+                super(index, name, false);
+            }
+
+            @Override
+            public boolean onCondition() {
+                return !mRO.isAutoBattleEnabled();
+            }
+
+            @Override
+            public void doAction() throws InterruptedException {
+                Log.d(TAG, "try auto battle " + super.currentName);
+                mRO.tryAutoBattle();
+            }
+        }
+        mJobRoutines.add(new DetectAutoBattle(8, "detectAutoBattle"));
+
+    }
+
     private void startAllJobs() {
         if (mJobRoutines != null) {
             for(int i = 0; i < mJobList.getJobCount(); i++) {
-                if (!mJobRoutines.get(i).isRunning())
+                if (!mJobRoutines.get(i).isAlive())
                     mJobRoutines.get(i).start();
             }
         }
+
+        mJobRoutines.get(7).start();
+        mJobRoutines.get(8).start();
     }
 
     private void stopAllJobs() {
@@ -119,10 +166,24 @@ public class ROAutoRoutineJob extends AutoJob {
                 mJobRoutines.get(i).interrupt();
             }
         }
+        mJobRoutines.get(7).interrupt();
+        mJobRoutines.get(8).interrupt();
     }
 
-    public void setJob(int index, ROJobDescription job) {
-        mJobRoutines.get(index).setJob(job);
+    public void setAutoJob(int index, ROJobDescription job) {
+        Thread t = mJobRoutines.get(index);
+        if (t instanceof ROJobRoutine)
+            ((ROJobRoutine) t).setJob(job);
+        else
+            Log.e(TAG, "index " + index + " is not an ROJobRoutine");
+    }
+
+    public void setDetailJobEnable(int index, boolean enable) {
+        int DETAIL_INDEX_START = 7;
+        RODetectionRoutine routine = (RODetectionRoutine) mJobRoutines.get(DETAIL_INDEX_START + index);
+        if (routine != null) {
+            routine.setEnable(enable);
+        }
     }
 
     /*
@@ -138,7 +199,6 @@ public class ROAutoRoutineJob extends AutoJob {
     private class ROJobRoutine extends Thread {
         private ROJobDescription currentJob;
         private int currentIndex;
-        private boolean currentRunning = false;
         private boolean deferAction = false;
 
         ROJobRoutine(int index, ROJobDescription job) {
@@ -146,12 +206,12 @@ public class ROAutoRoutineJob extends AutoJob {
             currentIndex = index;
         }
 
-        public boolean isRunning() {
-            return currentRunning;
-        }
-
         public void setJob(ROJobDescription job) {
             currentJob = job;
+        }
+
+        public int getCurrentIndex() {
+            return currentIndex;
         }
 
         private int getNextSleepTime(int originalSleepTime) {
@@ -167,8 +227,6 @@ public class ROAutoRoutineJob extends AutoJob {
          * main function should handle job parsing and running
          */
         private void main() throws Exception {
-            currentRunning = true;
-
             while (mShouldJobRunning) {
                 //do jobs
                 if (currentJob.sEnabled == 1) {
@@ -221,4 +279,86 @@ public class ROAutoRoutineJob extends AutoJob {
             }
         }
     }
+
+    public class RODetectionRoutine extends Thread {
+        private int currentIndex;
+        private String currentName;
+        private boolean deferAction = false;
+        private boolean enabled = false;
+        private boolean shouldBeInBattle = false;
+
+        RODetectionRoutine(int index, String name, boolean inBattle) {
+            currentIndex = index;
+            currentName = name;
+            shouldBeInBattle = inBattle;
+        }
+
+        /*
+         * Override onCondition and doAction to do custom job
+         */
+        public boolean onCondition() {
+            Log.w(TAG, "onCondition is not override in job" + currentName);
+            return false;
+        }
+
+        public void doAction() throws InterruptedException {
+            Log.w(TAG, "doAction is not override in job" + currentName);
+        }
+
+        public int getCurrentIndex() {
+            return currentIndex;
+        }
+
+        public void setEnable(boolean enable) {
+            enabled = enable;
+        }
+
+        /*
+         * internal helper function
+         */
+        private int getNextSleepTime(int originalSleepTime) {
+            if (deferAction) {
+                deferAction = false;
+                return 1000;
+            } else {
+                return originalSleepTime;
+            }
+        }
+
+        /*
+         * main function should handle job parsing and running
+         */
+        private void main() throws Exception {
+            while (mShouldJobRunning) {
+                //do jobs
+                if (enabled) {
+                    if (shouldBeInBattle) {
+                        if (!mRO.isInBattleMode()) {
+                            if (onCondition()) {
+                                doAction();
+                            }
+                        }
+                    } else {
+                        if (onCondition()) {
+                            doAction();
+                        }
+                    }
+                }
+
+                Thread.sleep(3000);
+            }
+        }
+
+        public void run() {
+            try {
+                main();
+            } catch (InterruptedException e) {
+                Log.w(TAG, "RODetectionRoutine [" + currentIndex + "] " + currentName +
+                        " caught an exception or been interrupted: " + e.getMessage());
+            } catch (Exception e) {
+                Log.f(TAG, "WTF: serious thing happened: " + e.getMessage(), e);
+            }
+        }
+    }
+
 }

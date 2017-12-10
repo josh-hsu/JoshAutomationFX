@@ -53,5 +53,12 @@ public class RORoutineDefinition {
     static ArrayList<ScreenCoord> pointSkills = new ArrayList<ScreenCoord>() {{
         add(pointSkill1);add(pointSkill2);add(pointSkill3);add(pointSkill4);add(pointSkill5);add(pointSkill6);
     }};
+
+    // Follow and auto battle
+    static ScreenPoint pointFollowed = new ScreenPoint(255,255,255,255,276,32, ScreenPoint.SO_Landscape);
+    static ScreenPoint pointFollowButton = new ScreenPoint(62,87,174,255,191,390, ScreenPoint.SO_Landscape);
+    static ScreenPoint pointAutoBattled = new ScreenPoint(100,141,225,255,1351,703, ScreenPoint.SO_Landscape);
+    static ScreenPoint pointAutoBattledYellow = new ScreenPoint(255,189,33,255,1351,703, ScreenPoint.SO_Landscape);
+    static ScreenPoint pointAutoBattledAllMonster = new ScreenPoint(226,227,226,255,1058,404, ScreenPoint.SO_Landscape);
 }
 

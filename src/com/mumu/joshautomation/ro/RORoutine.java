@@ -156,4 +156,37 @@ class RORoutine {
                 Log.d(TAG, "Unknown supply action: " + action);
         }
     }
+
+    boolean isAutoBattleEnabled() {
+        return mGL.getCaptureService().colorIs(pointAutoBattled, mDevice) ||
+                mGL.getCaptureService().colorIs(pointAutoBattledYellow, mDevice);
+    }
+
+    boolean isFollowingFirst() {
+        return mGL.getCaptureService().colorIs(pointFollowed, mDevice);
+    }
+
+    void tryAutoBattle() throws InterruptedException {
+        if (!isAutoBattleEnabled()) {
+            mGL.getInputService().tapOnScreen(pointAutoBattled.coord);
+            sleep(1000);
+            if (isAutoBattleEnabled()) {
+                Log.d(TAG, "This char is following someone, so tap auto battle end.");
+            } else {
+                if (mGL.getCaptureService().colorIs(pointAutoBattledAllMonster)) {
+                    mGL.getInputService().tapOnScreen(pointAutoBattledAllMonster.coord);
+                }
+            }
+        }
+    }
+
+    void tryFollowingFirst() throws InterruptedException {
+        if (!isFollowingFirst()) {
+            mGL.getInputService().tapOnScreen(pointFollowed.coord);
+            sleep(1000);
+            if (!isFollowingFirst() && mGL.getCaptureService().colorIs(pointFollowButton)) {
+                mGL.getInputService().tapOnScreen(pointFollowButton.coord);
+            }
+        }
+    }
 }

@@ -290,13 +290,22 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
 
         AutoJob autoJob = mAutoJobHandler.getJob(tab);
         if (autoJob instanceof ROAutoRoutineJob) {
-            ((ROAutoRoutineJob) autoJob).setJob(index - 1, mROJobListSet.get(tab).getJob(index - 1));
+            ((ROAutoRoutineJob) autoJob).setAutoJob(index - 1, mROJobListSet.get(tab).getJob(index - 1));
         }
     }
 
     @Override
     public void onExit(JobViewController controller) {
+        //do nothing
+    }
 
+    @Override
+    public void onDetailFeatureChanged(int tab, int index, boolean enable) {
+        if (!mDeviceInitialized)
+            return;
+
+        ROAutoRoutineJob autoJob = (ROAutoRoutineJob) mAutoJobHandler.getJob(tab);
+        autoJob.setDetailJobEnable(index, enable);
     }
 
     private class DeviceInitialThread extends Thread {
