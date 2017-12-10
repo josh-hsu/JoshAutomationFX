@@ -168,13 +168,13 @@ class RORoutine {
 
     void tryAutoBattle() throws InterruptedException {
         if (!isAutoBattleEnabled()) {
-            mGL.getInputService().tapOnScreen(pointAutoBattled.coord);
+            mGL.getInputService().tapOnScreen(pointAutoBattled.coord, mDevice);
             sleep(1000);
             if (isAutoBattleEnabled()) {
                 Log.d(TAG, "This char is following someone, so tap auto battle end.");
             } else {
-                if (mGL.getCaptureService().colorIs(pointAutoBattledAllMonster)) {
-                    mGL.getInputService().tapOnScreen(pointAutoBattledAllMonster.coord);
+                if (mGL.getCaptureService().colorIs(pointAutoBattledAllMonster, mDevice)) {
+                    mGL.getInputService().tapOnScreen(pointAutoBattledAllMonster.coord, mDevice);
                 }
             }
         }
@@ -182,10 +182,10 @@ class RORoutine {
 
     void tryFollowingFirst() throws InterruptedException {
         if (!isFollowingFirst()) {
-            mGL.getInputService().tapOnScreen(pointFollowed.coord);
+            mGL.getInputService().tapOnScreen(pointFollowed.coord, mDevice);
             sleep(1000);
-            if (!isFollowingFirst() && mGL.getCaptureService().colorIs(pointFollowButton)) {
-                mGL.getInputService().tapOnScreen(pointFollowButton.coord);
+            if (!isFollowingFirst() && mGL.getCaptureService().colorIs(pointFollowButton, mDevice)) {
+                mGL.getInputService().tapOnScreen(pointFollowButton.coord, mDevice);
             }
         }
     }
