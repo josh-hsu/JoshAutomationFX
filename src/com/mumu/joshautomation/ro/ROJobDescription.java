@@ -19,6 +19,8 @@ public class ROJobDescription {
     public final static int OnFollowStart  = 7;
     public final static int OnFollowEnd    = 8;
     public final static int OnServerDisconnected = 9;
+    public final static int OnPretendDeath = 10;
+    public final static int OnPretendDeathLong = 11;
     private final static int OnDefaultState      = 99;
 
     private final static String StringOnHPLessThan   = "當 HP 小於";
@@ -31,9 +33,12 @@ public class ROJobDescription {
     private final static String StringOnFollowStart  = "當開始跟隨(尚未開放)";
     private final static String StringOnFollowEnd    = "當結束跟隨(尚未開放)";
     private final static String StringOnServerDisconnected = "當伺服器斷線(尚未開放)";
+    private final static String StringOnPretendDeath = "定時裝死(技能一)之後";
+    private final static String StringOnPretendDeathLong = "定時裝死(技能一)之後等一下";
     private static ArrayList<String> stringOnWhenList = new ArrayList<String>() {{
         add(StringOnHPLessThan);add(StringOnHPHigherThan);add(StringOnMPLessThan);add(StringOnMPHigherThan);add(StringOnPeriod);
         add(StringOnAutoStart);add(StringOnAutoEnd);add(StringOnFollowStart);add(StringOnFollowEnd);add(StringOnServerDisconnected);
+        add(StringOnPretendDeath);add(StringOnPretendDeathLong);
     }};
 
     private static final int NumberOfItem  = 5;

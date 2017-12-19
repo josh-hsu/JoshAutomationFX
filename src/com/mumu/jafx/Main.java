@@ -241,6 +241,7 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
         int action = 0;
         int actionValue = 0;
 
+        // this is redundant, just put when = whenIndex in the future
         switch (whenIndex) {
             case OnHPLessThan:
                 Log.d(TAG, "When HP < " + whenValue);
@@ -262,6 +263,10 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
                 Log.d(TAG, "When about " + whenValue + " seconds later");
                 when = OnPeriod;
                 break;
+            case OnPretendDeath:
+            case OnPretendDeathLong:
+                Log.d(TAG, "Pretend death after " + whenValue + " seconds and use action to bring life back.");
+                when = whenIndex;
             default:
                 Log.d(TAG, "When ... not supported, maybe future");
         }

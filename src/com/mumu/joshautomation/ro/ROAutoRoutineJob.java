@@ -259,6 +259,40 @@ public class ROAutoRoutineJob extends AutoJob {
 
                             mRO.executeAction(currentJob.sAction, currentJob.sActionValue);
                             break;
+                        case OnPretendDeath:
+                            Thread.sleep(getNextSleepTime(currentJob.sWhenValue * 1000));
+                            Log.d(TAG, "sleep end, press pretending death.");
+
+                            if (!mRO.isInBattleMode()) {
+                                Log.d(TAG, "Not in battle mode, defer it.");
+                                deferAction = true;
+                                continue;
+                            }
+
+                            mRO.executeAction(ActionPressSkill, 1);
+                            Thread.sleep(1000);
+                            mRO.executeAction(currentJob.sAction, currentJob.sActionValue);
+                            mRO.executeAction(currentJob.sAction, currentJob.sActionValue);
+                            mRO.executeAction(currentJob.sAction, currentJob.sActionValue);
+                            mRO.executeAction(currentJob.sAction, currentJob.sActionValue);
+                            break;
+                        case OnPretendDeathLong:
+                            Thread.sleep(getNextSleepTime(currentJob.sWhenValue * 1000));
+                            Log.d(TAG, "sleep end, press pretending death.");
+
+                            if (!mRO.isInBattleMode()) {
+                                Log.d(TAG, "Not in battle mode, defer it.");
+                                deferAction = true;
+                                continue;
+                            }
+
+                            mRO.executeAction(ActionPressSkill, 1);
+                            Thread.sleep(5000);
+                            mRO.executeAction(currentJob.sAction, currentJob.sActionValue);
+                            mRO.executeAction(currentJob.sAction, currentJob.sActionValue);
+                            mRO.executeAction(currentJob.sAction, currentJob.sActionValue);
+                            mRO.executeAction(currentJob.sAction, currentJob.sActionValue);
+                            break;
                         default:
                             Log.w(TAG, "When " + currentJob.sWhen + " is not supported");
                             Thread.sleep(500);
