@@ -24,21 +24,29 @@ public class JobViewController {
     private static final String TAG = "ViewController";
     private Main mMainApp;
     private Stage dialogStage;
-    private final int mMaxSupportDevice = 3;
+    private final int mMaxSupportDevice = 5;
 
     @FXML private Label mStatusLabel;
     @FXML private Tab mTab1;
     @FXML private Tab mTab2;
     @FXML private Tab mTab3;
+    @FXML private Tab mTab4;
+    @FXML private Tab mTab5;
     @FXML private GridPane mGridPane1;
     @FXML private GridPane mGridPane2;
     @FXML private GridPane mGridPane3;
+    @FXML private GridPane mGridPane4;
+    @FXML private GridPane mGridPane5;
     @FXML private ImageView mDeviceImage1;
     @FXML private ImageView mDeviceImage2;
     @FXML private ImageView mDeviceImage3;
+    @FXML private ImageView mDeviceImage4;
+    @FXML private ImageView mDeviceImage5;
     @FXML private VBox mVBox1;
     @FXML private VBox mVBox2;
     @FXML private VBox mVBox3;
+    @FXML private VBox mVBox4;
+    @FXML private VBox mVBox5;
 
     private ArrayList<Tab> mTabSet;
     private ArrayList<GridPane> mGridPaneSet;
@@ -98,31 +106,43 @@ public class JobViewController {
         mTabSet.add(mTab1);
         mTabSet.add(mTab2);
         mTabSet.add(mTab3);
+        mTabSet.add(mTab4);
+        mTabSet.add(mTab5);
 
         mGridPaneSet = new ArrayList<>();
         mGridPaneSet.add(mGridPane1);
         mGridPaneSet.add(mGridPane2);
         mGridPaneSet.add(mGridPane3);
+        mGridPaneSet.add(mGridPane4);
+        mGridPaneSet.add(mGridPane5);
 
         mAutoJobPanes = new ArrayList<>();
         mAutoJobPanes.add(formatAutoJobPane(mGridPane1));
         mAutoJobPanes.add(formatAutoJobPane(mGridPane2));
         mAutoJobPanes.add(formatAutoJobPane(mGridPane3));
+        mAutoJobPanes.add(formatAutoJobPane(mGridPane4));
+        mAutoJobPanes.add(formatAutoJobPane(mGridPane5));
 
         mScreenViewSet = new ArrayList<>();
         mScreenViewSet.add(mDeviceImage1);
         mScreenViewSet.add(mDeviceImage2);
         mScreenViewSet.add(mDeviceImage3);
+        mScreenViewSet.add(mDeviceImage4);
+        mScreenViewSet.add(mDeviceImage5);
 
         mVBoxes = new ArrayList<>();
         mVBoxes.add(mVBox1);
         mVBoxes.add(mVBox2);
         mVBoxes.add(mVBox3);
+        mVBoxes.add(mVBox4);
+        mVBoxes.add(mVBox5);
 
         mDetailJobPanes = new ArrayList<>();
         mDetailJobPanes.add(formatDetailJobPane(mVBox1));
         mDetailJobPanes.add(formatDetailJobPane(mVBox2));
         mDetailJobPanes.add(formatDetailJobPane(mVBox3));
+        mDetailJobPanes.add(formatDetailJobPane(mVBox4));
+        mDetailJobPanes.add(formatDetailJobPane(mVBox5));
     }
 
     public void registerListener(JobViewListener listener) {

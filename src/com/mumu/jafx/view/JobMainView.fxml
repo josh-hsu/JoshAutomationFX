@@ -294,6 +294,196 @@
                   </AnchorPane>
                </content>
             </Tab>
+            <Tab fx:id="mTab4" text="搜尋裝置中..">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Accordion prefHeight="371.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <panes>
+                              <TitledPane animated="false" text="自動技能與物品">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <GridPane fx:id="mGridPane4" prefHeight="324.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                                <Label text="啟用" />
+                                                <Label text="使用條件" GridPane.columnIndex="1" />
+                                                <Label text="技能.物品" GridPane.columnIndex="3" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                                                <Label fx:id="mStatusLabel21" text="條件數值" GridPane.columnIndex="2" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+                                             </children>
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="150.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                          </GridPane>
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </TitledPane>
+                              <TitledPane animated="false" text="細項功能 (開發中，歡迎提供點子)">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <VBox fx:id="mVBox4" layoutX="152.0" layoutY="25.0" prefHeight="200.0" prefWidth="100.0" spacing="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <CheckBox mnemonicParsing="false" text="自動跟隨第一位隊員" />
+                                                <CheckBox mnemonicParsing="false" text="確保自動戰鬥開啟(全部魔物)" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </TitledPane>
+                              <TitledPane animated="false" prefHeight="345.0" prefWidth="600.0" text="螢幕截圖 (約三秒刷新)">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <ImageView fx:id="mDeviceImage4" fitHeight="284.0" fitWidth="561.0" layoutX="19.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </TitledPane>
+                           </panes>
+                        </Accordion>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="mTab5" text="搜尋裝置中..">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Accordion prefHeight="371.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <panes>
+                              <TitledPane animated="false" text="自動技能與物品">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <GridPane fx:id="mGridPane5" prefHeight="324.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                                <Label text="啟用" />
+                                                <Label text="使用條件" GridPane.columnIndex="1" />
+                                                <Label text="技能.物品" GridPane.columnIndex="3" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                                                <Label fx:id="mStatusLabel22" text="條件數值" GridPane.columnIndex="2" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                                                <CheckBox mnemonicParsing="false" prefHeight="16.0" prefWidth="15.0" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                                                <ChoiceBox prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+                                             </children>
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="150.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                          </GridPane>
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </TitledPane>
+                              <TitledPane animated="false" text="細項功能 (開發中，歡迎提供點子)">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <VBox fx:id="mVBox5" layoutX="152.0" layoutY="25.0" prefHeight="200.0" prefWidth="100.0" spacing="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <CheckBox mnemonicParsing="false" text="自動跟隨第一位隊員" />
+                                                <CheckBox mnemonicParsing="false" text="確保自動戰鬥開啟(全部魔物)" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </TitledPane>
+                              <TitledPane animated="false" prefHeight="345.0" prefWidth="600.0" text="螢幕截圖 (約三秒刷新)">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <ImageView fx:id="mDeviceImage5" fitHeight="284.0" fitWidth="561.0" layoutX="19.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </TitledPane>
+                           </panes>
+                        </Accordion>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
         </tabs>
       </TabPane>
    </children>
