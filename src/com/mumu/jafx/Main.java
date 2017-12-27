@@ -184,8 +184,8 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
         mROJobListSet = new ArrayList<>();
 
         // create jobs for all connected devices
-        for (int i = 0; i < mDeviceList.size(); i++) {
-            String device = mDeviceList.get(i);
+        for (int tab = 0; tab < mDeviceList.size(); tab++) {
+            String device = mDeviceList.get(tab);
             ROJobList jobList = new ROJobList();
 
             // add dummy empty job for initialize
@@ -193,10 +193,10 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
                 jobList.addJob(j, new ROJobDescription());
             }
 
-            mROJobListSet.add(i, jobList);
-            mAutoJobHandler.addJob(new ROAutoRoutineJob(device));
-            mAutoJobHandler.setJobEventListener(i, this);
-            mAutoJobHandler.setExtra(i, jobList);
+            mROJobListSet.add(tab, jobList);
+            mAutoJobHandler.addJob(new ROAutoRoutineJob(device, tab));
+            mAutoJobHandler.setJobEventListener(tab, this);
+            mAutoJobHandler.setExtra(tab, jobList);
         }
     }
 
@@ -223,8 +223,14 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
      */
     @Override
     public void onEventReceived(String msg, Object extra) {
-        if (mJobViewController != null)
-            mJobViewController.updateStatus(msg);
+        if (mJobViewController != null) {
+            if (extra instanceof int[]) {
+                int[] location = (int[]) extra;
+                mJobViewController.updateInfo(location[0], location[1], msg);
+            } else {
+                Log.w(TAG, "Message from auto job contain illegal extra");
+            }
+        }
     }
 
     @Override

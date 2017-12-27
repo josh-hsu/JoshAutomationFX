@@ -16,6 +16,7 @@ public class ROAutoRoutineJob extends AutoJob {
     private ArrayList<Thread> mJobRoutines;
     private JoshGameLibrary mGL;
     private AutoJobEventListener mListener;
+    private int mTab;
 
     private RORoutine mRO;
     private ROAutoRoutineJob mSelf;
@@ -24,7 +25,7 @@ public class ROAutoRoutineJob extends AutoJob {
 
     public static final String jobName = "RO 自動程序";
 
-    public ROAutoRoutineJob(String device) {
+    public ROAutoRoutineJob(String device, int tab) {
         super(jobName);
 
         /* JoshGameLibrary basic initial */
@@ -34,19 +35,8 @@ public class ROAutoRoutineJob extends AutoJob {
         mRO = new RORoutine(mGL, mListener, device);
         TAG = TAG + "(" + device + ")"; //make us easy to find out which device
         mSelf = this;
+        mTab = tab;
         mCurrentDevice = device;
-    }
-
-    public ROAutoRoutineJob() {
-        super(jobName);
-
-        /* JoshGameLibrary basic initial */
-        mGL = JoshGameLibrary.getInstance();
-        mGL.setGameOrientation(ScreenPoint.SO_Landscape);
-
-        mRO = new RORoutine(mGL, mListener, null);
-        TAG = TAG + "(null)"; //make us easy to find out which device
-        mSelf = this;
     }
 
     @Override
@@ -89,8 +79,9 @@ public class ROAutoRoutineJob extends AutoJob {
         }
     }
 
-    private void sendMessage(String msg) {
-        sendEvent(msg, mSelf);
+    private void sendMessage(String msg, int index) {
+        int[] location = {mTab, index};
+        sendEvent(msg, location);
     }
 
     private void formatNewJobs() {
@@ -244,30 +235,41 @@ public class ROAutoRoutineJob extends AutoJob {
                                 continue;
                             }
 
+                            if (currentJob.sEnabled == 0)
+                                continue;
+
                             if (mRO.checkBattleSupply(currentJob.sWhen, currentJob.sWhenValue))
                                 mRO.executeAction(currentJob.sAction, currentJob.sActionValue);
                             break;
                         case OnPeriod:
                             Thread.sleep(getNextSleepTime(currentJob.sWhenValue * 1000));
                             Log.d(TAG, "sleep end, checking " + currentIndex + " for period job");
+                            sendMessage("Sleep END", currentIndex);
 
                             if (!mRO.isInBattleMode()) {
                                 Log.d(TAG, "Not in battle mode, defer it.");
                                 deferAction = true;
                                 continue;
                             }
+
+                            if (currentJob.sEnabled == 0)
+                                continue;
 
                             mRO.executeAction(currentJob.sAction, currentJob.sActionValue);
                             break;
                         case OnPretendDeath:
                             Thread.sleep(getNextSleepTime(currentJob.sWhenValue * 1000));
                             Log.d(TAG, "sleep end, press pretending death.");
+                            sendMessage("Sleep END", currentIndex);
 
                             if (!mRO.isInBattleMode()) {
                                 Log.d(TAG, "Not in battle mode, defer it.");
                                 deferAction = true;
                                 continue;
                             }
+
+                            if (currentJob.sEnabled == 0)
+                                continue;
 
                             mRO.executeAction(ActionPressSkill, 1);
                             Thread.sleep(1000);
@@ -285,6 +287,9 @@ public class ROAutoRoutineJob extends AutoJob {
                                 deferAction = true;
                                 continue;
                             }
+
+                            if (currentJob.sEnabled == 0)
+                                continue;
 
                             mRO.executeAction(ActionPressSkill, 1);
                             Thread.sleep(5000);

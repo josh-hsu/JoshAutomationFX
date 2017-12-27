@@ -23,10 +23,8 @@ import java.util.ArrayList;
 public class JobViewController {
     private static final String TAG = "ViewController";
     private Main mMainApp;
-    private Stage dialogStage;
     private final int mMaxSupportDevice = 5;
 
-    @FXML private Label mStatusLabel;
     @FXML private Tab mTab1;
     @FXML private Tab mTab2;
     @FXML private Tab mTab3;
@@ -164,7 +162,7 @@ public class JobViewController {
         int rowCount = jobPane.rowCount;
         int columnCount = jobPane.columnCount;
 
-        if (columnCount != 4) {
+        if (columnCount != 5) {
             Log.d(TAG, "column count mismatched.");
         }
 
@@ -209,10 +207,19 @@ public class JobViewController {
             }
         }
 
+        ArrayList<Label> threadInfoLabels = new ArrayList<>();
+        for(int i = 1; i < rowCount; i++) {
+            Label label = (Label) getGridNodeByPosition(i, 4, gridPane);
+            if (label != null) {
+                threadInfoLabels.add(label);
+            }
+        }
+
         jobPane.enableCheckBoxes = checkBoxes;
         jobPane.whenChoiceBoxes = choiceBoxes;
         jobPane.whenValueTextFields = textFields;
         jobPane.actionChoiceBoxes = actionChoiceBoxes;
+        jobPane.threadInfoLabels = threadInfoLabels;
 
         return jobPane;
     }
@@ -328,10 +335,6 @@ public class JobViewController {
         );
     }
 
-    public void updateStatus(String msg) {
-        Platform.runLater(() -> mStatusLabel.setText("" + msg));
-    }
-
     public void updateScreenshot(int index, String path) {
         Platform.runLater(() -> {
                 if (index >= mScreenViewSet.size()) {
@@ -342,6 +345,13 @@ public class JobViewController {
                 }
             }
         );
+    }
+
+    public void updateInfo(int tab, int index, String text) {
+        Platform.runLater(() -> {
+            Label label = mAutoJobPanes.get(tab).threadInfoLabels.get(index);
+            label.setText(text);
+        });
     }
 
     /*
@@ -401,13 +411,14 @@ public class JobViewController {
      * consists with a outer GridPane with varies node insides it
      */
     private class AutoJobPane {
-        int columnCount = 4;
+        int columnCount = 5;
         int rowCount = 8; //if we want to dynamically generate job table, this should be editable
 
         ArrayList<CheckBox> enableCheckBoxes;
         ArrayList<ChoiceBox> whenChoiceBoxes;
         ArrayList<TextField> whenValueTextFields;
         ArrayList<ChoiceBox> actionChoiceBoxes;
+        ArrayList<Label> threadInfoLabels;
     }
 
     /*
