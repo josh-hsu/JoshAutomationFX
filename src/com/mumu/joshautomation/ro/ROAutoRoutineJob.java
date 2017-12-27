@@ -214,6 +214,16 @@ public class ROAutoRoutineJob extends AutoJob {
             }
         }
 
+        private void sleepIn(int expectSleepTime) throws InterruptedException {
+            int leftSleepTime = expectSleepTime;
+
+            while(leftSleepTime > 0) {
+                Thread.sleep(1000);
+                leftSleepTime -= 1000;
+                sendMessage("倒數計時: " + leftSleepTime/1000 + " / " + expectSleepTime/1000, currentIndex);
+            }
+        }
+
         /*
          * main function should handle job parsing and running
          */
@@ -226,11 +236,13 @@ public class ROAutoRoutineJob extends AutoJob {
                         case OnHPLessThan:
                         case OnHPHigherThan:
                         case OnMPHigherThan:
-                            Thread.sleep(getNextSleepTime(defaultDetectInterval));
+                            sendMessage("倒數計時中...", currentIndex);
+                            sleepIn(getNextSleepTime(defaultDetectInterval));
                             Log.d(TAG, "sleep end checking " + currentIndex + " for values");
 
                             if (!mRO.isInBattleMode()) {
                                 Log.d(TAG, "Not in battle mode, defer it.");
+                                sendMessage("非戰鬥中，延遲動作", currentIndex);
                                 deferAction = true;
                                 continue;
                             }
@@ -238,16 +250,22 @@ public class ROAutoRoutineJob extends AutoJob {
                             if (currentJob.sEnabled == 0)
                                 continue;
 
-                            if (mRO.checkBattleSupply(currentJob.sWhen, currentJob.sWhenValue))
+                            sendMessage("執行檢查", currentIndex);
+                            if (mRO.checkBattleSupply(currentJob.sWhen, currentJob.sWhenValue)) {
                                 mRO.executeAction(currentJob.sAction, currentJob.sActionValue);
+                            } else {
+                                sendMessage("未達到設定條件", currentIndex);
+                            }
                             break;
                         case OnPeriod:
-                            Thread.sleep(getNextSleepTime(currentJob.sWhenValue * 1000));
+                            sendMessage("倒數計時中...", currentIndex);
+                            sleepIn(getNextSleepTime(currentJob.sWhenValue * 1000));
                             Log.d(TAG, "sleep end, checking " + currentIndex + " for period job");
-                            sendMessage("Sleep END", currentIndex);
+                            sendMessage("檢查中", currentIndex);
 
                             if (!mRO.isInBattleMode()) {
                                 Log.d(TAG, "Not in battle mode, defer it.");
+                                sendMessage("非戰鬥中，延遲動作", currentIndex);
                                 deferAction = true;
                                 continue;
                             }
@@ -255,15 +273,18 @@ public class ROAutoRoutineJob extends AutoJob {
                             if (currentJob.sEnabled == 0)
                                 continue;
 
+                            sendMessage("執行動作", currentIndex);
                             mRO.executeAction(currentJob.sAction, currentJob.sActionValue);
                             break;
                         case OnPretendDeath:
-                            Thread.sleep(getNextSleepTime(currentJob.sWhenValue * 1000));
+                            sendMessage("倒數計時中...", currentIndex);
+                            sleepIn(getNextSleepTime(currentJob.sWhenValue * 1000));
                             Log.d(TAG, "sleep end, press pretending death.");
-                            sendMessage("Sleep END", currentIndex);
+                            sendMessage("檢查中", currentIndex);
 
                             if (!mRO.isInBattleMode()) {
                                 Log.d(TAG, "Not in battle mode, defer it.");
+                                sendMessage("非戰鬥中，延遲動作", currentIndex);
                                 deferAction = true;
                                 continue;
                             }
@@ -271,19 +292,24 @@ public class ROAutoRoutineJob extends AutoJob {
                             if (currentJob.sEnabled == 0)
                                 continue;
 
+                            sendMessage("點位於技能一的裝死", currentIndex);
                             mRO.executeAction(ActionPressSkill, 1);
-                            Thread.sleep(1000);
+                            sleepIn(1000);
+                            sendMessage("點四次裝死後要執行的動作", currentIndex);
                             mRO.executeAction(currentJob.sAction, currentJob.sActionValue);
                             mRO.executeAction(currentJob.sAction, currentJob.sActionValue);
                             mRO.executeAction(currentJob.sAction, currentJob.sActionValue);
                             mRO.executeAction(currentJob.sAction, currentJob.sActionValue);
                             break;
                         case OnPretendDeathLong:
-                            Thread.sleep(getNextSleepTime(currentJob.sWhenValue * 1000));
+                            sendMessage("倒數計時中...", currentIndex);
+                            sleepIn(getNextSleepTime(currentJob.sWhenValue * 1000));
                             Log.d(TAG, "sleep end, press pretending death.");
+                            sendMessage("檢查中", currentIndex);
 
                             if (!mRO.isInBattleMode()) {
                                 Log.d(TAG, "Not in battle mode, defer it.");
+                                sendMessage("非戰鬥中，延遲動作", currentIndex);
                                 deferAction = true;
                                 continue;
                             }
@@ -291,18 +317,22 @@ public class ROAutoRoutineJob extends AutoJob {
                             if (currentJob.sEnabled == 0)
                                 continue;
 
+                            sendMessage("點位於技能一的裝死", currentIndex);
                             mRO.executeAction(ActionPressSkill, 1);
-                            Thread.sleep(5000);
+                            sleepIn(5000);
+                            sendMessage("點四次裝死後要執行的動作", currentIndex);
                             mRO.executeAction(currentJob.sAction, currentJob.sActionValue);
                             mRO.executeAction(currentJob.sAction, currentJob.sActionValue);
                             mRO.executeAction(currentJob.sAction, currentJob.sActionValue);
                             mRO.executeAction(currentJob.sAction, currentJob.sActionValue);
                             break;
                         default:
+                            sendMessage("尚未支援的功能", currentIndex);
                             Log.w(TAG, "When " + currentJob.sWhen + " is not supported");
                             Thread.sleep(500);
                     }
                 } else {
+                    sendMessage("尚未啟用", currentIndex);
                     Thread.sleep(3000);
                 }
             }
@@ -312,8 +342,10 @@ public class ROAutoRoutineJob extends AutoJob {
             try {
                 main();
             } catch (InterruptedException e) {
+                sendMessage("被其他程序終止", currentIndex);
                 Log.w(TAG, "ROJobRoutine [" + currentIndex + "] caught an exception or been interrupted: " + e.getMessage());
             } catch (Exception e) {
+                sendMessage("嚴重錯誤，已終止", currentIndex);
                 Log.f(TAG, "WTF: serious thing happened: " + e.getMessage(), e);
             }
         }
