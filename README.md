@@ -6,7 +6,7 @@ PC version of JoshAutomation compatible with Nox player and other emulators, cur
 ## 安裝環境
 
 接下來我要教您如何使用 JoshAutomationFX，這是一個桌面版本的 Java 應用程式，用來作為 Android 模擬器的自動化小工具。
-目前版本: 0.31C (Beta)
+目前版本: 0.50A (Beta)
 
 ### 下載 Java 執行環境
 首先先到[這裡下載 Java](http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html)
@@ -28,7 +28,7 @@ AdbWinUsbApi.dll
 
 
 ### 調整安卓模擬器打開偵錯功能
-* 先將解析度調整成 1440x900 (以後會支援更多解析度)
+* 先將解析度調整成 1440x900 或是 1280x720 (以後會支援更多解析度)
 * 然後啟動你的模擬器
 * 點設定
 * 滑到最下面按 關於(平板電腦/手機)

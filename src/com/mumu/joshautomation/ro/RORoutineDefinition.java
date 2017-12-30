@@ -47,12 +47,12 @@ public class RORoutineDefinition {
     public ArrayList<ScreenCoord> pointItems;
 
     // Skill quick points
-    private ScreenCoord pointSkill1 = new ScreenCoord(1384, 824, ScreenPoint.SO_Landscape);
-    private ScreenCoord pointSkill2 = new ScreenCoord(1274, 824, ScreenPoint.SO_Landscape);
-    private ScreenCoord pointSkill3 = new ScreenCoord(1166, 824, ScreenPoint.SO_Landscape);
-    private ScreenCoord pointSkill4 = new ScreenCoord(1054, 824, ScreenPoint.SO_Landscape);
-    private ScreenCoord pointSkill5 = new ScreenCoord(944,  824, ScreenPoint.SO_Landscape);
-    private ScreenCoord pointSkill6 = new ScreenCoord(834,  824, ScreenPoint.SO_Landscape);
+    private ScreenCoord pointSkill1;
+    private ScreenCoord pointSkill2;
+    private ScreenCoord pointSkill3;
+    private ScreenCoord pointSkill4;
+    private ScreenCoord pointSkill5;
+    private ScreenCoord pointSkill6;
     public ArrayList<ScreenCoord> pointSkills;
 
     // Follow and auto battle
@@ -122,10 +122,10 @@ public class RORoutineDefinition {
         }};
 
         // Follow and auto battle
-        pointFollowed = new ScreenPoint(255,255,255,255,276,32, ScreenPoint.SO_Landscape);
-        pointFollowButton = new ScreenPoint(62,87,174,255,191,390, ScreenPoint.SO_Landscape);
-        pointAutoBattled = new ScreenPoint(100,141,225,255,1351,703, ScreenPoint.SO_Landscape);
-        pointAutoBattledYellow = new ScreenPoint(255,189,33,255,1351,703, ScreenPoint.SO_Landscape);
+        pointFollowed     = new ScreenPoint(255,255,255,255,276,32,  ScreenPoint.SO_Landscape);
+        pointFollowButton = new ScreenPoint(62, 87, 174,255,191,390, ScreenPoint.SO_Landscape);
+        pointAutoBattled           = new ScreenPoint(100,141,225,255,1351,703, ScreenPoint.SO_Landscape);
+        pointAutoBattledYellow     = new ScreenPoint(255,189,33, 255,1351,703, ScreenPoint.SO_Landscape);
         pointAutoBattledAllMonster = new ScreenPoint(226,227,226,255,1058,404, ScreenPoint.SO_Landscape);
     }
 
@@ -134,42 +134,42 @@ public class RORoutineDefinition {
      */
     private void restoreResolution1280x720() {
         // HP supply gauge point info
-        pointHPStart = new ScreenCoord(49,138,ScreenPoint.SO_Landscape);
-        pointHPEnd   = new ScreenCoord(157,138,ScreenPoint.SO_Landscape);
+        pointHPStart = new ScreenCoord(44,124,ScreenPoint.SO_Landscape);
+        pointHPEnd   = new ScreenCoord(139,124,ScreenPoint.SO_Landscape);
         pointHPColor = new ScreenColor(137,214,37,0xff);
 
         // MP supply gauge point info
-        pointMPStart = new ScreenCoord(49,149,ScreenPoint.SO_Landscape);
-        pointMPEnd   = new ScreenCoord(157,149,ScreenPoint.SO_Landscape);
+        pointMPStart = new ScreenCoord(44,133,ScreenPoint.SO_Landscape);
+        pointMPEnd   = new ScreenCoord(139,133,ScreenPoint.SO_Landscape);
         pointMPColor = new ScreenColor(113,145,232,0xff);
 
         // Item supply points
-        pointItem1 = new ScreenCoord(1274, 714, ScreenPoint.SO_Landscape);
-        pointItem2 = new ScreenCoord(1166, 714, ScreenPoint.SO_Landscape);
-        pointItem3 = new ScreenCoord(1054, 714, ScreenPoint.SO_Landscape);
-        pointItem4 = new ScreenCoord(944 , 714, ScreenPoint.SO_Landscape);
-        pointItem5 = new ScreenCoord(834 , 714, ScreenPoint.SO_Landscape);
+        pointItem1 = new ScreenCoord(1140, 555, ScreenPoint.SO_Landscape);
+        pointItem2 = new ScreenCoord(1040, 555, ScreenPoint.SO_Landscape);
+        pointItem3 = new ScreenCoord(940,  555, ScreenPoint.SO_Landscape);
+        pointItem4 = new ScreenCoord(840 , 555, ScreenPoint.SO_Landscape);
+        pointItem5 = new ScreenCoord(740 , 555, ScreenPoint.SO_Landscape);
         pointItems = new ArrayList<ScreenCoord>() {{
             add(pointItem1);add(pointItem2);add(pointItem3);add(pointItem4);add(pointItem5);
         }};
 
         // Skill quick points
-        pointSkill1 = new ScreenCoord(1384, 824, ScreenPoint.SO_Landscape);
-        pointSkill2 = new ScreenCoord(1274, 824, ScreenPoint.SO_Landscape);
-        pointSkill3 = new ScreenCoord(1166, 824, ScreenPoint.SO_Landscape);
-        pointSkill4 = new ScreenCoord(1054, 824, ScreenPoint.SO_Landscape);
-        pointSkill5 = new ScreenCoord(944,  824, ScreenPoint.SO_Landscape);
-        pointSkill6 = new ScreenCoord(834,  824, ScreenPoint.SO_Landscape);
+        pointSkill1 = new ScreenCoord(1240, 650, ScreenPoint.SO_Landscape);
+        pointSkill2 = new ScreenCoord(1140, 650, ScreenPoint.SO_Landscape);
+        pointSkill3 = new ScreenCoord(1040, 650, ScreenPoint.SO_Landscape);
+        pointSkill4 = new ScreenCoord(940,  650, ScreenPoint.SO_Landscape);
+        pointSkill5 = new ScreenCoord(840,  650, ScreenPoint.SO_Landscape);
+        pointSkill6 = new ScreenCoord(740,  650, ScreenPoint.SO_Landscape);
         pointSkills = new ArrayList<ScreenCoord>() {{
             add(pointSkill1);add(pointSkill2);add(pointSkill3);add(pointSkill4);add(pointSkill5);add(pointSkill6);
         }};
 
         // Follow and auto battle
-        pointFollowed = new ScreenPoint(255,255,255,255,276,32, ScreenPoint.SO_Landscape);
-        pointFollowButton = new ScreenPoint(62,87,174,255,191,390, ScreenPoint.SO_Landscape);
-        pointAutoBattled = new ScreenPoint(100,141,225,255,1351,703, ScreenPoint.SO_Landscape);
-        pointAutoBattledYellow = new ScreenPoint(255,189,33,255,1351,703, ScreenPoint.SO_Landscape);
-        pointAutoBattledAllMonster = new ScreenPoint(226,227,226,255,1058,404, ScreenPoint.SO_Landscape);
+        pointFollowed     = new ScreenPoint(255,255,255,255,247,26,  ScreenPoint.SO_Landscape);
+        pointFollowButton = new ScreenPoint(62, 87, 174,255,171,348, ScreenPoint.SO_Landscape);
+        pointAutoBattled           = new ScreenPoint(100,140,225,255,1205,545, ScreenPoint.SO_Landscape);
+        pointAutoBattledYellow     = new ScreenPoint(255,188,33, 255,1205,545, ScreenPoint.SO_Landscape);
+        pointAutoBattledAllMonster = new ScreenPoint(230,230,230,255,925, 277, ScreenPoint.SO_Landscape);
     }
 }
 

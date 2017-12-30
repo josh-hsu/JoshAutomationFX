@@ -23,7 +23,15 @@ class RORoutine {
     public RORoutine(JoshGameLibrary gl, AutoJobEventListener el) {
         mGL = gl;
         mCallbacks = el;
-        mROD = new RORoutineDefinition(RORoutineDefinition.SUPPORTED_1440x900);
+
+        // Definition plan selection
+        if (mGL.getScreenWidth() == 1280) {
+            mROD = new RORoutineDefinition(RORoutineDefinition.SUPPORTED_1280x720);
+            Log.d(TAG, "1280x720 plan selected.");
+        } else {
+            mROD = new RORoutineDefinition(RORoutineDefinition.SUPPORTED_1440x900);
+            Log.d(TAG, "1440x900 plan selected.");
+        }
     }
 
     private void sendMessage(String msg) {
