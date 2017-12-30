@@ -9,15 +9,16 @@ PC version of JoshAutomation compatible with Nox player and other emulators, cur
 目前版本: 0.31C (Beta)
 
 ### 下載 Java 執行環境
-首先先到 http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html
+首先先到[這裡下載 Java](http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html)
 
 點一下 Accept License Agreement 後，按一下那個 x64.exe 檔案就可以下載了
 然後下載完就把它裝一裝，一直往下按就好
 
 
 ### 安裝 ADB
-https://dl.google.com/android/repository/platform-tools-latest-windows.zip
-下載後，解壓縮
+[下載](https://dl.google.com/android/repository/platform-tools-latest-windows.zip)
+
+完成後，解壓縮
 ```
 adb.exe
 AdbWinApi.dll
@@ -33,7 +34,7 @@ AdbWinUsbApi.dll
 * 滑到最下面按 關於(平板電腦/手機)
 * 一直按版本號碼直到他說你是開發人員
 * 返回後找到開發人員選項
-* 確定下圖圈選的地方打勾
+* 將 USB偵錯 打勾
 
 ## 下載與執行
 [下載](https://github.com/josh-hsu/JoshAutomationFX/blob/master/release/JoshAutomationFX.zip?raw=true) -下載最新版
@@ -48,19 +49,20 @@ AdbWinUsbApi.dll
 ## 注意事項
 * 要修改已經啟動的條件時，必須先取消啟動，修改後再重新啟動
 * 技能一與物品一是最右邊那格，往左列推
+* 請先將所有要開的模擬器都打開才打開本程式，避免找不到裝置
 
 
 ## 錯誤回報
 麻煩遇到問題，可以將你解壓縮後執行檔案的資料夾下會看到 Log/JAFX_日期.txt
 
-把這個寄給我 alenbos0517@gmail.com
+把這個寄給我 joshhsu1002@gmail.com
 ```
 標題: [JAFX] 錯誤回報
 內容: 
 您的暱稱或是聯絡信箱方式，大約陳述您的問題以及發生的時間
 ```
 如果你看得懂英文，也可以直接在
-https://github.com/josh-hsu/JoshAutomationFX/issues
+[這裡](https://github.com/josh-hsu/JoshAutomationFX/issues)
 開BUG給我，我會更快收到
 
 
