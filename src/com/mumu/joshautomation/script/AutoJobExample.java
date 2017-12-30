@@ -22,7 +22,8 @@ class AutoJobExample extends AutoJob {
         super(jobName);
 
         /* JoshGameLibrary basic initial */
-        mGL = JoshGameLibrary.getInstance();
+        mGL = new JoshGameLibrary();
+        mGL.setDeviceName(null); //device serial name on device, null if only one
         mGL.setGameOrientation(ScreenPoint.SO_Landscape);
         mGL.setScreenDimension(1080, 1920);
     }

@@ -16,16 +16,16 @@
 
 package com.mumu.libjoshgame;
 
-
 /*
- * Josh Game Library - Version 1.50
+ * Josh Game Library - Version 1.60
  */
 /*
    JoshGameLibrary (GL)
    This game control library require the following initial phase
 
    JoshGameLibrary mGL;
-   mGL = JoshGameLibrary.getInstance();               //this make sure there will be only one instance
+   mGL = new JoshGameLibrary();                       //create your own instance for each device
+   mGL.setDeviceName("device_name");                  //Set current device name (serial) for adb -s deviceName command
    mGL.setPlatform(true);                             //setting to PC mode (required)
    mGL.setGameOrientation(ScreenPoint.SO_Landscape);  //setting game orientation for point check
    mGL.setScreenDimension(1080, 1920);                //setting the dimension of screen for point check
@@ -36,26 +36,20 @@ package com.mumu.libjoshgame;
          you should see Josh-Tool instead.
    Note: with version 1.50 or higher, it only compatibles with PC mode. This means it should only run by PC
          with devices connected through ADB.
+   Note: with version 1.60 or higher, JoshGameLibrary is not singleton anymore to fit in multiple devices
+         resolution support.
  */
 public class JoshGameLibrary {
     private InputService mInputService;
     private CaptureService mCaptureService;
-    private static Cmd mCmd;
+    private static AdbDeviceManager mAdbDeviceManager;
     private int width, height, orientation;
+    private String deviceName;
 
-    private static JoshGameLibrary currentRuntime;
-
-    public static JoshGameLibrary getInstance() {
-        if (currentRuntime == null) {
-            currentRuntime = new JoshGameLibrary();
-        }
-        return currentRuntime;
-    }
-
-    private JoshGameLibrary() {
+    public JoshGameLibrary() {
         mCaptureService = new CaptureService();
         mInputService = new InputService(mCaptureService);
-        mCmd = Cmd.getInstance();
+        mAdbDeviceManager = AdbDeviceManager.getInstance();
     }
 
     public void setScreenDimension(int w, int h) {
@@ -63,6 +57,18 @@ public class JoshGameLibrary {
         height = h;
         mCaptureService.setScreenDimension(w, h);
         mInputService.setScreenDimension(w, h);
+    }
+
+    public int setScreenDimensionFromDevice() {
+        int[] actualSize;
+
+        if (deviceName != null) {
+            actualSize = mAdbDeviceManager.getAdbDeviceResolution(deviceName);
+            setScreenDimension(actualSize[0], actualSize[1]);
+            return 0;
+        }
+
+        return -1;
     }
 
     public void setGameOrientation(int orientation) {
@@ -104,6 +110,16 @@ public class JoshGameLibrary {
         mInputService.setPlatformPC(platformPC);
     }
 
+    /*
+     * setDeviceName (added in 1.60)
+     * Set current device name (serial) for adb -s deviceName command
+     */
+    public void setDeviceName(String dev) {
+        deviceName = dev;
+        mCaptureService.setDeviceName(dev);
+        mInputService.setDeviceName(dev);
+    }
+
     public void setChatty(boolean chatty) {
         mCaptureService.setChatty(chatty);
     }
@@ -114,6 +130,10 @@ public class JoshGameLibrary {
 
     public InputService getInputService() {
         return mInputService;
+    }
+
+    public String getDeviceName() {
+        return deviceName;
     }
 
     public int getScreenWidth () {
@@ -130,14 +150,14 @@ public class JoshGameLibrary {
 
     static class GLService {
         /*
-         * this eases the pain of accessing Cmd for GLServices
+         * this eases the pain of accessing AdbDeviceManager for GLServices
          */
         String runCommand(String cmd) {
-            return mCmd.runCommand(cmd);
+            return mAdbDeviceManager.runCommand(cmd);
         }
 
         String runCommand(String cmd, String dev) {
-            return mCmd.runCommand(cmd, dev);
+            return mAdbDeviceManager.runCommand(cmd, dev);
         }
     }
 

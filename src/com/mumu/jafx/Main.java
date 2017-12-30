@@ -12,10 +12,8 @@ import com.mumu.joshautomation.ro.ROJobList;
 import com.mumu.joshautomation.script.AutoJob;
 import com.mumu.joshautomation.script.AutoJobEventListener;
 import com.mumu.joshautomation.script.AutoJobHandler;
-import com.mumu.libjoshgame.Cmd;
-import com.mumu.libjoshgame.JoshGameLibrary;
+import com.mumu.libjoshgame.AdbDeviceManager;
 import com.mumu.libjoshgame.Log;
-import com.mumu.libjoshgame.ScreenPoint;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -38,7 +36,6 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
     private RootViewController mRootViewController;
 
     private AutoJobHandler mAutoJobHandler;
-    private JoshGameLibrary mGL;
     private ArrayList<ROJobList> mROJobListSet;
     private ArrayList<String> mDeviceList;
 
@@ -124,7 +121,7 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
     }
 
     private void checkConnectedDevices() {
-        mDeviceList = Cmd.getInstance().getAdbDevices();
+        mDeviceList = AdbDeviceManager.getInstance().getAdbDevices();
         for (String device: mDeviceList) {
             Log.d(TAG, "adb device found: " + device);
         }
@@ -164,8 +161,8 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
             String filename = "/sdcard/screen" + i + ".png";
             String localName = "screen" + i + ".png";
             String path = mCurrentWD + "\\Screenshot\\";
-            Cmd.getInstance().runCommand("screencap -p " + filename, mDeviceList.get(i));
-            Cmd.getInstance().pullAdbFile(filename, path, mDeviceList.get(i));
+            AdbDeviceManager.getInstance().runCommand("screencap -p " + filename, mDeviceList.get(i));
+            AdbDeviceManager.getInstance().pullAdbFile(filename, path, mDeviceList.get(i));
 
             try {
                 URL pathUrl = new File(path + localName).toURI().toURL();
@@ -324,16 +321,6 @@ public class Main extends Application implements AutoJobEventListener, JobViewLi
         @Override
         public void run() {
             super.run();
-
-            mGL = JoshGameLibrary.getInstance();
-
-            // setting up GL before AutoJob initialized
-            mGL.setScreenDimension(1440,900);
-            mGL.setGameOrientation(ScreenPoint.SO_Landscape);
-            mGL.setTouchShift(0);
-            mGL.setAmbiguousRange(new int[] {0xf,0xf,0xf});
-            mGL.setPlatform(true);
-            mGL.setChatty(false);
 
             checkConnectedDevices();
             createAutoJob();

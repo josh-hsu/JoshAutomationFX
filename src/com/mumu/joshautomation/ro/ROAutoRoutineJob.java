@@ -29,10 +29,17 @@ public class ROAutoRoutineJob extends AutoJob {
         super(jobName);
 
         /* JoshGameLibrary basic initial */
-        mGL = JoshGameLibrary.getInstance();
+        mGL = new JoshGameLibrary();
+        mGL.setDeviceName(device);
+        //mGL.setScreenDimension(1440,900);
+        mGL.setScreenDimensionFromDevice();
         mGL.setGameOrientation(ScreenPoint.SO_Landscape);
+        mGL.setTouchShift(0);
+        mGL.setAmbiguousRange(new int[] {0xf,0xf,0xf});
+        mGL.setPlatform(true);
+        mGL.setChatty(false);
 
-        mRO = new RORoutine(mGL, mListener, device);
+        mRO = new RORoutine(mGL, mListener);
         TAG = TAG + "(" + device + ")"; //make us easy to find out which device
         mSelf = this;
         mTab = tab;
@@ -68,7 +75,7 @@ public class ROAutoRoutineJob extends AutoJob {
 
     public void setJobEventListener(AutoJobEventListener el) {
         mListener = el;
-        mRO = new RORoutine(mGL, mListener, mCurrentDevice);
+        mRO = new RORoutine(mGL, mListener);
     }
 
     private void sendEvent(String msg, Object extra) {

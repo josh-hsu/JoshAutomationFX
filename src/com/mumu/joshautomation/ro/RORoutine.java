@@ -18,12 +18,12 @@ class RORoutine {
     private static final String TAG = "RORoutine";
     private JoshGameLibrary mGL;
     private AutoJobEventListener mCallbacks;
-    private String mDevice;
+    private RORoutineDefinition mROD;
 
-    public RORoutine(JoshGameLibrary gl, AutoJobEventListener el, String dev) {
+    public RORoutine(JoshGameLibrary gl, AutoJobEventListener el) {
         mGL = gl;
         mCallbacks = el;
-        mDevice = dev;
+        mROD = new RORoutineDefinition(RORoutineDefinition.SUPPORTED_1440x900);
     }
 
     private void sendMessage(String msg) {
@@ -46,11 +46,11 @@ class RORoutine {
      * -------------- */
     private ScreenCoord getTargetGaugeCoord(float percent, int gauge) {
         if (gauge == GAUGE_TYPE_HP) {
-            int length = (int)((pointHPEnd.x - pointHPStart.x) * percent) / 100;
-            return new ScreenCoord(pointHPStart.x + length, pointHPStart.y, pointHPStart.orientation);
+            int length = (int)((mROD.pointHPEnd.x - mROD.pointHPStart.x) * percent) / 100;
+            return new ScreenCoord(mROD.pointHPStart.x + length, mROD.pointHPStart.y, mROD.pointHPStart.orientation);
         } else if (gauge == GAUGE_TYPE_MP) {
-            int length = (int)((pointMPEnd.x - pointMPStart.x) * percent) / 100;
-            return new ScreenCoord(pointMPStart.x + length, pointMPStart.y, pointMPStart.orientation);
+            int length = (int)((mROD.pointMPEnd.x - mROD.pointMPStart.x) * percent) / 100;
+            return new ScreenCoord(mROD.pointMPStart.x + length, mROD.pointMPStart.y, mROD.pointMPStart.orientation);
         } else {
             Log.d(TAG, "Unknown gauge type " + gauge);
         }
@@ -59,23 +59,21 @@ class RORoutine {
     }
 
     private boolean isMPLowerThan(float percent) {
-        ScreenPoint point = new ScreenPoint(getTargetGaugeCoord(percent, GAUGE_TYPE_MP), pointMPEmptyColor);
-        return mGL.getCaptureService().colorIs(point, mDevice);
+        return !isMPHigherThan(percent);
     }
 
     private boolean isHPLowerThan(float percent) {
-        ScreenPoint point = new ScreenPoint(getTargetGaugeCoord(percent, GAUGE_TYPE_HP), pointHPEmptyColor);
-        return mGL.getCaptureService().colorIs(point, mDevice);
+        return !isHPHigherThan(percent);
     }
 
     private boolean isMPHigherThan(float percent) {
-        ScreenPoint point = new ScreenPoint(getTargetGaugeCoord(percent, GAUGE_TYPE_MP), pointMPColor);
-        return mGL.getCaptureService().colorIs(point, mDevice);
+        ScreenPoint point = new ScreenPoint(getTargetGaugeCoord(percent, GAUGE_TYPE_MP), mROD.pointMPColor);
+        return mGL.getCaptureService().colorIs(point);
     }
 
     private boolean isHPHigherThan(float percent) {
-        ScreenPoint point = new ScreenPoint(getTargetGaugeCoord(percent, GAUGE_TYPE_HP), pointHPColor);
-        return mGL.getCaptureService().colorIs(point, mDevice);
+        ScreenPoint point = new ScreenPoint(getTargetGaugeCoord(percent, GAUGE_TYPE_HP), mROD.pointHPColor);
+        return mGL.getCaptureService().colorIs(point);
     }
 
     public float getCurrentHPValue() {
@@ -90,29 +88,29 @@ class RORoutine {
         return isHPHigherThan(50) || isHPLowerThan(50);
     }
 
-    void tapOnQuickItem(int index) {
+    private void tapOnQuickItem(int index) {
         if (index < 1)
             return;
 
-        ScreenCoord itemCoord = pointItems.get(index - 1);
-        mGL.getInputService().tapOnScreen(itemCoord, mDevice);
+        ScreenCoord itemCoord = mROD.pointItems.get(index - 1);
+        mGL.getInputService().tapOnScreen(itemCoord);
     }
 
-    void tapOnSkill(int index) {
+    private void tapOnSkill(int index) {
         if (index < 1)
             return;
 
-        ScreenCoord skillCoord = pointSkills.get(index - 1);
-        mGL.getInputService().tapOnScreen(skillCoord, mDevice);
+        ScreenCoord skillCoord = mROD.pointSkills.get(index - 1);
+        mGL.getInputService().tapOnScreen(skillCoord);
     }
 
-    void tapOnRandomSpot(int radius) {
+    private void tapOnRandomSpot(int radius) {
         int center_x = mGL.getScreenWidth() / 2;
         int center_y = mGL.getScreenHeight() / 2;
         int x_shift = (int) (Math.random() * radius) - radius/2;
         int y_shift = (int) (Math.random() * radius) - radius/2;
         ScreenCoord tapPoint = new ScreenCoord(center_x + x_shift, center_y + y_shift, mGL.getScreenOrientation());
-        mGL.getInputService().tapOnScreen(tapPoint, mDevice);
+        mGL.getInputService().tapOnScreen(tapPoint);
     }
 
     boolean checkBattleSupply(int type, int typeValue) {
@@ -158,23 +156,23 @@ class RORoutine {
     }
 
     boolean isAutoBattleEnabled() {
-        return mGL.getCaptureService().colorIs(pointAutoBattled, mDevice) ||
-                mGL.getCaptureService().colorIs(pointAutoBattledYellow, mDevice);
+        return mGL.getCaptureService().colorIs(mROD.pointAutoBattled) ||
+                mGL.getCaptureService().colorIs(mROD.pointAutoBattledYellow);
     }
 
     boolean isFollowingFirst() {
-        return mGL.getCaptureService().colorIs(pointFollowed, mDevice);
+        return mGL.getCaptureService().colorIs(mROD.pointFollowed);
     }
 
     void tryAutoBattle() throws InterruptedException {
         if (!isAutoBattleEnabled()) {
-            mGL.getInputService().tapOnScreen(pointAutoBattled.coord, mDevice);
+            mGL.getInputService().tapOnScreen(mROD.pointAutoBattled.coord);
             sleep(1000);
             if (isAutoBattleEnabled()) {
                 Log.d(TAG, "This char is following someone, so tap auto battle end.");
             } else {
-                if (mGL.getCaptureService().colorIs(pointAutoBattledAllMonster, mDevice)) {
-                    mGL.getInputService().tapOnScreen(pointAutoBattledAllMonster.coord, mDevice);
+                if (mGL.getCaptureService().colorIs(mROD.pointAutoBattledAllMonster)) {
+                    mGL.getInputService().tapOnScreen(mROD.pointAutoBattledAllMonster.coord);
                 }
             }
         }
@@ -182,10 +180,10 @@ class RORoutine {
 
     void tryFollowingFirst() throws InterruptedException {
         if (!isFollowingFirst()) {
-            mGL.getInputService().tapOnScreen(pointFollowed.coord, mDevice);
+            mGL.getInputService().tapOnScreen(mROD.pointFollowed.coord);
             sleep(1000);
-            if (!isFollowingFirst() && mGL.getCaptureService().colorIs(pointFollowButton, mDevice)) {
-                mGL.getInputService().tapOnScreen(pointFollowButton.coord, mDevice);
+            if (!isFollowingFirst() && mGL.getCaptureService().colorIs(mROD.pointFollowButton)) {
+                mGL.getInputService().tapOnScreen(mROD.pointFollowButton.coord);
             }
         }
     }
