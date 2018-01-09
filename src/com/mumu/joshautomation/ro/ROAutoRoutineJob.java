@@ -13,11 +13,12 @@ import static com.mumu.joshautomation.ro.ROJobDescription.*;
 
 public class ROAutoRoutineJob extends AutoJob {
     private String TAG = "ROAutoRoutine";
+    private int DETAIL_INDEX_START = 7;
+
     private ArrayList<Thread> mJobRoutines;
     private JoshGameLibrary mGL;
     private AutoJobEventListener mListener;
     private int mTab;
-
     private RORoutine mRO;
     private ROAutoRoutineJob mSelf;
     private ROJobList mJobList;
@@ -34,7 +35,7 @@ public class ROAutoRoutineJob extends AutoJob {
         //mGL.setScreenDimension(1440,900);
         mGL.setScreenDimensionFromDevice();
         mGL.setGameOrientation(ScreenPoint.SO_Landscape);
-        mGL.setTouchShift(0);
+        mGL.setTouchShift(2);
         mGL.setAmbiguousRange(new int[] {0xf,0xf,0xf});
         mGL.setPlatform(true);
         mGL.setChatty(false);
@@ -91,6 +92,9 @@ public class ROAutoRoutineJob extends AutoJob {
         sendEvent(msg, location);
     }
 
+    //
+    // Job Formatter
+    //
     private void formatNewJobs() {
         if (mJobRoutines != null && !mJobRoutines.isEmpty())
             mJobRoutines.clear();
@@ -122,7 +126,7 @@ public class ROAutoRoutineJob extends AutoJob {
                 mRO.tryFollowingFirst();
             }
         }
-        mJobRoutines.add(new DetectAutoFollow(7, "detectAutoBattle"));
+        mJobRoutines.add(new DetectAutoFollow(DETAIL_INDEX_START, "detectAutoBattle"));
 
         // Detect of auto battle button
         // index : 8
@@ -142,32 +146,33 @@ public class ROAutoRoutineJob extends AutoJob {
                 mRO.tryAutoBattle();
             }
         }
-        mJobRoutines.add(new DetectAutoBattle(8, "detectAutoBattle"));
+        mJobRoutines.add(new DetectAutoBattle(DETAIL_INDEX_START + 1, "detectAutoBattle"));
 
     }
 
+    //
+    // Job Trigger
+    //
     private void startAllJobs() {
         if (mJobRoutines != null) {
-            for(int i = 0; i < mJobList.getJobCount(); i++) {
-                if (!mJobRoutines.get(i).isAlive())
-                    mJobRoutines.get(i).start();
+            for (Thread routine : mJobRoutines) {
+                if (!routine.isAlive())
+                    routine.start();
             }
         }
-
-        mJobRoutines.get(7).start();
-        mJobRoutines.get(8).start();
     }
 
     private void stopAllJobs() {
         if (mJobRoutines != null) {
-            for(int i = 0; i < mJobList.getJobCount(); i++) {
-                mJobRoutines.get(i).interrupt();
+            for (Thread routine : mJobRoutines) {
+                routine.interrupt();
             }
         }
-        mJobRoutines.get(7).interrupt();
-        mJobRoutines.get(8).interrupt();
     }
 
+    //
+    // Job Setter
+    //
     public void setAutoJob(int index, ROJobDescription job) {
         Thread t = mJobRoutines.get(index);
         if (t instanceof ROJobRoutine)
@@ -177,23 +182,27 @@ public class ROAutoRoutineJob extends AutoJob {
     }
 
     public void setDetailJobEnable(int index, boolean enable) {
-        int DETAIL_INDEX_START = 7;
         RODetectionRoutine routine = (RODetectionRoutine) mJobRoutines.get(DETAIL_INDEX_START + index);
         if (routine != null) {
             routine.setEnable(enable);
         }
     }
 
-    /*
-     * onJobListChanged
-     * Currently we will stop all jobs to accomplish new jobs
-     */
+    //
+    // onJobListChanged
+    // Currently we will stop all jobs to accomplish new jobs
+    //
     private void onJobListChanged() {
         stopAllJobs();
         formatNewJobs();
         startAllJobs();
     }
 
+    //
+    // ROJobRoutine
+    // This is for period customizable job, like auto drink or skill under
+    // user's conditions.
+    //
     private class ROJobRoutine extends Thread {
         private ROJobDescription currentJob;
         private int currentIndex;
@@ -358,6 +367,11 @@ public class ROAutoRoutineJob extends AutoJob {
         }
     }
 
+    //
+    // RODetectionRoutine
+    // This is for regular scenario of if "onCondition" happened than "doAction"
+    // will be called
+    //
     public class RODetectionRoutine extends Thread {
         private int currentIndex;
         private String currentName;
