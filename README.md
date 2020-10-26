@@ -1,7 +1,10 @@
+#
+# 即將合併 JoshAutomation 2.0
+# 可使用強大的 SAPA 功能 客製化屬於自己的腳本需求
+#
+
 # JoshAutomationFX
 PC version of JoshAutomation compatible with Nox player and other emulators, currently under developing.
-
-目前支援 RO 手遊版 自動機制
 
 ## 安裝環境
 
